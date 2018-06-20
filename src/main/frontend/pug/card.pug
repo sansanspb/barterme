@@ -1,0 +1,114 @@
+extends template
+
+block header
+    include ./components/blocks/header
+    + header({headerClass: ' white-header', isIndex: false})
+
+block content
+    main(ng-cloak ng-controller="CompanyController as ctrl")
+        include  ./components/fragments/chat
+        include  ./components/fragments/success-request-popup
+        include  ./components/fragments/partner-popup
+        include  ./components/fragments/show-more-popup
+        input#companyId(type='text' hidden th:value="${company.companyId}")
+        input#subCatId(type='text' hidden th:value="${currentCateg.categoryId}")
+        input#parentId(type='text' hidden th:value="${currentParentCateg.categoryId}")
+        .block.page-top-block.card-block
+            .content
+                ul.breadcrumbs
+                    li.bc-item
+                        a.bc-link(href='/') Главная /
+                    li.bc-item
+                        a.bc-link(th:href="@{${'listing?id=' + currentParentCateg.categoryId}}" th:text="${currentParentCateg.title + ' /'}")
+                    li.bc-item
+                        a.bc-link(th:href="@{${'insideCateg?parentId=' + currentParentCateg.categoryId + '&subId=' + currentCateg.categoryId}}" th:text="${currentCateg.title + ' /'}")
+                    li.bc-item
+                        a.bc-link.current(href='#') {{ctrl.company.caption}}
+                .nopic-header
+                    h2.page-title {{ctrl.company.caption}}
+                    .np-buttons
+                        a.nav-btn.prev(href='{{ctrl.moveCard(true)}}') Назад
+                        a.nav-btn.next(href='{{ctrl.moveCard(false)}}') Вперед
+                .card-hat
+                    p.card-views.grey Компанию посмотрели 89 раз
+                    .card-top-block
+                        .add-to-favs(ng-class="{pressed : ctrl.company.isFavorite}" ng-click="ctrl.favoriteClick()")
+                        .card-slider
+                            img(src='image/get/{{ctrl.company.photoPath}}')
+                            img(src='image/get/{{ctrl.company.photoPath}}')
+                            img(src='image/get/{{ctrl.company.photoPath}}')
+                            img(src='image/get/{{ctrl.company.photoPath}}')
+                        .card-info
+                            button.pink-btn.big#goPartner(ng-click="ctrl.sendPartner()") Запартнериться
+                            p.raiting-mark(ng-class="ctrl.getRaiting(ctrl.company.rating)") {{ctrl.company.rating}}
+                            h2.card-info-title Кто мои клиенты?
+                            .ci-col
+                                p.smallcaps клиентская база
+                                p.card-info-title(th:text="${company.clientCount}")
+                                p.smallcaps пол
+                                p.card-info-title(th:text="${company.genderMale ? (company.genderFemale ? 'М/Ж' : 'М') : (company.genderFemale ? 'Ж' : 'не указан')}")
+                            .ci-col
+                                p.smallcaps доход (т.р.)
+                                p.card-info-title(th:text="${company.incomeMin + ' - ' + company.incomeMax}")
+                                p.smallcaps возраст
+                                p.card-info-title(th:text="${company.ageMin + ' - ' + company.ageMax}")
+                            p.smallcaps регион
+                            p.card-info-title {{ctrl.company.regionString}}
+                .card-info-plate.half
+                    h3.card-info-title Мы предлагаем
+                    ul.card-info-list
+                        li(ng-repeat="offerCat in ctrl.company.categories.offerCategories | limitTo : 3") {{ctrl.getCategoryNameById(offerCat)}}
+                    a.pink-link.card-showmore(href="#" ng-show="ctrl.company.categories.offerCategories.lenght > 3") Показать еще
+                .card-info-plate.half.wm
+                    h3.card-info-title Мы ищем
+                    ul.card-info-list
+                        li(ng-repeat="searchCat in ctrl.company.categories.searchCategories") {{ctrl.getCategoryNameById(searchCat)}}
+                .about-company
+                    h3.card-info-title.bigger О компании
+                    p.common-text.grey {{ctrl.company.about}}
+                .feedbacks
+                    h3.card-info-title.bigger Отзывы
+                    p.common-text.grey(ng-show="ctrl.company.reviews.length == 0") Никто еще не оставлял отзывы о компании
+                    .one-feedback(ng-repeat="review in ctrl.company.reviews | limitTo : 3")
+                        .feedback-hat
+                            p.feedback-name(ng-class="ctrl.getRaiting(review.rating)") {{review.contactPerson}}
+                            p.feedback-date.grey {{review.createDate | date : 'dd.MM.yy'}}
+                        p.feedback-text.common-text {{review.message}}
+                    .hidden-feedbacks
+                        .one-feedback(ng-repeat="review in ctrl.company.reviews | reviewFilter")
+                            .feedback-hat
+                                p.feedback-name(ng-class="ctrl.getRaiting(review.rating)") {{review.contactPerson}}
+                                p.feedback-date.grey {{review.createDate | date : 'dd.MM.yy'}}
+                            p.feedback-text.common-text {{review.message}}
+                    a.grey-btn#showMoreFeedbacks(href='' ng-show="ctrl.company.reviews.length > 3") Показать больше отзывов
+        .block.other-categs.nop.wpt(ng-show="companies.length != 0")
+            .content
+                .nopic-header
+                    h2.page-title
+                        | Вас могут заинтересовать
+                        br
+                        |  эти предложения
+                    p.page-undertitle
+                        | Ознакомьтесь с другими вариантами
+                        br
+                        |  в выбранной категории
+                .inside-categ-cards.extra
+                    .common-plate.inside-categ-plate(ng-repeat="company in companies = (ctrl.companies | withoutCompany : ctrl.company.companyId)")
+                        a(href='card?parentId={{ctrl.currentParentCatId}}&subId={{ctrl.currentCategId}}&companyId={{company.companyId}}')
+                            .img-wrapper
+                                img(src='image/get/{{company.photoPath}}')
+                            .text-wrapper
+                                .overf
+                                    h3.mid-title {{company.caption}}
+                                    p.com-desc {{company.description}}
+                                    p.common-text.grey {{company.about}}
+                            .raiting-block(ng-if="company.rating")
+                                p.raiting-mark.five(ng-class="ctrl.getRaiting(company.rating)") {{company.rating}}
+                    .clearfix
+        include ./components/blocks/categ-block
+        + categ({categClass: '', isIndex: false})
+        #counterpoint
+        include ./components/blocks/order-teaser-block
+        include ./components/blocks/order-block
+        include ./components/blocks/footer
+        + footer({footerClass: '', isIndex: false})

@@ -1,0 +1,95 @@
+.popup-wrapper#regPopupWrapper
+    .popup.reg-popup#regPopup
+        img.close-popup(src='img/close-popup.svg')
+        img.popup-emoji(src='img/emoji/wave.png')
+
+        h2.mid-title
+            | Привет! Рады тебя видеть!
+        p.common-text
+            | Хочешь получить доступ к&nbsp;нашим партнерам?
+            br
+            |  Регистрируйся прямо сейчас!
+        form(id='regForm')
+            input.common-input.reg-input(type='text' id='comName' name='comName' placeholder='Название компании')
+            input.common-input.reg-input(type='email' id='corpMail' name='corpMail' placeholder='Корпоративный Email')
+            input.common-input.reg-input(type='phone' id='regPhone' name='regPhone' placeholder='Телефон')
+            input.common-input.reg-input(type='password' id='regPass' name='regPass' placeholder='Пароль')
+            button.pink-btn#regist(type='submit' value='Зарегистрироваться') Зарегистрироваться
+        p.common-text.underbutton
+            | Уже есть аккаунт?
+            |
+            a.pink#goToEntrance(href='#') Войти
+
+    .popup.reg-popup#entrancePopup
+        img.close-popup(src='img/close-popup.svg')
+        .pop-cont.long
+            img.popup-emoji(src='img/emoji/wave.png')
+
+            h2.mid-title
+                | С возвращением!
+            p.common-text
+                | Мы скучали ;)
+            form(id='entranceForm' data-th-action='@{auth/login}' method='POST')
+                input.common-input.reg-input(type='email' id='EntMail' name='email' placeholder='Email')
+                input.common-input.reg-input(type='password' id='EntPass' name='password' placeholder='Пароль')
+                button.pink-btn(type='submit' value='Войти') Войти
+            p.common-text.underbutton
+                | Впервые здесь?
+                |
+                a.pink#goToReg(href='#') Зарегистрироваться
+
+    .popup.reg-popup#codePopup
+        img.close-popup(src='img/close-popup.svg')
+        .pop-cont.long
+            img.popup-emoji(src='img/emoji/write.png')
+
+            h2.mid-title
+                | Еще чуть-чуть!
+                br
+                | Введите код из письма
+            p.common-text
+                | Мы выслали вам письмо с кодом.
+                br
+                |  Оно придет в течение 1-5 минут
+            form(id='codeForm')
+                input.common-input.reg-input(type='text' id='code' name='code' placeholder='Код из сообщения')
+                button.pink-btn#finishReg(type='submit' value='Закончить регистрацию') Закончить регистрацию
+            p.common-text.underbutton
+                | Не пришло письмо?
+                |
+                a.pink(href='#') Отправить еще раз
+
+
+    .popup.reg-popup#moderPopup
+        img.close-popup(src='img/close-popup.svg')
+        .pop-cont.long
+            img.popup-emoji(src='img/emoji/ok.png')
+
+            h2.mid-title
+                | Почти готово!
+            p.common-text
+                | Мы ответственно подходим к выбору партнеров
+                br
+                |  для вас, поэтому подождите еще немного,
+                br
+                |  чтобы мы подтвердили вашу личность.
+            p.common-text
+                | После успешного прохождения модерации
+                br
+                |  мы вышлем вам уведомление на e-mail
+            form(id='moderForm')
+                button.pink-btn#goToFinish(type='submit' value='Понятно') Понятно
+
+    .popup.reg-popup#finishregPopup
+        img.close-popup(src='img/close-popup.svg')
+        .pop-cont
+            img.popup-emoji(src='img/emoji/clap.png')
+
+            h2.mid-title
+                | Вы восхитительны!
+            p.common-text
+                | Спасибо за интерес!
+                br
+                |  Мы уверены, что вам здесь понравится!
+            form(id='finishRegForm')
+                button.pink-btn#exitReg(type='submit' value='Наслаждаться BarterMe' ng-click="hctrl.loadHead()") Наслаждаться BarterMe

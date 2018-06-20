@@ -1,0 +1,43 @@
+.listing-cards.inside-categ-cards
+
+    .sort-block
+        p.chosen-sort#openSort По дате добавления
+        .sort-variants
+            ul.s-r-list
+                li.s-r-item
+                    a.s-r-link(href="#") По дате добавления
+                li.s-r-item
+                    a.s-r-link(href="#") По алфавиту
+                li.s-r-item
+                    a.s-r-link(href="#") По популярности
+
+    .common-plate.inside-categ-plate(ng-repeat="company in ctrl.companies")
+        a(th:href="@{${'card?parentId=' + currentParentCateg.categoryId + '&subId=' + currentCateg.categoryId + '&companyId={{company.companyId}}'}}")
+            .img-wrapper
+                img(src='image/get/{{company.photoPath}}')
+            .text-wrapper
+                .overf
+                    h3.mid-title {{company.caption}}
+                    p.com-desc {{company.description}}
+                    p.common-text.grey {{company.about}}
+
+            .raiting-block(ng-if="company.rating")
+                p.raiting-mark(ng-class="ctrl.getRaiting(company.rating)") {{company.rating}}
+
+
+    .clearfix
+
+    .pagination
+        ul.pagination-list
+            li.pagination-item
+                a.paginatin-circle.active(href="#") 1
+            li.pagination-item
+                a.paginatin-circle(href="#") 2
+            li.pagination-item
+                a.paginatin-circle(href="#") 3
+            li.pagination-item
+                a.paginatin-circle(href="#") 4
+            li.pagination-item
+                a.paginatin-circle(href="#") 5
+            li.pagination-item
+                a.pagination-arrow-next(href="#")

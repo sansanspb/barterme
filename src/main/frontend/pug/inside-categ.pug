@@ -1,0 +1,57 @@
+extends template
+
+block title
+    title(th:text="${currentParentCateg.title + ' - ' + currentCateg.title}")
+
+block header
+    include ./components/blocks/header
+    + header({headerClass: ' white-header', isIndex: false})
+
+block content
+    main(ng-controller="CompanyController as ctrl")
+        include  ./components/fragments/chat
+        include  ./components/fragments/success-request-popup
+        input#parentCatId(type='text' th:value="${currentParentCateg.categoryId}")
+        input#subCatId(type='text' th:value="${currentCateg.categoryId}")
+        .block.page-top-block
+            .content
+                ul.breadcrumbs
+                    li.bc-item
+                        a.bc-link(href='/') Главная /
+                    li.bc-item
+                        a.bc-link(th:href="@{${'listing?id=' + currentParentCateg.categoryId}}" th:text="${currentParentCateg.title + '/'}")
+                    li.bc-item
+                        a.bc-link.current(href='#' th:text="${currentCateg.title}")
+
+                .nopic-header
+                    h2.page-title(th:text="${currentCateg.title}")
+                    p.page-undertitle
+                        | Находите лучшие предложения,
+                        br
+                        |  которые подойдут вам!
+
+                include ./components/blocks/inside-categ-cards
+
+        .block.other-categs
+            .content
+                .nopic-header
+                    h2.page-title
+                        | В других категориях
+                        br
+                        | тоже много интересного
+                    p.page-undertitle
+                        | Возможно, то, что вам нужно, скрывается
+                        br
+                        |  в одной из схожих рубрик. Посмотрим?
+                include ./components/blocks/listing-cards
+
+        #counterpoint
+        include ./components/blocks/order-teaser-block
+        include ./components/blocks/order-block
+
+        include ./components/blocks/categ-block
+        + categ({categClass: '', isIndex: false})
+
+
+        include ./components/blocks/footer
+        + footer({footerClass: '', isIndex: false})

@@ -1,0 +1,145 @@
+extends template
+
+block title
+    title BarterMe!
+
+
+block header
+    include ./components/reg/reg
+    include ./components/blocks/header
+    + header({headerClass: '', isIndex: true})
+
+block content
+    main
+        include  ./components/fragments/chat
+
+        .block.index-top-block
+            .content
+                h1.big-title.index
+                    | Находи
+                    br
+                    |  маркетинг партнеров.
+                    br
+                    |  Barter&nbsp;Me решает.
+                .search-wrapper.main
+                    .search-result-block#mainSearchResults
+                        ul.s-r-list
+                            li.s-r-item
+                                a.s-r-link(href="#") Календари
+                            li.s-r-item
+                                a.s-r-link(href="#") Календари настенные
+                            li.s-r-item
+                                a.s-r-link(href="#") Календула
+                    input#mainSearch(type='search' placeholder='Мне нужно...')
+                    a.start-search.pink-btn(href='#') Найти партнера
+
+                .center-b
+                    img.mob-top-ill.mobshow(src='img/top-ill-formob.svg')
+
+        .block.comp-slider-block.reg-block#companies
+            .content
+
+                h2.page-title
+                    | Уже с нами
+
+                .c-slider
+                    img(src='img/companies/com-3.svg')
+                    img(src='img/companies/com-4.svg')
+                    img(src='img/companies/com-2.svg')
+                    img(src='img/companies/com-1.svg')
+                    img(src='img/companies/com-3.svg')
+                    img(src='img/companies/com-4.svg')
+                    img(src='img/companies/com-2.svg')
+                    img(src='img/companies/com-1.svg')
+
+                .mob-slider.mobshow.mCustomScrollbar(data-mcs-axis="x")
+                    .bulk
+                        img(src='img/companies/com-3.svg')
+                        img(src='img/companies/com-4.svg')
+                        img(src='img/companies/com-2.svg')
+                        img(src='img/companies/com-1.svg')
+
+        include ./components/blocks/categ-block
+        + categ({categClass: 'categ-grey', isIndex: true})
+
+        .block.index-video-block#videoBlock
+            .content
+                .video-info-block
+                    h2.page-title.left.white
+                        | Бесплатные
+                        br
+                        |  возможности
+                        br
+                        |  для&nbsp;эффективного
+                        br
+                        |  маркетинга
+                    p.common-text.white
+                        | Мы - команда крутых маркетологов.
+                        br
+                        |  Мы &nbsp;создали barter.me для&nbsp;других крутых
+                        br
+                        |  маркетологов. Договаривайтесь о&nbsp;бартерных
+                        br
+                        |  сделках. Это&nbsp;сделает вашу жизнь проще,
+                        br
+                        |  а&nbsp;бюджет на&nbsp;продвижение -&nbsp;меньше
+                    a.pink-btn.big.mobhide.video#play-button(href="#") Посмотреть видео
+                    a.pink-btn.big.mobshow.video#play-button-mob(href="#") Посмотреть видео
+
+                img.shtrikh.ab-pic(src='img/main-page/paint.png')
+                .video-block.mobhide
+                    iframe#video(src='https://www.youtube.com/embed/KVrX0jR--94', width='610', height='455', frameborder='0', allow='autoplay; encrypted-media', allowfullscreen='')
+                img.ipad.ab-pic(src='img/main-page/ipad.png')
+
+                div.mobshow.mob-video-block(style='padding:56.25% 0 0 0;position:relative;')
+                    iframe(src='https://www.youtube.com/embed/KVrX0jR--94' style='position:absolute;top:0;left:0;width:100%;height:100%;' frameborder='0', allow='autoplay; encrypted-media', allowfullscreen='')
+                script(src='https://player.vimeo.com/api/player.js')
+
+
+
+        .block.index-emoji-block.reg-block
+            .content
+                img(src='img/emoji/emoji-1.png')
+                h2.page-title
+                    | Бесплатно. Эффективно. Не&nbsp;гербалайф.
+
+        .block.reg-block.blog-plates-block.grey-bg#blog
+            .content
+                h2.page-title Блог
+                p.page-undertitle
+                    | Здесь публикуются самые свежие новости.
+                    br
+                    |  Не&nbsp;пропустите интересное!
+                .blog-plates
+                    .common-plate
+                        a(href='blog-page')
+                            .img-wrapper
+                                img(src='img/blog/blog.jpg')
+                            .text-wrapper
+                                .overf
+                                    h3.mid-title
+                                        | Добро пожаловать!
+                                    p.common-text.grey
+                                        | Дорогие друзья, мы долго к этому шли через тернии разработки,
+                                        | комментариев, дизайнов и прототипов. И наконец-то готовы вас
+                                        | всех принять в революционную эру. Эру эффективного маркетинга с BarterMe.ru.
+
+                    .clearfix
+
+                    .pagination
+                        ul.pagination-list
+                            li.pagination-item
+                                a.paginatin-circle.active(href="#") 1
+                            li.pagination-item
+                                a.paginatin-circle(href="#") 2
+                            li.pagination-item
+                                a.paginatin-circle(href="#") 3
+                            li.pagination-item
+                                a.paginatin-circle(href="#") 4
+                            li.pagination-item
+                                a.paginatin-circle(href="#") 5
+                            li.pagination-item
+                                a.pagination-arrow-next(href="#")
+
+        include ./components/blocks/footer
+        + footer({footerClass: '', isIndex: true})

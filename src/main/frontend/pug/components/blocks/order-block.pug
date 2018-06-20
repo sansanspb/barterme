@@ -1,0 +1,48 @@
+#formBlock
+.block.order-block.shrinked(ng-controller="OrderController as Octrl")
+    img.close-order-block(src='img/big-close.svg')
+    .content
+        h2.page-title
+            | Что вы ищете?
+        p.page-undertitle
+            | Заполните форму, и&nbsp;мы&nbsp;постараемся найти для&nbsp;вас партнера,
+            br
+            |  которого еще&nbsp;нет в&nbsp;нашей&nbsp;базе
+
+        form.order-form
+            .form-col
+                input.common-input(type=text placeholder='Я ищу' ng-model="Octrl.order.search")
+                input.common-input(type=text placeholder='Мои маркетинг задачи' ng-model="Octrl.order.marketingTask")
+                input.common-input(type=text placeholder='Мой город' ng-model="Octrl.order.region")
+                input.common-input(type=text placeholder='Взамен я предлагаю' ng-model="Octrl.order.offer")
+                input.common-input(type=text placeholder='Дополнительные контакты' ng-model="Octrl.order.contacts")
+
+            .form-col
+                p.ch-title В категориях
+
+
+                input.checkbox.sall#selectAll(type='checkbox' hidden onClick="toggle(this)")
+                label.checkbox-label(for='selectAll') Все
+
+                input.checkbox.sall#pr(type='checkbox' name='foo' hidden ng-model="Octrl.categories[0].check")
+                label.checkbox-label(for='pr') Организация PR-мероприятия
+
+                input.checkbox.sall#rass(type='checkbox' hidden ng-model="Octrl.categories[1].check")
+                label.checkbox-label(for='rass') Рассылка материалов
+
+                input.checkbox.sall#priz(type='checkbox' checked name='foo' hidden ng-model="Octrl.categories[2].check")
+                label.checkbox-label(for='priz') Призы для конкурсов
+
+                input.checkbox.sall#real(type='checkbox' name='foo' hidden ng-model="Octrl.categories[3].check")
+                label.checkbox-label(for='real') Реализация продукции
+
+                input.checkbox.sall#partner(type='checkbox' name='foo' hidden ng-model="Octrl.categories[4].check")
+                label.checkbox-label(for='partner' hidden) Партнерства между магазинами
+
+                input.checkbox.sall#partner2(type='checkbox' name='foo' hidden ng-model="Octrl.categories[5].check")
+                label.checkbox-label(for='partner2') Партнерство в соцсетях
+
+                input.checkbox.sall#imi(type='checkbox' name='foo' hidden ng-model="Octrl.categories[6].check")
+                label.checkbox-label(for='imi') Имиджевое продвижение
+
+            button.pink-btn.big#submitRequest(value='Отправить заявку' ng-click="Octrl.sendOrder()") Отправить заявку

@@ -1,0 +1,146 @@
+extends template
+
+block title
+    title Личный кабинет
+
+
+block header
+    include ./components/blocks/header
+    + header({headerClass: ' white-header', isIndex: false})
+
+block content
+    main(ng-controller="CabinetController as ctrl")
+        include  ./components/fragments/chat
+        include  ./components/fragments/city-select
+        include  ./components/fragments/geo-select
+        include  ./components/fragments/delete-userpic
+
+        .block.page-top-block.cabinet-top-block
+            .content
+                ul.breadcrumbs
+                    li.bc-item
+                        a.bc-link(href='/') Главная /
+                    li.bc-item
+                        a.bc-link.current(href='cabinet')  Личный кабинет
+
+                .nopic-header.cabinet.left-align
+                    h2.page-title Привет, {{ctrl.company.caption}}!
+                    p.page-undertitle.grey
+                        | Заполните обязательные поля,
+                        br
+                        |  чтобы получить доступ к нашей базе партнеров
+
+                    a.pink-link.editcab(href='' ng-click="ctrl.saveCompany()") Сохранить
+
+                .cabinet-hat.edit
+                    .img-wrapper.cab
+                        p.empty-logo-text.grey.common-text Логотип вашей компании
+                        img.cab-userpic(src='image/get/{{ctrl.company.photoPath}}')
+                        input(hidden type="file" id="ava" name="ava")
+                        .ava-btns
+                            .wrap
+                                a.ava-btn.change-ava#loadBtn(href='#' ng-click="ctrl.uploadImage()") Изменить
+                                a.ava-btn.delete-ava(href='#') Удалить
+                    .cabinet-hat-info
+                        .one-line
+                            span.grey.label-like Компания:
+                            input.cab-edit-input.full-i(placeholder='Название компании', ng-model="ctrl.company.caption")
+                        .one-line
+                            span.grey Город:
+                            span.pink.editgeo {{ctrl.getRegionById()}}
+                        .one-line
+                            span.grey.label-like Контактное лицо:
+                            input.cab-edit-input.full-i(placeholder='Введите имя', ng-model="ctrl.company.contactPerson")
+                        .one-line
+                            span.grey.label-like Почта:
+                            input.cab-edit-input.full-i(placeholder='Введите почту', ng-model="ctrl.company.contactEmail")
+
+
+                .cabinet-main-part
+                    .cabinet-tab#cab-info
+                        .one-cab-cols-row
+                            .one-cab-col
+                                h2.card-info-title Мы предлагаем
+                                ul.card-edit-list
+                                    li.openable(ng-repeat="categ in ctrl.categoriesTree")
+                                        span(ng-click="categ.opened1 = !categ.opened1;") {{categ.title}}
+                                        ul.card-vars-list(ng-if="categ.childs.length != 0" ng-show="categ.opened1")
+                                            li.card-var(ng-repeat="child in categ.childs")
+                                                input.checkbox(type='checkbox' name='foo' hidden ng-checked="ctrl.isCategoryChecked(child.categoryId, 1)")
+                                                label.checkbox-label(ng-click="ctrl.pushCategory(child.categoryId, 1)") {{child.title}}
+
+                                input.cab-edit-input.nm.wm.full-i(placeholder='Другое')
+
+                            .one-cab-col
+                                h2.card-info-title Мы ищем
+                                ul.card-edit-list
+                                    li.openable(ng-repeat="categ in ctrl.categoriesTree")
+                                        span(ng-click="categ.opened2 = !categ.opened2;") {{categ.title}}
+                                        ul.card-vars-list(ng-if="categ.childs.length != 0" ng-show="categ.opened2")
+                                            li.card-var(ng-repeat="child in categ.childs")
+                                                input.checkbox(type='checkbox' name='foo' hidden ng-checked="ctrl.isCategoryChecked(child.categoryId, 2)")
+                                                label.checkbox-label(ng-click="ctrl.pushCategory(child.categoryId, 2)") {{child.title}}
+
+                                input.cab-edit-input.nm.wm.full-i(placeholder='Другое')
+
+                        .one-cab-cols-row.data-block
+                            .one-cab-col
+                                h2.card-info-title Моя клиентская база
+                                .one-base-line
+                                    span.grey.label-like Размер:
+                                    input.cab-edit-input.size.nm(placeholder='тыс.' ng-model="ctrl.company.clientCount")
+                                    span.grey.after человек
+                                .one-base-line
+                                    span.grey.m-lab.nom Пол:
+                                    .options-part
+                                        .option-line
+                                            input.radio#male(type='radio' name='gender' ng-checked="ctrl.company.genderMale && !ctrl.company.genderMale" ng-click="ctrl.switchGender(1)")
+                                            label.radio-label(for="male") М
+                                        .option-line
+                                            input.radio#female(type='radio' name='gender' ng-checked="!ctrl.company.genderMale && ctrl.company.genderFemale" ng-click="ctrl.switchGender(2)")
+                                            label.radio-label(for="female") Ж
+
+                                        .option-line
+                                            input.radio#both(type='radio' ng-checked="ctrl.company.genderMale && ctrl.company.genderFemale" name='gender' ng-click="ctrl.switchGender(3)")
+                                            label.radio-label(for="both") М/Ж
+                                .one-base-line.mb
+                                    span.grey.m-lab Возраст:
+                                    span.grey.before от
+                                    input.cab-edit-input.year.nm(ng-model="ctrl.company.ageMin")
+                                    span.grey.inthemiddle до
+                                    input.cab-edit-input.year.nm(ng-model="ctrl.company.ageMax")
+                                    span.grey.after лет
+                                .one-base-line.mbl
+                                    span.grey.m-lab Доход:
+                                    span.grey.before от
+                                    input.cab-edit-input.year.nm(ng-model="ctrl.company.incomeMin")
+                                    span.grey.inthemiddle до
+                                    input.cab-edit-input.year.nm(ng-model="ctrl.company.incomeMax")
+                                    span.grey.after т.р.
+                                .one-base-line
+                                    span.grey Геолокация:
+                                    span.pink.editgeo {{ctrl.getRegionById()}}
+
+                            .one-cab-col.big
+                                h2.card-info-title Мои маркетинг каналы
+                                .select-channels
+                                    .col
+                                        .channel(ng-repeat="channel in ctrl.marketingChannels | marketingChannels : 1")
+                                            input.checkbox(type='checkbox' name='foo' hidden ng-checked="ctrl.isMarketingChannelChecked(channel.marketingChannelId)")
+                                            label.checkbox-label(ng-click="ctrl.pushMarketingChannel(channel)") {{channel.title}}
+                                    .col
+                                        .channel(ng-repeat="channel in ctrl.marketingChannels | marketingChannels : 2")
+                                            input.checkbox(type='checkbox' name='foo' hidden ng-checked="ctrl.isMarketingChannelChecked(channel.marketingChannelId)")
+                                            label.checkbox-label(ng-click="ctrl.pushMarketingChannel(channel)") {{channel.title}}
+
+                                input.cab-edit-input.nm.wm(placeholder='Другое')
+
+                        .one-cab-cols-row
+                            h3.card-info-title О компании
+                            textarea.company-edit(placeholder='Расскажите о вашей компании' ng-model="ctrl.company.about")
+
+
+                        button.pink-btn.big.savecab(ng-click="ctrl.saveCompany()") Сохранить изменения
+
+        include ./components/blocks/footer
+        + footer({footerClass: '', isIndex: false})

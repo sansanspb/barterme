@@ -1,0 +1,9 @@
+.popup-wrapper#showMorePopupWrapper
+    .popup.showmore-popup#showMorePopup
+        img.close-popup#closeRequest(src='img/close-popup.svg')
+
+        h2.card-info-title
+            | Мы предлагаем
+        ul.card-info-list
+            li(ng-repeat="offerCat in ctrl.company.categories.offerCategories") {{ctrl.getCategoryNameById(offerCat)}}
+

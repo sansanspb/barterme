@@ -1,0 +1,72 @@
+extends template
+
+block title
+    title Артемий Лебедев о кросс-маркетинге
+
+
+block header
+    include ./components/reg/reg
+    include ./components/blocks/header
+    + header({headerClass: ' white-header', isIndex: false})
+
+block content
+    main
+        include  ./components/fragments/chat
+        .block.page-top-block
+            .content
+                ul.breadcrumbs
+                    li.bc-item
+                        a.bc-link(href='/') Главная /
+                    li.bc-item
+                        a.bc-link.current(href='#') Добро пожаловать!
+
+                .blog-page
+                    .blog-part
+                        h2.page-title
+                            | Добро пожаловать!
+                        p.common-text
+                            | Дорогие друзья, мы долго к этому шли через тернии разработки, комментариев,
+                            | дизайнов и прототипов. И наконец-то готовы вас всех принять
+                            | в революционную эру. Эру эффективного маркетинга с BarterMe.ru.
+
+                    .blog-part
+                        p.common-text
+                            | Сервис работает предельно просто: после регистрации укажите то, что вам
+                            | интересно в рамках маркетинговых задач. А также то, что вы можете
+                            | предложить взамен. По факту, это все. Ждите классных предложений от партнеров.  
+
+                    <!--.blog-part
+                        .quote-block
+                            p.quote
+                                | Ut vitae tristique augue, tincidunt aliquet leo. Maecenas aliquet quam
+                                br
+                                |  at orci congue, ut maximus urna dapibus. Vivamus in elementum diam.
+                                br
+                                |  Nibh, non rhoncus ligula consequat at. Mauris lectus tellus
+                            p.quote-author.common-text
+                                | Артемий Лебедев, на встрече BarterMe-->
+
+                    .blog-part
+                        p.common-text
+                            | Удачных вам партнерств!
+                    .blog-part
+                        p.common-text
+                            |  И если у вас возникли вопросы, вы нашли ошибку в работе платформы, вам просто хочется с нами поговорить, пожалуйста, пишите на friends@barterme.ru
+
+                    .blog-part
+                        p.common-text
+                            | С любовью,
+                            | Ваши основательницы BarterMe
+                    p.blog-date.grey 19 июня 2018г.
+
+        <!--.block.reg-block.blog-plates-block.grey-bg
+            .content
+                h2.page-title Другие публикации
+                p.page-undertitle
+                    | В нашем блоге много интересного,
+                    | посмотрите сами
+                .blog-plates -->
+
+
+        include ./components/blocks/footer
+        + footer({footerClass: '', isIndex: false})

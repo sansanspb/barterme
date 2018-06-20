@@ -1,0 +1,9 @@
+.listing-cards
+    .common-plate.listing-plate(th:each="categ:${subcategories}")
+        a(href='blog-page.html')
+            .img-wrapper
+                a(th:href="@{${'insideCateg?parentId=' + currentParentCateg.categoryId + '&subId=' + categ.categoryId}}")
+                    .img-darkner
+                    h3.listing-card-name.mid-title.white(th:text="${categ.title}")
+                    img(th:src="@{${'img/subcategs/' + categ.categoryId + '.jpg'}}")
+    .clearfix

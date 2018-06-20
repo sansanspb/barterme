@@ -1,0 +1,59 @@
+extends template
+
+block title
+    title Заявки
+
+
+block header
+    include ./components/blocks/header
+    + header({headerClass: ' white-header', isIndex: false})
+
+block content
+    main(ng-controller="CabinetController as ctrl")
+        include  ./components/fragments/chat
+        .block.page-top-block
+            .content
+                ul.breadcrumbs
+                    li.bc-item
+                        a.bc-link(href='/') Главная /
+                    li.bc-item
+                        a.bc-link.current(href='#')  Заявки
+
+                .nopic-header.left-align
+                    h2.page-title
+                        | Входящие заявки
+
+                .requests-block
+                    .nofav-block.norequests
+                        img.nofav-ill(src='img/cabinet/nofav.png')
+                        .nofav-text
+                            h3.card-info-title
+                                | В данный момент
+                                br
+                                |  вы ни с кем не партнеритесь
+                            p.common-text.grey
+                                | Надеемся, это продлится недолго,
+                                br
+                                | ведь в нашем деле время - деньги!
+                            a.pink-btn.big(href='/#categs') Исправить ситуацию
+                    .one-request(ng-repeat="partner in partners = (ctrl.company.partners | filter : {status : 'WAIT', receiverId : ctrl.company.companyId})")
+                        .request-body
+                            a.img-wrapper(href='card?parentId={{ctrl.categoriesTree[0].categoryId}}&subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&companyId={{favorite.companyId}}')
+                                img(src='image/get/{{partner.company.photoPath}}')
+                            .request-text-part
+                                h3.mid-title {{partner.company.caption}}
+                                p.common-text {{partner.company.description}}
+                                span.raiting-word.grey(ng-show="partner.company.rating") Рейтинг
+                                p.raiting-mark(ng-class="ctrl.ratings[partner.company.rating]") {{partner.company.rating}}
+
+                        .request-btns(id="btns{{partner.partnersId}}")
+                            button.pink-btn.accept(ng-click="ctrl.receivePartner(partner)") Принять
+                            button.grey-btn.decline(ng-click="ctrl.preRejectPartner($event, partner)") Отклонить
+
+                        .request-remove-alert(id="btnAlerts{{partner.partnersId}}")
+                            p.grey Точно отклонить?
+                            button.pink-btn.yesremove(ng-click="ctrl.rejectPartner(partner);") Да
+                            button.grey-btn.noremove(ng-click="ctrl.cancelRejectPartner($event, partner)") Отмена
+
+        include ./components/blocks/footer
+        + footer({footerClass: '', isIndex: false})

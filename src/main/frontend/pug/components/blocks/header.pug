@@ -1,0 +1,51 @@
+mixin header(options)
+
+    block header-options
+        - var headerClass = 'block page-header' + options.headerClass
+
+    header(class=headerClass ng-controller="HeaderController as hctrl")
+        .preloader(ng-show="showLoader")
+        .content(ng-init="hctrl.loadHead()")
+            if options.isIndex
+                a(href="/")
+                    img.header-logo.white(src='img/logo_black.svg')
+                    img.header-logo.black(src='img/logo_black.svg')
+            else
+                a(href="/")
+                    img.header-logo.white(src='img/logo_black.svg')
+                    img.header-logo.black(src='img/logo_black.svg')
+
+            .header-right-part.hide(ng-show="hctrl.showHead")
+
+                .mob-menu(ng-show="hctrl.showUnreg")
+                    .mm-cont
+                        a.entrance#entranceBtn(href='#' ng-click="hctrl.showLogin()") вход
+                        a.reg.pink-btn.regBtn(href='#' ng-click="hctrl.showReg()") регистрация
+                    .mm-mail.mobshow
+                        span Напишите нам
+                        a.pink-link(href="mailto: friends@barterme.ru") friends@barterme.ru
+                .mob-menu(ng-show="hctrl.showReg")
+                    .mm-cont
+                        a.cabinet-header-link.mobshow(href='/') на главную
+                        a.cabinet-header-link.cabin(href='cabinet' ng-hide="hctrl.isCabinetLocation()") личный кабинет
+                    .mm-mail.mobshow
+                        span Напишите нам
+                        a.pink-link(href="mailto: friends@barterme.ru") friends@barterme.ru
+                .bell-block(ng-show="hctrl.showBell")
+                    span.bell-number(ng-show="hctrl.partnerNotifications.length > 0") {{hctrl.partnerNotifications.length}}
+                if options.isIndex
+                    .header-search-btn
+                else
+                    .header-search-btn.h-visible
+
+                .hamburger
+                    .stripe.stripe-1
+                    .stripe.stripe-2
+                    .stripe.stripe-3
+
+                include ../fragments/search-result
+                include ../fragments/notifications
+                .search-wrapper
+                    input(type='search' id='headerSearch' placeholder='Мне нужно...' autofocus='autofocus')
+                    a.start-search.pink-btn(href='#') Найти
+

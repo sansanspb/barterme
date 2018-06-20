@@ -1,0 +1,237 @@
+doctype html
+html.no-js(lang="ru-RU" ng-app="barterme")
+    head
+        meta(charset="utf-8")
+        meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
+        block title
+                title Личный кабинет
+
+        meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
+
+        link(rel="shortcut icon", href="img/favicon.png", type="image/png")
+
+        link(href='css/main.css', rel='stylesheet')
+
+body(ng-controller="CabinetController as ctrl")
+
+    block header
+        include ./components/blocks/header
+        + header({headerClass: ' white-header', isIndex: false})
+
+    block content
+        main
+            include  ./components/fragments/chat
+            include  ./components/fragments/raiting
+
+            .block.page-top-block.cabinet-top-block
+                .content
+                    ul.breadcrumbs
+                        li.bc-item
+                            a.bc-link(href='/') Главная /
+                        li.bc-item
+                            a.bc-link.current(href='cabinet')  Личный кабинет
+
+                    .nopic-header.cabinet.left-align
+                        h2.page-title Привет, {{ctrl.company.caption}}!
+                        p.page-undertitle.grey
+                            | Здесь вся информация о вашей компании.
+                            br
+                            |  Следите за её точностью и актуальностью.
+
+                        a.pink-link.editcab(href='cabinet-edit') Редактировать
+
+                    .cabinet-hat.static
+                        .img-wrapper
+                            img.cab-userpic(src='image/get/{{ctrl.company.photoPath}}')
+                        .cabinet-hat-info
+                            .one-line(ng-show="ctrl.getRegionById() != 'Выберите геолокацию'")
+                                span.grey Город:
+                                span.pink {{ctrl.getRegionById()}}
+                            .one-line
+                                span.grey Контактное лицо:
+                                span.pink {{ctrl.company.contactPerson}}
+                            .one-line
+                                span.grey Почта:
+                                span.pink {{ctrl.company.contactEmail}}
+                            .one-line
+                                span.grey(ng-show="ctrl.company.rating") Рейтинг:
+                                p.raiting-mark(ng-class="ctrl.getRaiting(ctrl.company.rating)") {{ctrl.company.rating}}
+
+                        .one-time-notif
+                            p.grey
+                                | Мы не передаем ваши контакты никому.
+                                br
+                                |  Вы общаетесь через сообщения на BarterMe.
+                                br
+                                |  Там вы можете обменяться прямыми контактами, если хотите
+                            span.pink.ok OK
+
+
+                    .cabinet-main-part
+                        .cabinet-tab-container.tab-container
+                            ul.etabs
+                                li.tab
+                                    a(href="#cab-info") О компании
+                                li.tab
+                                    a(href="#cab-fav") Избранное
+                                li.tab.mobhide
+                                    a(href="#cab-part") Мои партнерства
+                                li.tab.mobshow
+                                    a(href="#cab-part") Партнерства
+
+                            .cabinet-tab#cab-info
+                                .one-cab-cols-row
+                                    .one-cab-col
+                                        h2.card-info-title Мы предлагаем
+                                        ul.card-info-list
+                                            li(ng-repeat="offerCat in ctrl.company.categories.offerCategories") {{ctrl.getCategoryNameById(offerCat)}}
+
+                                    .one-cab-col
+                                        h2.card-info-title Мы ищем
+                                        ul.card-info-list
+                                            li(ng-repeat="searchCat in ctrl.company.categories.searchCategories") {{ctrl.getCategoryNameById(searchCat)}}
+
+                                .one-cab-cols-row
+                                    .one-cab-col
+                                        h2.card-info-title Моя клиентская база
+                                        .one-base-line
+                                            span.grey Размер:
+                                            span.pink {{ctrl.company.clientCount}}
+                                        .one-base-line
+                                            span.grey Пол:
+                                            span.pink {{ctrl.company.genderMale ? ctrl.company.genderFemale ? 'М/Ж' : 'М' : 'Ж'}}
+                                        .one-base-line
+                                            span.grey Возраст:
+                                            span.pink {{ctrl.company.ageMin}} - {{ctrl.company.ageMax}}
+                                        .one-base-line
+                                            span.grey Доход:
+                                            span.pink {{ctrl.company.incomeMin}} - {{ctrl.company.incomeMax}}
+                                        .one-base-line(ng-show="ctrl.getRegionById() != 'Выберите геолокацию'")
+                                            span.grey Геолокация:
+                                            span.pink {{ctrl.getRegionById()}}
+
+                                    .one-cab-col
+                                        h2.card-info-title Мои маркетинг каналы
+                                        ul.mar-channels-list.grey
+                                            li(ng-repeat="channel in ctrl.company.marketingChannels") {{channel.title}}
+
+                                .one-cab-cols-row
+                                    h3.card-info-title О компании
+                                    p.common-text.grey.about-company {{ctrl.company.about}}
+
+                                .one-cab-cols-row
+                                    p.common-text.share-text
+                                        | Поделитесь своим предложением в соц сетях
+                                    .share-btns
+                                        a.share-btn.s-vk(href="#")
+                                        a.share-btn.s-ok(href="#")
+                                        a.share-btn.s-fb(href="#")
+                                        a.share-btn.s-tw(href="#")
+
+                            .cabinet-tab#cab-fav
+                                .nofav-block(ng-show="ctrl.favorites.length == 0")
+                                    img.nofav-ill(src='img/cabinet/nofav.png')
+                                    .nofav-text
+                                        h3.card-info-title У вас еще нет избранного
+                                        p.common-text.grey
+                                            | Мы думаем, что вам нужно посмотреть повнимательнее!
+                                            br
+                                            |  На нашем сайте просто тонна интересностей
+                                        a.pink-btn.big(href='/#categs') Бегом выбирать
+
+                                .common-plate.inside-categ-plate.cab-fav-plate(ng-repeat="favorite in ctrl.favorites")
+                                    a.remove-fav(href='' ng-click="ctrl.removeCompanyFromFavorite(favorite.companyId)")
+                                    a.img-wrapper(href='card?parentId={{ctrl.categoriesTree[0].categoryId}}&subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&companyId={{favorite.companyId}}')
+                                        img(src='image/get/{{favorite.photoPath}}')
+                                    .text-wrapper
+                                        .overf
+                                            h3.mid-title {{favorite.caption}}
+                                            p.com-desc {{favorite.description}}
+                                            p.common-text.grey {{favorite.about}}
+                                        .raiting-block(ng-if="favorite.rating")
+                                            p.raiting-mark(ng-class="ctrl.getRaiting(favorite.rating)") {{favorite.rating}}
+
+                            .cabinet-tab#cab-part
+                                .partner-tabs
+                                    ul.etabs
+                                        li.tab
+                                            a(href="#wait") Жду ответа
+                                        li.tab
+                                            a(href="#now") Партнерюсь
+                                        li.tab
+                                            a(href="#done") Завершено
+                                        .clearfix
+                                    .cab-partners-block#wait
+                                        .one-request(ng-repeat="partner in ctrl.company.partners | filter : {status : 'WAIT', senderId : ctrl.company.companyId}")
+                                            .request-body
+                                                a.img-wrapper(href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&companyId={{partner.company.companyId}}")
+                                                    img(src='image/get/{{partner.company.photoPath}}')
+                                                .request-text-part
+                                                    h3.mid-title {{partner.company.caption}}
+                                                    p.common-text {{partner.company.about}}
+                                                    span.raiting-word.grey(ng-if="partner.company.rating") Рейтинг
+                                                    p.raiting-mark.small(ng-class="ctrl.getRaiting(partner.company.rating)") {{partner.company.rating}}
+
+                                    .cab-partners-block#now
+                                        .nofav-block.nopartners(ng-show="partners.length == 0")
+                                            img.nofav-ill(src='img/cabinet/nofav.png')
+                                            .nofav-text
+                                                h3.card-info-title
+                                                    | В данный момент
+                                                    br
+                                                    |  вы ни с кем не партнеритесь
+                                                p.common-text.grey
+                                                    | Надеемся, это продлится недолго,
+                                                    br
+                                                    | ведь в нашем деле время - деньги!
+                                                a.pink-btn.big(href='/#categs') Исправить ситуацию
+
+                                        .one-request.tofinish(ng-repeat="partner in partners = (ctrl.company.partners | filter : {status : 'ACTIVE'} | partnersFilter : ctrl.company.companyId)")
+                                            .request-body
+                                                a.img-wrapper(href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&companyId={{partner.company.companyId}}")
+                                                    img(src='image/get/{{partner.company.photoPath}}')
+                                                .request-text-part
+                                                    h3.mid-title {{partner.company.caption}}
+                                                    p.common-text {{partner.company.about}}
+                                                    span.raiting-word.grey(ng-if="partner.company.rating") Рейтинг
+                                                    p.raiting-mark.small(ng-class="ctrl.getRaiting(partner.company.rating)") {{partner.company.rating}}
+                                            .request-btns
+                                                <!--button.pink-btn.write Написать-->
+                                                button.grey-btn.finish-partner(ng-click="ctrl.preCompletePartner($event, partner)") Завершить партнерство
+
+                                    .cab-partners-block#done
+                                        .one-request(ng-repeat="partner in ctrl.company.partners | filter : {status : 'COMPLETE'} | partnersFilter : ctrl.company.companyId")
+                                            .request-body
+                                                a.img-wrapper(href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&companyId={{partner.company.companyId}}")
+                                                    img(src='image/get/{{partner.company.photoPath}}')
+                                                .request-text-part
+                                                    h3.mid-title {{partner.company.caption}}
+                                                    p.common-text {{partner.company.about}}
+                                                    span.raiting-word.grey(ng-if="partner.company.rating") Рейтинг
+                                                    p.raiting-mark.small(ng-class="ctrl.getRaiting(partner.company.rating)") {{partner.company.rating}}
+                                            <!--.request-btns
+                                                button.pink-btn.write Написать-->
+
+
+            .block.cabinet-feedbacks
+                .content
+                    .feedbacks
+                        h3.card-info-title.bigger Отзывы
+                        p.common-text.grey(ng-show="ctrl.company.reviews.length == 0") Никто еще не оставлял отзывы о компании
+                        .one-feedback(ng-repeat="review in ctrl.company.reviews | limitTo : 3")
+                            .feedback-hat
+                                p.feedback-name(ng-class="ctrl.getRaiting(review.rating)") {{review.contactPerson}}
+                                p.feedback-date.grey {{review.createDate | date : 'dd.MM.yy'}}
+                            p.feedback-text.common-text {{review.message}}
+
+                        .hidden-feedbacks
+                            .one-feedback(ng-repeat="review in ctrl.company.reviews | reviewFilter")
+                                .feedback-hat
+                                    p.feedback-name(ng-class="ctrl.getRaiting(review.rating)") {{review.contactPerson}}
+                                    p.feedback-date.grey {{review.createDate | date : 'dd.MM.yy'}}
+                                p.feedback-text.common-text {{review.message}}
+                        a.grey-btn#showMoreFeedbacks(href='' ng-show="ctrl.company.reviews.length > 3") Показать больше отзывов
+
+            include ./components/blocks/footer
+            + footer({footerClass: '', isIndex: false})
+    script(src='js/main.js')

@@ -1,0 +1,39 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    outline: none;
+    border: none;
+    text-decoration: none;
+    -webkit-font-smoothing: antialiased;
+    
+}
+li {list-style: none;}
+
+.clearfix {clear: both;}
+
+a {
+    color: inherit;
+    -webkit-transition: all 0.3s linear;
+    transition: all 0.3s linear;
+}
+
+button {
+    transition: all 0.3s linear;
+    cursor: pointer; 
+}
+
+input, textarea {-webkit-appearance: none;}
+
+::-webkit-input-placeholder {color: #000;}
+::-moz-placeholder          {color: #000;}
+:-moz-placeholder           {color: #000;}
+:-ms-input-placeholder      {color: #000;}
+
+.error, .success {
+    display: block;
+    width: 100%;
+}
+.error {
+    color: darkred;
+}

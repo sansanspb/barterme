@@ -1,0 +1,161 @@
+mixin categ(options)
+
+    block categ-options
+        - var categClass = 'block categ-block ' + options.categClass;
+
+    .reg-block#categs(class=categClass)
+        .content
+            if options.isIndex
+                h2.page-title
+                    | Что вы ищете?
+                p.page-undertitle
+                    | Выбирайте среди
+                    |
+                    span 1765
+                    |  профессионалов
+                    br
+                    |  и
+                    |
+                    span 2587
+                    |  видов услуг
+            else
+                h2.page-title
+                    | Другие услуги
+                p.page-undertitle
+                    | Выбирайте среди
+                    |
+                    span 1765
+                    |  профессионалов
+                    br
+                    |  и
+                    |
+                    span 2587
+                    |  видов услуг
+
+            .categ-plates
+                if options.isIndex
+                    a.one-categ-plate(href="listing?id=1")
+                        img(src="img/main-page/main_ic_1.svg")
+                        p.plate-title.common-text
+                            | Организация
+                            br
+                            |  мероприятий
+                        p.plate-subcategs
+                            | Алкоголь, еда,
+                            br
+                            |  перфоманс, развлечения
+                    a.one-categ-plate(href="listing?id=2")
+                        img(src="img/main-page/main_ic_2.svg")
+                        p.plate-title.common-text
+                            | Рассылки
+                            br
+                            |  клиентам
+                        p.plate-subcategs
+                            | E-mail, SMS,
+                            br
+                            |  Web push-рассылка
+                    a.one-categ-plate(href="listing?id=3")
+                        img(src="img/main-page/main_ic_3.svg")
+                        p.plate-title.common-text
+                            | Всё
+                            br
+                            |  для конкурса
+                        p.plate-subcategs
+                            | Призы, анонсы, продвижение
+                    a.one-categ-plate(href="listing?id=4")
+                        img(src="img/main-page/main_ic_4.svg")
+                        p.plate-title.common-text
+                            | Ко-брендинг
+                            br
+                            |  (доп. каналы)
+                        p.plate-subcategs
+                            | Реклама в прессе,
+                            br
+                            |  ТВ реклама
+                    a.one-categ-plate(href="listing?id=5")
+                        img(src="img/main-page/main_ic_5.svg")
+                        p.plate-title.common-text
+                            | Распространение
+                            br
+                            |  продукции
+                        p.plate-subcategs
+                            | Образцы для распространения
+                    a.one-categ-plate(href="listing?id=6")
+                        img(src="img/main-page/main_ic_6.svg")
+                        p.plate-title.common-text
+                            | Партнерство
+                            br
+                            |  в соцсетях
+                        p.plate-subcategs
+                            | Обмен постами,
+                            br
+                            |  посты за подарки
+                    a.one-categ-plate(href="listing?id=7")
+                        img(src="img/main-page/main_ic_7.svg")
+                        p.plate-title.common-text
+                            | BTL
+                            br
+                            |  маркетинг
+                        p.plate-subcategs
+                            | Раздача листовок,
+                            br
+                            |  кросс-партнеры
+                    a.one-categ-plate(href="listing?id=8")
+                        img(src="img/main-page/main_ic_8.svg")
+                        p.plate-title.common-text
+                            | Предложения
+                            br
+                            |  для сотрудников
+                        p.plate-subcategs
+                            | Скидки,
+                            br
+                            |  сэмплинг в офис
+                else
+                    a.one-categ-plate(href="listing?id=1")
+                        img(src="img/main-page/main_ic_1.svg")
+                        p.plate-title.common-text
+                            | Организация
+                            br
+                            |  мероприятий
+                    a.one-categ-plate(href="listing?id=2")
+                        img(src="img/main-page/main_ic_2.svg")
+                        p.plate-title.common-text
+                            | Рассылки
+                            br
+                            |  клиентам
+                    a.one-categ-plate(href="listing?id=3")
+                        img(src="img/main-page/main_ic_3.svg")
+                        p.plate-title.common-text
+                            | Всё
+                            br
+                            |  для конкурса
+                    a.one-categ-plate(href="listing?id=4")
+                        img(src="img/main-page/main_ic_4.svg")
+                        p.plate-title.common-text
+                            | Ко-брендинг
+                            br
+                            |  (доп. каналы)
+                    a.one-categ-plate(href="listing?id=5")
+                        img(src="img/main-page/main_ic_5.svg")
+                        p.plate-title.common-text
+                            | Распространение
+                            br
+                            |  продукции
+                    a.one-categ-plate(href="listing?id=6")
+                        img(src="img/main-page/main_ic_6.svg")
+                        p.plate-title.common-text
+                            | Партнерство
+                            br
+                            |  в соцсетях
+                    a.one-categ-plate(href="listing?id=7")
+                        img(src="img/main-page/main_ic_7.svg")
+                        p.plate-title.common-text
+                            | BTL
+                            br
+                            |  маркетинг
+                    a.one-categ-plate(href="listing?id=8")
+                        img(src="img/main-page/main_ic_8.svg")
+                        p.plate-title.common-text
+                            | Предложения
+                            br
+                            |  для сотрудников

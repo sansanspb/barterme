@@ -1,0 +1,13 @@
+.notif-wrapper.mCustomScrollbar
+    .one-notif(ng-repeat="notification in hctrl.partnerNotifications | filter : {readed : false}" ng-class="{'reject' : notification.status == 'ERROR', 'openchat' : notification.status == 'SENDED'}")
+        a.torequest(href='requests' ng-click="hctrl.readNotification(notification)")
+        header
+            span.n-status.smallcaps {{hctrl.getTitle(notification)}}
+            span.n-date.smallcaps {{notification.createDate | date : 'dd.MM.yy hh:mm'}}
+        p.notif-text
+            | {{notification.status == 'REJECTED' ? 'Увы! ' : (notification.status == 'ACTIVE' ? 'Ура! ' : '')}}Компания
+            |
+            a.pink-link(href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&companyId={{notification.company.companyId}}") {{notification.company.caption}}
+            |
+            | {{notification.status == 'REJECTED' ? 'вам отказала. ' : (notification.status == 'ACTIVE' ? 'одобрила вашу заявку! ' : 'Хочет сотрудничать! ')}}
+            | {{notification.status == 'REJECTED' ? 'Не расстраивайтесь! Повезет с другой ;)' : (notification.status == 'ACTIVE' ? 'Начните сотрудничать прямо сейчас! ' : 'Примите решение!')}}

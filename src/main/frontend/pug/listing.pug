@@ -1,0 +1,40 @@
+extends template
+
+block title
+    title Подарки для конкурсов
+
+
+block header
+    include ./components/reg/reg
+    include ./components/blocks/header
+    + header({headerClass: ' white-header', isIndex: false})
+
+block content
+    main
+        include  ./components/fragments/chat
+        include  ./components/fragments/success-request-popup
+        .block.page-top-block
+            .content
+                ul.breadcrumbs
+                    li.bc-item
+                        a.bc-link(href='/') Главная /
+                    li.bc-item
+                        a.bc-link.current(href='#' th:text="${currentParentCateg.title}")
+
+                .listing-header
+                    img.categ-icon(th:src="@{${'img/main-page/main_ic_' + currentParentCateg.categoryId + '.svg'}}")
+                    h2.page-title(th:text="${currentParentCateg.title}")
+                    p.page-undertitle
+
+                include ./components/blocks/listing-cards
+
+        #counterpoint
+        include ./components/blocks/order-teaser-block
+        include ./components/blocks/order-block
+
+        include ./components/blocks/categ-block
+        + categ({categClass: '', isIndex: false})
+
+
+        include ./components/blocks/footer
+        + footer({footerClass: '', isIndex: false})

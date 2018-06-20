@@ -1,0 +1,53 @@
+mixin footer(options)
+
+    block footer-options
+        - var footerClass = 'block page-footer' + options.footerClass
+
+    footer(class=footerClass)
+        .content
+            a(href='index.html')
+                img.footer-logo(src='img/logo_white.svg')
+            .footer-cols
+
+                if options.isIndex
+                    ul.footer-col
+                        li
+                            a.smooth-anchor(href="#videoBlock") Как это работает?
+                        li
+                            a.smooth-anchor(href="#companies") Компании-партнеры
+                        li
+                            a.smooth-anchor(href="#blog") Блог
+
+                else
+                    ul.footer-col
+                        li
+                            a(href="index.html#videoBlock", target='_blank') Как это работает?
+                        li
+                            a(href="index.html#companies", target='_blank') Компании-партнеры
+                        li
+                            a(href="index.html#blog", target='_blank') Блог
+
+                ul.footer-col.wm
+                    li
+                        a(href="#") СМИ о нас
+                    li
+                        a(href="#") FAQ
+
+                ul.footer-col
+                    li
+                        p Напишите нам
+                    li
+                        a.pink-link(href="mailto: friends@barterme.ru") friends@barterme.ru
+
+                ul.footer-col.right-align.wm
+                    li
+                        a(href="#") Присоединяйтесь
+                    li
+                        .sn
+                            a.vk(href='#', target='_blank')
+                            a.fb(href='#', target='_blank')
+                            a.inst(href='#', target='_blank')
+
+            .clearfix
+
+        p.copyright BarterMe, 2018

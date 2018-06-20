@@ -1,0 +1,11 @@
+.popup-wrapper#deleteUserPicWrapper
+    .popup.remove-userpic-popup#deleteUserPicPopup
+        img.close-popup(src='img/close-popup.svg')
+        .pop-cont
+            img.popup-emoji(src='img/emoji/remove-userpic.png')
+
+            h2.mid-title
+                | Точно удалить?
+
+            button.pink-btn#removePic(href="#" ng-click="ctrl.company.photoId = null") Да-да
+            button.grey-btn#notRemovePic(href="#") Так..падажжи

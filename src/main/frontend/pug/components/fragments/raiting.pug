@@ -1,0 +1,42 @@
+.popup-wrapper#finishPartnerWrapper
+    .popup.partner-popup#finishPartnerPopup
+        img.close-popup(src='img/close-popup.svg')
+        .pop-cont.long
+            h2.mid-title
+                | Расскажи,
+                br
+                |  как все прошло?
+
+            p.common-text
+                | Оцени по пятибальной шкале
+
+            .popup-raiting-block
+                .one-raiting-part
+                    .raiting-mark.one
+                    input.radio#one(type='radio' name='raiting' ng-model="ctrl.raiting" value='1')
+                    label.radio-label.emoji(for="one")
+
+                .one-raiting-part
+                    .raiting-mark.two
+                    input.radio#two(type='radio' name='raiting' ng-model="ctrl.raiting" value='2')
+                    label.radio-label.emoji(for="two")
+
+                .one-raiting-part
+                    .raiting-mark.three
+                    input.radio#three(type='radio' name='raiting' ng-model="ctrl.raiting" value='3')
+                    label.radio-label.emoji(for="three")
+
+                .one-raiting-part
+                    .raiting-mark.four
+                    input.radio#four(type='radio' name='raiting' ng-model="ctrl.raiting" value='4')
+                    label.radio-label.emoji(for="four")
+
+                .one-raiting-part
+                    .raiting-mark.five
+                    input.radio#five(type='radio' name='raiting' ng-model="ctrl.raiting" value='5')
+                    label.radio-label.emoji(for="five")
+
+            textarea.company-edit.feedback-textarea(placeholder="Ваш отзыв" ng-model="ctrl.raitingMessage")
+
+            form
+                button.pink-btn#closePartnership(ng-click="ctrl.completePartner()") Завершить партнерство

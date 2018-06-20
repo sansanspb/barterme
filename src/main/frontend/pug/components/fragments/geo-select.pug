@@ -1,0 +1,17 @@
+.popup-wrapper#selectGeoPopupWrapper
+    .popup.city-popup#selectGeoPopup
+        img.close-popup(src='img/close-popup.svg')
+        .cities-hat
+            h2.card-info-title
+                | Ваша геолокация
+        .cities-wrapper.mCustomScrollbar
+            .cities-col
+                ul.city-select-list(ng-repeat="char in ctrl.VOC1 track by $index" ng-show="regions.length != 0" ng-if="ctrl.company")
+                    li.city-letter {{char}}
+                    li.city-name(ng-repeat="region in regions = (ctrl.regions | regionsFilter : char)")
+                        a(href='' ng-click="ctrl.setRegion(region.regionId)") {{region.title}}
+            .cities-col
+                ul.city-select-list(ng-repeat="char in ctrl.VOC2 track by $index" ng-show="regions.length != 0" ng-if="ctrl.company")
+                    li.city-letter {{char}}
+                    li.city-name(ng-repeat="region in regions = (ctrl.regions | regionsFilter : char)")
+                        a(href='' ng-click="ctrl.setRegion(region.regionId)") {{region.title}}
