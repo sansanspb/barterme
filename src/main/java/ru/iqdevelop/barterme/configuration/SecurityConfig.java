@@ -34,19 +34,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/cabinet*")
-                .access("hasAnyRole('ROLE_CONFIRMED_USER')")
-                .and()
-                .formLogin()
-                .loginPage("/")
-                .loginProcessingUrl("/auth/login")
-                .failureUrl("/")
-                .usernameParameter("email")
-                .passwordParameter("password")
-                .defaultSuccessUrl("/cabinet")
-                .and()
-                .logout()
-                .logoutUrl("/auth/logout")
-                .logoutSuccessUrl("/");
+                .access("hasAnyRole('ROLE_USER')");
+//                .access("hasAnyRole('ROLE_CONFIRMED_USER')")
+//                .and()
+//                .formLogin()
+//                .loginPage("/")
+//                .failureUrl("/")
+//                .usernameParameter("email")
+//                .passwordParameter("password")
+//                .defaultSuccessUrl("/cabinet")
+//                .and()
+//                .logout()
+//                .logoutUrl("/auth/logout")
+//                .logoutSuccessUrl("/");
     }
 
     @Bean

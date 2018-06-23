@@ -506,6 +506,22 @@ $(document).ready(function() {
         $('.mob-menu').removeClass('opened');
     })
 
+    $('#login').click(function (toCode) {
+        toCode.preventDefault();
+        toCode.stopPropagation();
+        var $form = $(this.form),
+            email = $form.find( 'input[name="email"]' ).val(),
+            password = $form.find( 'input[name="password"]' ).val();
+        console.log(email);
+        API.Auth.Login(email, password).done(function(result){
+            if (result.success){
+                document.location.href = 'cabinet';
+                // $('#regPopup').fadeOut(200);
+                // $('#finishregPopup').fadeIn(300);
+            }
+        });
+    });
+
     $('#regist').click(function (toCode) {
         toCode.preventDefault();
         toCode.stopPropagation();
@@ -520,7 +536,8 @@ $(document).ready(function() {
                 $('#finishregPopup').fadeIn(300);
             }
         });
-    })
+    });
+
     $('#confirmBtn').click(function (confirm) {
         confirm.preventDefault();
         confirm.stopPropagation();

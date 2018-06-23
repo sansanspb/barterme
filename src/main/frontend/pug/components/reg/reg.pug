@@ -29,10 +29,10 @@
                 | С возвращением!
             p.common-text
                 | Мы скучали ;)
-            form(id='entranceForm' data-th-action='@{auth/login}' method='POST')
-                input.common-input.reg-input(type='email' id='EntMail' name='email' placeholder='Email')
-                input.common-input.reg-input(type='password' id='EntPass' name='password' placeholder='Пароль')
-                button.pink-btn(type='submit' value='Войти') Войти
+            form(id='entranceForm')
+                input.common-input.reg-input(type='email' name='email' placeholder='Email')
+                input.common-input.reg-input(type='password' name='password' placeholder='Пароль')
+                button.pink-btn#login(type='submit' value='Войти') Войти
             p.common-text.underbutton
                 | Впервые здесь?
                 |

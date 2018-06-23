@@ -1,6 +1,7 @@
 var serverApiUrl = {
     auth : {
         register        :   'auth/register',
+        login           :   'auth/login',
         confirmUser     :   'auth/confirmUser',
         getInfo         :   'auth/getUserInfo'
     },
@@ -15,13 +16,24 @@ var serverApiUrl = {
     companies : {
         getOthersCompanies : 'company/getOthersCompanies'
     }
-}
+};
+
 module.exports = {
     Auth : {
         Register : function Register(title, email, phone, password){
             var data = JSON.stringify({title: title, email: email, phone: phone, password: password});
                 return $.ajax({
                     url: serverApiUrl.auth.register,
+                    dataType: 'json',
+                    type: 'post',
+                    contentType: 'application/json',
+                    data: data
+                });
+        },
+        Login: function Login(email, password){
+            var data = JSON.stringify({email: email, password: password});
+                return $.ajax({
+                    url: serverApiUrl.auth.login,
                     dataType: 'json',
                     type: 'post',
                     contentType: 'application/json',

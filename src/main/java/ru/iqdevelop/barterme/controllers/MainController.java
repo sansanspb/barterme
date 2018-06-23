@@ -147,24 +147,6 @@ public class MainController {
 		return model;
 	}
 
-	@RequestMapping(value = "auth/login", method = RequestMethod.GET)
-	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
-		@RequestParam(value = "logout", required = false) String logout) {
-
-	  ModelAndView model = new ModelAndView();
-	  if (error != null) {
-		model.addObject("error", "Не верная пара логин\\пароль.");
-	  }
-
-	  if (logout != null) {
-		model.addObject("msg", "Вы вышли из личного кабинета.");
-	  }
-	  model.setViewName("auth/customLogin");
-
-	  return model;
-
-	}
-	
 	//for 403 access denied page
 	@RequestMapping(value = "/403", method = RequestMethod.GET)
 	public ModelAndView accessDenied() {

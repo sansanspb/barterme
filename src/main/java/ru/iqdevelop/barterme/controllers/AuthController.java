@@ -41,12 +41,13 @@ public class AuthController {
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public @ResponseBody AnswerMessage register(@RequestBody RegistrationModel registrationModel, HttpServletRequest request) {
+    public @ResponseBody
+    AnswerMessage register(@RequestBody RegistrationModel registrationModel, HttpServletRequest request) {
         try {
             logger.info("Start register");
 
             authService.register(registrationModel);
-            doAutoLogin(registrationModel.getEmail(), registrationModel.getPassword(), request);
+            doLogin(registrationModel.getEmail(), registrationModel.getPassword(), request);
 
             return AnswerMessage.getSuccessMessage();
         } catch (Exception e) {
@@ -57,7 +58,8 @@ public class AuthController {
 
 
     @RequestMapping(value = "/confirmUser", method = RequestMethod.POST)
-    public @ResponseBody AnswerMessage confirmUser(Principal principal, @RequestParam("confirmToken") String confirmToken) {
+    public @ResponseBody
+    AnswerMessage confirmUser(Principal principal, @RequestParam("confirmToken") String confirmToken) {
         try {
             logger.info("Start confirmUser");
 
@@ -65,7 +67,7 @@ public class AuthController {
 
             Object credentials = SecurityContextHolder.getContext().getAuthentication().getCredentials();
             UserDetails userDetails = customUserDetailService.loadUserByUsername(principal.getName());
-            SecurityContextHolder.getContext().setAuthentication( new UsernamePasswordAuthenticationToken(principal, credentials, userDetails.getAuthorities()));
+            SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(principal, credentials, userDetails.getAuthorities()));
 
             return AnswerMessage.getSuccessMessage();
         } catch (Exception e) {
@@ -75,7 +77,8 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/getUserInfo", method = RequestMethod.POST)
-    public @ResponseBody AnswerMessage getUserInfo(Principal principal) {
+    public @ResponseBody
+    AnswerMessage getUserInfo(Principal principal) {
         try {
             logger.info("Start getUserInfo");
 
@@ -95,7 +98,33 @@ public class AuthController {
         }
     }
 
-    private void doAutoLogin(String user, String pass, HttpServletRequest request) {
+//    @RequestMapping(value = "/login", method = RequestMethod.POST)
+//    public ModelAndView login(@RequestParam(value = "error", required = false) String error,
+//                              @RequestParam(value = "logout", required = false) String logout) {
+//
+//        ModelAndView model = new ModelAndView();
+//        if (error != null) {
+//            model.addObject("error", "Не верная пара логин\\пароль.");
+//        }
+//
+//        if (logout != null) {
+//            model.addObject("msg", "Вы вышли из личного кабинета.");
+//        }
+//        model.setViewName("auth/customLogin");
+//
+//        return model;
+//
+//    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public @ResponseBody
+    AnswerMessage login(@RequestBody RegistrationModel model, HttpServletRequest request) {
+        doLogin(model.getEmail(), model.getPassword(), request);
+        return AnswerMessage.getSuccessMessage();
+    }
+
+
+    private void doLogin(String user, String pass, HttpServletRequest request) {
         UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(user, pass);
         Authentication auth = authenticationManager.authenticate(authReq);
 
