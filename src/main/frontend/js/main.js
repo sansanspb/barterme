@@ -7,7 +7,7 @@ require('vimeo-froogaloop2/javascript/froogaloop.min');
 require('./angularjs/app.js');
 API = require('./API.js');
 
-$(document).ready(function() {
+$(document).ready(function () {
     console.log('current version: 1.7');
     $('.hide').removeClass('hide');
     API.Categories.getAll().done(function (result) {
@@ -102,7 +102,7 @@ $(document).ready(function() {
 
     new WOW().init();
 
-    $(window).scroll(function() {
+    $(window).scroll(function () {
 
         var y = $(this).scrollTop();
         if (y > 10) {
@@ -122,9 +122,9 @@ $(document).ready(function() {
 
         $('body,html').animate({scrollTop: top}, 1500)
     })
-    
+
     // Requests
-    
+
     $('.decline').click(function (declineRequest) {
         declineRequest.preventDefault();
         $(this).closest('.one-request').find('.request-btns').fadeOut(100);
@@ -169,7 +169,7 @@ $(document).ready(function() {
 
     $('.remove-fav').click(function (removeFav) {
         removeFav.preventDefault();
-       $(this).closest('.common-plate').fadeOut(300);
+        $(this).closest('.common-plate').fadeOut(300);
     });
 
     $('.common-plate.inside-categ-plate.cab-fav-plate:last-of-type .remove-fav').click(function () {
@@ -274,10 +274,10 @@ $(document).ready(function() {
         hSearch.stopPropagation();
         API.Auth.getInfo()
             .then(
-                function(result){
-                    if (result.success){
-                        for (var i = 0; i < result.data.roles.length; i++){
-                            if (result.data.roles[i] == 'ROLE_CONFIRMED_USER'){
+                function (result) {
+                    if (result.success) {
+                        for (var i = 0; i < result.data.roles.length; i++) {
+                            if (result.data.roles[i] == 'ROLE_CONFIRMED_USER') {
                                 API.Auth.isRegistered = true;
                                 API.Companies.getOthersCompanies().done(function (result) {
                                     API.Companies.otherCompanies = result.data;
@@ -295,24 +295,24 @@ $(document).ready(function() {
         $('#headerSearch').focus();
     })
     $('#mainSearch').click(function () {
-       API.Auth.getInfo()
-           .then(
-               function(result){
-                   if (result.success){
-                       for (var i = 0; i < result.data.roles.length; i++){
-                           if (result.data.roles[i] == 'ROLE_CONFIRMED_USER'){
-                               API.Auth.isRegistered = true;
-                               API.Companies.getOthersCompanies().done(function (result) {
-                                   API.Companies.otherCompanies = result.data;
-                               });
-                           }
-                       }
-                   } else {
-                       API.Auth.isRegistered = false;
-                   }
+        API.Auth.getInfo()
+            .then(
+                function (result) {
+                    if (result.success) {
+                        for (var i = 0; i < result.data.roles.length; i++) {
+                            if (result.data.roles[i] == 'ROLE_CONFIRMED_USER') {
+                                API.Auth.isRegistered = true;
+                                API.Companies.getOthersCompanies().done(function (result) {
+                                    API.Companies.otherCompanies = result.data;
+                                });
+                            }
+                        }
+                    } else {
+                        API.Auth.isRegistered = false;
+                    }
 
-               }
-           )
+                }
+            )
     });
 
     $('.start-search').click(function (searchError) {
@@ -333,22 +333,22 @@ $(document).ready(function() {
     /*$('#headerSearch').click(function (e) {
         $( "#headerSearch" ).keyup();
     });*/
-    $( "#headerSearch" ).on('keyup', function(e) {
+    $("#headerSearch").on('keyup', function (e) {
 
         $('#headerSearchResults>.s-r-list>.s-r-item').remove();
         var categs = API.Categories.allCategories,
             resultTags = '',
             companies = API.Companies.otherCompanies;
-        if (API.Auth.isRegistered){
-            for (var i = 0; i < companies.length; i++){
-                if (companies[i].caption.toUpperCase().indexOf($("#headerSearch").val().toUpperCase()) != -1){
+        if (API.Auth.isRegistered) {
+            for (var i = 0; i < companies.length; i++) {
+                if (companies[i].caption.toUpperCase().indexOf($("#headerSearch").val().toUpperCase()) != -1) {
                     resultTags += '<li class="s-r-item"><a class="s-r-link" href="card?parentId=1&subId=9&companyId=' + companies[i].companyId + '">' + companies[i].caption + '</a></li>';
                 }
             }
         }
-        for (var i = 0; i < categs.length; i++){
-            if (categs[i].title.toUpperCase().indexOf($("#headerSearch").val().toUpperCase()) != -1){
-                if (API.Auth.isRegistered){
+        for (var i = 0; i < categs.length; i++) {
+            if (categs[i].title.toUpperCase().indexOf($("#headerSearch").val().toUpperCase()) != -1) {
+                if (API.Auth.isRegistered) {
                     if (categs[i].parentId == null) {
                         resultTags += '<li class="s-r-item"><a class="s-r-link" href="listing?id=' + categs[i].categoryId + '">' + categs[i].title + '</a></li>';
                     } else {
@@ -362,7 +362,7 @@ $(document).ready(function() {
                 }
             }
         }
-        if (resultTags == ''){
+        if (resultTags == '') {
             $('#headerSearchResults>.s-r-list').append('<li class="s-r-item"><a class="s-r-link" href="#">Ничего не найдено</a></li>');
         } else {
             $('#headerSearchResults>.s-r-list').append(resultTags);
@@ -374,21 +374,21 @@ $(document).ready(function() {
     /*$('#mainSearch').click(function (e) {
         $( "#mainSearch" ).keyup();
     });*/
-    $( "#mainSearch" ).on('keyup', function(e) {
+    $("#mainSearch").on('keyup', function (e) {
         $('#mainSearchResults>.s-r-list>.s-r-item').remove();
         var categs = API.Categories.allCategories,
             resultTags = '',
             companies = API.Companies.otherCompanies;
-        if (API.Auth.isRegistered){
-            for (var i = 0; i < companies.length; i++){
-                if (companies[i].caption.toUpperCase().indexOf($("#mainSearch").val().toUpperCase()) != -1){
+        if (API.Auth.isRegistered) {
+            for (var i = 0; i < companies.length; i++) {
+                if (companies[i].caption.toUpperCase().indexOf($("#mainSearch").val().toUpperCase()) != -1) {
                     resultTags += '<li class="s-r-item"><a class="s-r-link" href="card?parentId=1&subId=9&companyId=' + companies[i].companyId + '">' + companies[i].caption + '</a></li>';
                 }
             }
         }
-        for (var i = 0; i < categs.length; i++){
-            if (categs[i].title.toUpperCase().indexOf($("#mainSearch").val().toUpperCase()) != -1){
-                if (API.Auth.isRegistered){
+        for (var i = 0; i < categs.length; i++) {
+            if (categs[i].title.toUpperCase().indexOf($("#mainSearch").val().toUpperCase()) != -1) {
+                if (API.Auth.isRegistered) {
                     if (categs[i].parentId == null) {
                         resultTags += '<li class="s-r-item"><a class="s-r-link" href="listing?id=' + categs[i].categoryId + '">' + categs[i].title + '</a></li>';
                     } else {
@@ -402,7 +402,7 @@ $(document).ready(function() {
                 }
             }
         }
-        if (resultTags == ''){
+        if (resultTags == '') {
             $('#mainSearchResults>.s-r-list').append('<li class="s-r-item"><a class="s-r-link" href="#">Ничего не найдено</a></li>');
         } else {
             $('#mainSearchResults>.s-r-list').append(resultTags);
@@ -456,21 +456,21 @@ $(document).ready(function() {
 
     //select all checkboxes
 
-    $("#selectAll").change(function(){  //"select all" change
+    $("#selectAll").change(function () {  //"select all" change
         var status = this.checked; // "select all" checked status
-        $('.checkbox.sall').each(function(){ //iterate all listed checkbox items
+        $('.checkbox.sall').each(function () { //iterate all listed checkbox items
             this.click(); //change ".checkbox" checked status
         });
     });
 
-    $('.checkbox.sall').change(function(){ //".checkbox" change
+    $('.checkbox.sall').change(function () { //".checkbox" change
         //uncheck "select all", if one of the listed checkbox item is unchecked
-        if(this.checked == false){ //if this item is unchecked
+        if (this.checked == false) { //if this item is unchecked
             $("#selectAll")[0].checked = false; //change "select all" checked status to false
         }
 
         //check "select all" if all checkbox items are checked
-        if ($('.checkbox.sall:checked').length == $('.checkbox').length ){
+        if ($('.checkbox.sall:checked').length == $('.checkbox').length) {
             $("#selectAll")[0].checked = true; //change "select all" checked status to true
         }
     });
@@ -510,14 +510,25 @@ $(document).ready(function() {
         toCode.preventDefault();
         toCode.stopPropagation();
         var $form = $(this.form),
-            email = $form.find( 'input[name="email"]' ).val(),
-            password = $form.find( 'input[name="password"]' ).val();
+            email = $form.find('input[name="email"]').val(),
+            password = $form.find('input[name="password"]').val();
         console.log(email);
-        API.Auth.Login(email, password).done(function(result){
-            if (result.success){
+        API.Auth.Login(email, password).done(function (result) {
+            if (result.success) {
                 document.location.href = 'cabinet';
-                // $('#regPopup').fadeOut(200);
-                // $('#finishregPopup').fadeIn(300);
+            }
+        });
+    });
+
+    $('a.subcateg-card').click(function (event) {
+        event.preventDefault();
+        var a = $(this);
+        API.Auth.getInfo().done(function (result) {
+            if (result.success) {
+                window.location.href = a.attr('href');
+            } else {
+                $('#regPopupWrapper').fadeIn(300);
+                $('#entrancePopup').fadeIn(300);
             }
         });
     });
@@ -526,12 +537,12 @@ $(document).ready(function() {
         toCode.preventDefault();
         toCode.stopPropagation();
         var $form = $(this.form),
-            title = $form.find( 'input[name="comName"]' ).val(),
-            email = $form.find( 'input[name="corpMail"]' ).val(),
-            phone = $form.find( 'input[name="regPhone"]' ).val(),
-            password = $form.find( 'input[name="regPass"]' ).val();
-        API.Auth.Register(title, email, phone, password).done(function(result){
-            if (result.success){
+            title = $form.find('input[name="comName"]').val(),
+            email = $form.find('input[name="corpMail"]').val(),
+            phone = $form.find('input[name="regPhone"]').val(),
+            password = $form.find('input[name="regPass"]').val();
+        API.Auth.Register(title, email, phone, password).done(function (result) {
+            if (result.success) {
                 $('#regPopup').fadeOut(200);
                 $('#finishregPopup').fadeIn(300);
             }
@@ -547,15 +558,15 @@ $(document).ready(function() {
 
     $('#finishReg').click(function (finishReg) {
         finishReg.preventDefault();
-        finishReg.stopPropagation(); 
+        finishReg.stopPropagation();
         var $form = $(this.form),
-            confirmToken = $form.find( 'input[name="code"]' ).val();
-        API.Auth.Confirm(confirmToken).done(function(result){
-            if (result.success){
+            confirmToken = $form.find('input[name="code"]').val();
+        API.Auth.Confirm(confirmToken).done(function (result) {
+            if (result.success) {
                 $('#codePopup').fadeOut(200);
                 $('#moderPopup').fadeIn(300);
             }
-        });        
+        });
     })
 
     $('#exitReg').click(function (exitReg) {
@@ -583,12 +594,11 @@ $(document).ready(function() {
     })
 
 
-
     $('.popup').click(function (pop) {
         pop.stopPropagation();
     })
 
-    $('#seeError').click(function(seeError) {
+    $('#seeError').click(function (seeError) {
         seeError.preventDefault();
         $('.show-error').addClass('error');
         $('.error-message').fadeIn(200);
@@ -653,7 +663,7 @@ $(document).ready(function() {
         $(this).addClass('active');
     });
 
-    if($(window).width() < 705) {
+    if ($(window).width() < 705) {
         $('.editcity, .regBtn').click(function () {
             disableBodyScroll(targetElement);
         })
@@ -661,4 +671,5 @@ $(document).ready(function() {
 
 });
 
-document.addEventListener("touchstart", function(){}, true);
+document.addEventListener("touchstart", function () {
+}, true);
