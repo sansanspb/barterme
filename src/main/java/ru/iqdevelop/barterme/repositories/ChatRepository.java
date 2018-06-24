@@ -1,5 +1,7 @@
 package ru.iqdevelop.barterme.repositories;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.iqdevelop.barterme.entities.ChatMessageEntity;
 import ru.iqdevelop.barterme.utils.Helpers;
@@ -12,6 +14,8 @@ import java.util.List;
 
 @Repository
 public class ChatRepository extends AbstractRepository<Long, ChatMessageEntity> {
+
+    private static final Logger logger = LoggerFactory.getLogger(ChatRepository.class);
 
     public List<ChatMessageEntity> getMessagesHistoryPart(Long senderId, Long receiverId, int stage) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -34,14 +38,12 @@ public class ChatRepository extends AbstractRepository<Long, ChatMessageEntity> 
         messageEntity.setSendDate(Helpers.getCurrentTimestamp());
 
         try {
-            entityManager.getTransaction().begin();
             entityManager.persist(messageEntity);
-            entityManager.getTransaction().commit();
-
+            logger.info("Message from %d to %d at %s put in database.", messageEntity.getSender().getCompanyId(),
+                    messageEntity.getReceiver().getCompanyId(), messageEntity.getSendDate().toString());
             return true;
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();
-
+            logger.error(e.getMessage());
             return false;
         }
     }

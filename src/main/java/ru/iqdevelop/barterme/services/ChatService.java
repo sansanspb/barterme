@@ -1,5 +1,7 @@
 package ru.iqdevelop.barterme.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -14,6 +16,8 @@ import java.util.List;
 @Service
 @EnableTransactionManagement
 public class ChatService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ChatService.class);
 
     @Autowired
     private ChatRepository chatRepository;
@@ -30,6 +34,9 @@ public class ChatService {
     public void sendMessage(Long senderId, Long receiverId, String msg) {
         CompanyEntity senderCompany = companyRepository.getById(senderId);
         CompanyEntity receiverCompany = companyRepository.getById(receiverId);
+
+        if (senderCompany == null || receiverCompany == null)
+            logger.error(String.format("Company sender id=%d or receiver id=%d are not found.", senderId, receiverId));
 
         ChatMessageEntity msgEntity = new ChatMessageEntity();
         msgEntity.setSender(senderCompany);
