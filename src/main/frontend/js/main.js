@@ -76,7 +76,7 @@ $(document).ready(function () {
         $('.chosen-sort').removeClass('opened');
         $('.sort-variants').fadeOut(200);
         $('.search-wrapper').removeClass('error');
-    });
+    })
 
     const bodyScrollLock = require('body-scroll-lock');
     const disableBodyScroll = bodyScrollLock.disableBodyScroll;
@@ -116,12 +116,12 @@ $(document).ready(function () {
     // Smooth footer anchors
 
     $('.footer-col').on('click', '.smooth-anchor', function (event) {
-        event.preventDefault();
+        event.preventDefault()
         let id = $(this).attr('href'),
-            top = $(id).offset().top;
+            top = $(id).offset().top
 
         $('body,html').animate({scrollTop: top}, 1500)
-    });
+    })
 
     // Requests
 
@@ -129,23 +129,23 @@ $(document).ready(function () {
         declineRequest.preventDefault();
         $(this).closest('.one-request').find('.request-btns').fadeOut(100);
         $(this).closest('.one-request').find('.request-remove-alert').delay(300).fadeIn(300);
-    });
+    })
 
     $('.yesremove').click(function (removeRequest) {
         removeRequest.preventDefault();
         $(this).closest('.one-request').fadeOut(200);
-    });
+    })
     $('.noremove').click(function (returnRequest) {
         returnRequest.preventDefault();
         $(this).closest('.one-request').find('.request-btns').delay(300).fadeIn(300);
         $(this).closest('.one-request').find('.request-remove-alert').fadeOut(100);
-    });
+    })
 
     // Эта механика тоже кривоватая, надо будет сделать нормально
 
     $('.one-request:last-of-type .yesremove').click(function () {
         $('.norequests').delay(200).fadeIn(300);
-    });
+    })
 
     // Favourite
 
@@ -157,13 +157,13 @@ $(document).ready(function () {
 
     $('.close-chat').click(function () {
         $('.chat-wrapper').addClass('hidden');
-    });
+    })
 
     // Cabinet
 
     $('.ok').click(function () {
         $(this).closest('.one-time-notif').fadeOut(300);
-    });
+    })
 
     $('.cabinet-tab-container, .partner-tabs').easytabs();
 
@@ -174,21 +174,21 @@ $(document).ready(function () {
 
     $('.common-plate.inside-categ-plate.cab-fav-plate:last-of-type .remove-fav').click(function () {
         $('.nofav-block').delay(200).fadeIn(300);
-    });
+    })
 
     $('.editcity').click(function (editCity) {
         editCity.preventDefault();
         editCity.stopPropagation();
         $('#selectCityPopupWrapper').fadeIn(300);
         $('#selectCityPopup').fadeIn(300);
-    });
+    })
 
     $('.finish-partner').click(function (finishPartner) {
         finishPartner.preventDefault();
         finishPartner.stopPropagation();
         $('#finishPartnerWrapper').fadeIn(300);
         $('#finishPartnerPopup').fadeIn(300);
-    });
+    })
 
     $("#closePartnership").click(function (closeP) {
         closeP.preventDefault();
@@ -196,47 +196,47 @@ $(document).ready(function () {
         $('#finishPartnerPopup').fadeOut(300);
         $(".tofinish").fadeOut(100);
         $(".nopartners").fadeIn(400);
-    });
+    })
 
     $('.editgeo').click(function (editGeo) {
         editGeo.preventDefault();
         editGeo.stopPropagation();
         $('#selectGeoPopupWrapper').fadeIn(300);
         $('#selectGeoPopup').fadeIn(300);
-    });
+    })
 
     $('.city-name').click(function () {
         $('.popup-wrapper, .popup').fadeOut(200);
-    });
+    })
 
     $('#removePic').click(function (deleteAva) {
         deleteAva.preventDefault();
         $('.img-wrapper.cab').addClass('empty');
-    });
+    })
 
     $('.delete-ava').click(function (deleteAva) {
         deleteAva.preventDefault();
         deleteAva.stopPropagation();
         $('#deleteUserPicWrapper').fadeIn(300);
         $('#deleteUserPicPopup').fadeIn(300);
-    });
+    })
 
     $('#removePic').click(function (deleteAva) {
         deleteAva.preventDefault();
         $('.img-wrapper.cab').addClass('empty');
         $('#deleteUserPicWrapper').fadeOut(300);
         $('#deleteUserPicPopup').fadeOut(300);
-    });
+    })
 
     $('#notRemovePic').click(function (deleteAva) {
         deleteAva.preventDefault();
         $('#deleteUserPicWrapper').fadeOut(300);
         $('#deleteUserPicPopup').fadeOut(300);
-    });
+    })
 
     $('.openable span').click(function () {
         $(this).parent('.openable').find('.card-vars-list').fadeToggle(200);
-    });
+    })
 
     // Slider
 
@@ -256,7 +256,7 @@ $(document).ready(function () {
                 items: 4
             }
         }
-    });
+    })
 
     $('.card-slider').owlCarousel({
         loop: true,
@@ -266,7 +266,7 @@ $(document).ready(function () {
         pagination: true,
         autoplay: true,
         responsiveClass: false
-    });
+    })
 
     // Header search
 
@@ -289,11 +289,11 @@ $(document).ready(function () {
                     }
 
                 }
-            );
+            )
         $('.notif-wrapper').fadeOut(200);
         $('.header-right-part .search-wrapper').toggleClass('opened');
         $('#headerSearch').focus();
-    });
+    })
     $('#mainSearch').click(function () {
         API.Auth.getInfo()
             .then(
@@ -319,15 +319,15 @@ $(document).ready(function () {
         searchError.preventDefault();
         searchError.stopPropagation();
         $(this).closest('.search-wrapper').addClass('error');
-    });
+    })
 
     $('.header-right-part .search-wrapper').click(function (ss) {
         ss.stopPropagation();
-    });
+    })
 
     $('.start-search').click(function (stS) {
         stS.preventDefault();
-    });
+    })
 
     // Поменяйте эти условия при дальнейшей разработке
     /*$('#headerSearch').click(function (e) {
@@ -416,7 +416,7 @@ $(document).ready(function () {
     $('.bell-block').click(function (notifs) {
         notifs.stopPropagation();
         $('.notif-wrapper').fadeIn(300);
-    });
+    })
 
     //Sort
 
@@ -424,7 +424,7 @@ $(document).ready(function () {
         openSort.stopPropagation();
         $('.chosen-sort').toggleClass('opened');
         $('.sort-variants').fadeToggle(300);
-    });
+    })
 
     // Show more feedbacks
 
@@ -435,7 +435,7 @@ $(document).ready(function () {
         $(this).text(
             text == "Показать больше отзывов" ? "Скрыть отзывы" : "Показать больше отзывов");
         $('.hidden-feedbacks').fadeToggle();
-    });
+    })
 
 
     // Open Order Form
@@ -483,41 +483,52 @@ $(document).ready(function () {
         callRegPop.stopPropagation();
         $('#regPopupWrapper').fadeIn(300);
         $('#regPopup').fadeIn(300);
-    });
+    })
 
     $('#entranceBtn').click(function (callEntrancePop) {
         callEntrancePop.preventDefault();
         callEntrancePop.stopPropagation();
         $('#regPopupWrapper').fadeIn(300);
         $('#entrancePopup').fadeIn(300);
-    });
+    })
 
     $('#goToReg').click(function (goToReg) {
         goToReg.preventDefault();
         $('#entrancePopup').fadeOut(200);
         $('#regPopup').fadeIn(300);
         $('.mob-menu').removeClass('opened');
-    });
+    })
 
     $('#goToEntrance').click(function (goToEnt) {
         goToEnt.preventDefault();
         $('#regPopup').fadeOut(200);
         $('#entrancePopup').fadeIn(300);
         $('.mob-menu').removeClass('opened');
-    });
+    })
 
     $('#login').click(function (toCode) {
         toCode.preventDefault();
         toCode.stopPropagation();
         var $form = $(this.form),
-            email = $form.find( 'input[name="email"]' ).val(),
-            password = $form.find( 'input[name="password"]' ).val();
+            email = $form.find('input[name="email"]').val(),
+            password = $form.find('input[name="password"]').val();
         console.log(email);
-        API.Auth.Login(email, password).done(function(result){
-            if (result.success){
+        API.Auth.Login(email, password).done(function (result) {
+            if (result.success) {
                 document.location.href = 'cabinet';
-                // $('#regPopup').fadeOut(200);
-                // $('#finishregPopup').fadeIn(300);
+            }
+        });
+    });
+
+    $('a.subcateg-card').click(function (event) {
+        event.preventDefault();
+        var a = $(this);
+        API.Auth.getInfo().done(function (result) {
+            if (result.success) {
+                window.location.href = a.attr('href');
+            } else {
+                $('#regPopupWrapper').fadeIn(300);
+                $('#entrancePopup').fadeIn(300);
             }
         });
     });
@@ -543,7 +554,7 @@ $(document).ready(function () {
         confirm.stopPropagation();
         $('#regPopupWrapper').fadeIn(300);
         $('#codePopup').fadeIn(300);
-    });
+    })
 
     $('#finishReg').click(function (finishReg) {
         finishReg.preventDefault();
@@ -556,7 +567,7 @@ $(document).ready(function () {
                 $('#moderPopup').fadeIn(300);
             }
         });
-    });
+    })
 
     $('#exitReg').click(function (exitReg) {
         exitReg.preventDefault();
@@ -564,13 +575,13 @@ $(document).ready(function () {
         $('.popup').fadeOut(200);
         $('.mob-menu, .hamburger').removeClass('opened');
         window.location.href = "cabinet";
-    });
+    })
 
     $('#goToFinish').click(function (goToFinish) {
         goToFinish.preventDefault();
         $('#moderPopup').fadeOut(200);
         $('#finishregPopup').fadeIn(300);
-    });
+    })
 
     $('.popup-wrapper, .close-popup').click(function () {
         $('.popup-wrapper').fadeOut(200);
@@ -580,43 +591,43 @@ $(document).ready(function () {
         $('.error-message').fadeOut(200);
         $('.mob-menu, .hamburger').removeClass('opened');
         angular.element($('.page-header')).scope().hctrl.loadHead();
-    });
+    })
 
 
     $('.popup').click(function (pop) {
         pop.stopPropagation();
-    });
+    })
 
     $('#seeError').click(function (seeError) {
         seeError.preventDefault();
         $('.show-error').addClass('error');
         $('.error-message').fadeIn(200);
-    });
+    })
 
     $('#okWait, #submitRequestPopupWrapper, #closeRequest').click(function (okWait) {
         okWait.preventDefault();
         $('.popup-wrapper').fadeOut(200);
         $('.order-teaser-block').removeClass('shrinked');
         $('.order-block').addClass('shrinked');
-    });
+    })
 
     $('#goPartner').click(function (goPartner) {
         goPartner.stopPropagation();
         $('#partnerPopupWrapper').fadeIn(300);
         $('#partnerPopup').fadeIn(300);
-    });
+    })
 
     $('#cool').click(function (okWait) {
         okWait.preventDefault();
         $('.popup-wrapper').fadeOut(200);
-    });
+    })
 
     $('.card-showmore').click(function (showMore) {
         showMore.preventDefault();
         showMore.stopPropagation();
         $('#showMorePopupWrapper').fadeIn(300);
         $('#showMorePopup').fadeIn(300);
-    });
+    })
 
     // Video
 
@@ -625,7 +636,7 @@ $(document).ready(function () {
         $('.ipad').addClass('moved');
         $('.video-info-block').addClass('hidden');
         $('.video-block').delay(500).fadeIn(300);
-    });
+    })
 
 
     var iframe = document.getElementById('video');
@@ -641,11 +652,11 @@ $(document).ready(function () {
     $('#play-button-mob').click(function (mobVid) {
         mobVid.preventDefault();
         $('.mob-video-block').fadeIn(300);
-    });
+    })
 
     $('.pagination-arrow-next, .paginatin-circle').click(function (pag) {
         pag.preventDefault();
-    });
+    })
 
     $('.paginatin-circle').click(function () {
         $('.paginatin-circle').removeClass('active');

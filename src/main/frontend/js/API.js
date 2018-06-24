@@ -30,7 +30,7 @@ module.exports = {
                     data: data
                 });
         },
-        Login: function Login(email, password){
+        Login: function (email, password){
             var data = JSON.stringify({email: email, password: password});
                 return $.ajax({
                     url: serverApiUrl.auth.login,
