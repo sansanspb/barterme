@@ -109,7 +109,7 @@ module.exports = function($scope, CompanyService, AuthService, CategoriesService
     function getRegions(){
         CompanyService.getRegions().then(function(result){
             self.regions = result;
-            console.log(result);
+            // console.log(result);
         });
     }
 
@@ -265,6 +265,7 @@ module.exports = function($scope, CompanyService, AuthService, CategoriesService
     function receivePartner(partner){
         CompanyService.receivePartner(partner.senderId).then(function (result) {
             self.getPartners();
+            // TODO: show chat fragment here
         });
     }
 
