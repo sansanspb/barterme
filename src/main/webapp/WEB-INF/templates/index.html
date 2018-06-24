@@ -32,10 +32,10 @@
         <div class="pop-cont long"><img class="popup-emoji" src="img/emoji/wave.png">
             <h2 class="mid-title">С возвращением!</h2>
             <p class="common-text">Мы скучали ;)</p>
-            <form id="entranceForm" data-th-action="@{auth/login}" method="POST">
-                <input class="common-input reg-input" type="email" id="EntMail" name="email" placeholder="Email">
-                <input class="common-input reg-input" type="password" id="EntPass" name="password" placeholder="Пароль">
-                <button class="pink-btn" type="submit" value="Войти">Войти</button>
+            <form id="entranceForm">
+                <input class="common-input reg-input" type="email" name="email" placeholder="Email">
+                <input class="common-input reg-input" type="password" name="password" placeholder="Пароль">
+                <button class="pink-btn" id="login" type="submit" value="Войти">Войти</button>
             </form>
             <p class="common-text underbutton">
                 Впервые здесь?
@@ -180,9 +180,8 @@
         <div class="content">
             <h2 class="page-title">Что вы ищете?</h2>
             <p class="page-undertitle">
-                Выбирайте среди
-                <span>1765</span> профессионалов<br> и
-                <span>2587</span> видов услуг
+                Выбирайте партнеров
+                среди лучших компаний!
             </p>
             <div class="categ-plates"><a class="one-categ-plate" href="listing?id=1"><img
                     src="img/main-page/main_ic_1.svg">
@@ -282,7 +281,7 @@
         </div>
     </div>
     <footer class="block page-footer">
-        <div class="content"><a href="index.html"><img class="footer-logo" src="img/logo_white.svg"></a>
+        <div class="content"><a href="#"><img class="footer-logo" src="img/logo_white.svg"></a>
             <div class="footer-cols">
                 <ul class="footer-col">
                     <li><a class="smooth-anchor" href="#videoBlock">Как это работает?</a></li>

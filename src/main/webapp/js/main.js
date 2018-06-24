@@ -24,6 +24,7 @@
         var serverApiUrl = {
             auth: {
                 register: 'auth/register',
+                login: 'auth/login',
                 confirmUser: 'auth/confirmUser',
                 getInfo: 'auth/getUserInfo'
             },
@@ -38,13 +39,24 @@
             companies: {
                 getOthersCompanies: 'company/getOthersCompanies'
             }
-        }
+        };
+
         module.exports = {
             Auth: {
                 Register: function Register(title, email, phone, password) {
                     var data = JSON.stringify({title: title, email: email, phone: phone, password: password});
                     return $.ajax({
                         url: serverApiUrl.auth.register,
+                        dataType: 'json',
+                        type: 'post',
+                        contentType: 'application/json',
+                        data: data
+                    });
+                },
+                Login: function (email, password) {
+                    var data = JSON.stringify({email: email, password: password});
+                    return $.ajax({
+                        url: serverApiUrl.auth.login,
                         dataType: 'json',
                         type: 'post',
                         contentType: 'application/json',
@@ -128,7 +140,7 @@
                 '3': 'three',
                 '4': 'four',
                 '5': 'five'
-            }
+            };
 
             self.getFavorites = getFavorites;
             self.getInfo = getInfo;
@@ -456,7 +468,7 @@
                 });
                 inp.click();
             }
-        }
+        };
     }, {}], 4: [function (require, module, exports) {
         'use sctrict';
 
@@ -469,7 +481,7 @@
                 '3': 'three',
                 '4': 'four',
                 '5': 'five'
-            }
+            };
 
             self.currentCategId = 0;
             self.currentParentCatId = 0;
@@ -616,7 +628,7 @@
                 return '#';
             }
 
-        }
+        };
     }, {}], 5: [function (require, module, exports) {
         'use sctrict';
 
@@ -701,7 +713,7 @@
                 return false;
             }
 
-        }
+        };
     }, {}], 6: [function (require, module, exports) {
         'use strict';
 
@@ -753,7 +765,7 @@
                     title: 'Имиджевое продвижение',
                     check: false
                 }
-            ]
+            ];
 
             self.sendOrder = sendOrder;
 
@@ -773,7 +785,7 @@
                     $('#submitRequestPopupWrapper').fadeIn(300);
                 });
             }
-        }
+        };
     }, {}], 8: [function (require, module, exports) {
         'use strict';
 
@@ -842,7 +854,7 @@
                     }
                     return newvalues;
                 };
-            })
+            });
     }, {}], 9: [function (require, module, exports) {
         'use strict';
 
@@ -855,7 +867,7 @@
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
                     }
-                }
+                };
 
             var service = {
                 regCode: false,
@@ -898,7 +910,7 @@
             }
 
             return service;
-        }
+        };
     }, {}], 10: [function (require, module, exports) {
         'use strict';
 
@@ -911,7 +923,7 @@
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
                     }
-                }
+                };
 
             var service = {
                 getAll: getAll
@@ -938,7 +950,7 @@
             }
 
             return service;
-        }
+        };
     }, {}], 11: [function (require, module, exports) {
         'use strict';
 
@@ -982,7 +994,7 @@
 
                     //methods
                     getCompanyById: getCompanyById
-                }
+                };
 
             function getCompanyById(companyId) {
                 for (var i = 0; i < container.companies.length; i++) {
@@ -1484,7 +1496,7 @@
             }
 
             return service;
-        }
+        };
     }, {}], 12: [function (require, module, exports) {
         'use strict';
 
@@ -1516,7 +1528,7 @@
             }
 
             return service;
-        }
+        };
     }, {}], 13: [function (require, module, exports) {
         'use strict';
 
@@ -1552,7 +1564,7 @@
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
                     }
-                }
+                };
 
             var service = {
                 getAll: getAll
@@ -1579,7 +1591,7 @@
             }
 
             return service;
-        }
+        };
     }, {}], 15: [function (require, module, exports) {
         'use strict';
 
@@ -1592,7 +1604,7 @@
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
                     }
-                }
+                };
 
             var service = {
                 send: send
@@ -1620,7 +1632,7 @@
             }
 
             return service;
-        }
+        };
     }, {}], 16: [function (require, module, exports) {
         'use strict';
 
@@ -1659,7 +1671,7 @@
 
             var service = {
                 sendRequest: sendRequest
-            }
+            };
 
             function sendRequest(url, data) {
                 var deferred = $q.defer();
@@ -1689,7 +1701,7 @@
             }
 
             return service;
-        }
+        };
     }, {}], 17: [function (require, module, exports) {
         'use strict';
 
@@ -1703,7 +1715,7 @@
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
                     }
-                }
+                };
 
             var service = {
                 getCompanyReviews: getCompanyReviews,
@@ -1712,7 +1724,7 @@
 
             function getCompanyReviews(companyId) {
                 var deferred = $q.defer(),
-                    data = JSON.stringify({companyId: companyId})
+                    data = JSON.stringify({companyId: companyId});
                 $http.post(SERVICE_URI.getCompanyReviews, data)
                     .then(
                         function (response) {
@@ -1760,7 +1772,7 @@
             }
 
             return service;
-        }
+        };
     }, {}], 18: [function (require, module, exports) {
         window.$ = window.jQuery = window.jquery = require('jquery');
         require('malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min')($);
@@ -1840,7 +1852,7 @@
                 $('.chosen-sort').removeClass('opened');
                 $('.sort-variants').fadeOut(200);
                 $('.search-wrapper').removeClass('error');
-            })
+            });
 
             const bodyScrollLock = require('body-scroll-lock');
             const disableBodyScroll = bodyScrollLock.disableBodyScroll;
@@ -1880,12 +1892,12 @@
             // Smooth footer anchors
 
             $('.footer-col').on('click', '.smooth-anchor', function (event) {
-                event.preventDefault()
+                event.preventDefault();
                 let id = $(this).attr('href'),
-                    top = $(id).offset().top
+                    top = $(id).offset().top;
 
                 $('body,html').animate({scrollTop: top}, 1500)
-            })
+            });
 
             // Requests
 
@@ -1893,23 +1905,23 @@
                 declineRequest.preventDefault();
                 $(this).closest('.one-request').find('.request-btns').fadeOut(100);
                 $(this).closest('.one-request').find('.request-remove-alert').delay(300).fadeIn(300);
-            })
+            });
 
             $('.yesremove').click(function (removeRequest) {
                 removeRequest.preventDefault();
                 $(this).closest('.one-request').fadeOut(200);
-            })
+            });
             $('.noremove').click(function (returnRequest) {
                 returnRequest.preventDefault();
                 $(this).closest('.one-request').find('.request-btns').delay(300).fadeIn(300);
                 $(this).closest('.one-request').find('.request-remove-alert').fadeOut(100);
-            })
+            });
 
             // Эта механика тоже кривоватая, надо будет сделать нормально
 
             $('.one-request:last-of-type .yesremove').click(function () {
                 $('.norequests').delay(200).fadeIn(300);
-            })
+            });
 
             // Favourite
 
@@ -1921,13 +1933,13 @@
 
             $('.close-chat').click(function () {
                 $('.chat-wrapper').addClass('hidden');
-            })
+            });
 
             // Cabinet
 
             $('.ok').click(function () {
                 $(this).closest('.one-time-notif').fadeOut(300);
-            })
+            });
 
             $('.cabinet-tab-container, .partner-tabs').easytabs();
 
@@ -1938,21 +1950,21 @@
 
             $('.common-plate.inside-categ-plate.cab-fav-plate:last-of-type .remove-fav').click(function () {
                 $('.nofav-block').delay(200).fadeIn(300);
-            })
+            });
 
             $('.editcity').click(function (editCity) {
                 editCity.preventDefault();
                 editCity.stopPropagation();
                 $('#selectCityPopupWrapper').fadeIn(300);
                 $('#selectCityPopup').fadeIn(300);
-            })
+            });
 
             $('.finish-partner').click(function (finishPartner) {
                 finishPartner.preventDefault();
                 finishPartner.stopPropagation();
                 $('#finishPartnerWrapper').fadeIn(300);
                 $('#finishPartnerPopup').fadeIn(300);
-            })
+            });
 
             $("#closePartnership").click(function (closeP) {
                 closeP.preventDefault();
@@ -1960,47 +1972,47 @@
                 $('#finishPartnerPopup').fadeOut(300);
                 $(".tofinish").fadeOut(100);
                 $(".nopartners").fadeIn(400);
-            })
+            });
 
             $('.editgeo').click(function (editGeo) {
                 editGeo.preventDefault();
                 editGeo.stopPropagation();
                 $('#selectGeoPopupWrapper').fadeIn(300);
                 $('#selectGeoPopup').fadeIn(300);
-            })
+            });
 
             $('.city-name').click(function () {
                 $('.popup-wrapper, .popup').fadeOut(200);
-            })
+            });
 
             $('#removePic').click(function (deleteAva) {
                 deleteAva.preventDefault();
                 $('.img-wrapper.cab').addClass('empty');
-            })
+            });
 
             $('.delete-ava').click(function (deleteAva) {
                 deleteAva.preventDefault();
                 deleteAva.stopPropagation();
                 $('#deleteUserPicWrapper').fadeIn(300);
                 $('#deleteUserPicPopup').fadeIn(300);
-            })
+            });
 
             $('#removePic').click(function (deleteAva) {
                 deleteAva.preventDefault();
                 $('.img-wrapper.cab').addClass('empty');
                 $('#deleteUserPicWrapper').fadeOut(300);
                 $('#deleteUserPicPopup').fadeOut(300);
-            })
+            });
 
             $('#notRemovePic').click(function (deleteAva) {
                 deleteAva.preventDefault();
                 $('#deleteUserPicWrapper').fadeOut(300);
                 $('#deleteUserPicPopup').fadeOut(300);
-            })
+            });
 
             $('.openable span').click(function () {
                 $(this).parent('.openable').find('.card-vars-list').fadeToggle(200);
-            })
+            });
 
             // Slider
 
@@ -2020,7 +2032,7 @@
                         items: 4
                     }
                 }
-            })
+            });
 
             $('.card-slider').owlCarousel({
                 loop: true,
@@ -2030,7 +2042,7 @@
                 pagination: true,
                 autoplay: true,
                 responsiveClass: false
-            })
+            });
 
             // Header search
 
@@ -2053,11 +2065,11 @@
                             }
 
                         }
-                    )
+                    );
                 $('.notif-wrapper').fadeOut(200);
                 $('.header-right-part .search-wrapper').toggleClass('opened');
                 $('#headerSearch').focus();
-            })
+            });
             $('#mainSearch').click(function () {
                 API.Auth.getInfo()
                     .then(
@@ -2083,15 +2095,15 @@
                 searchError.preventDefault();
                 searchError.stopPropagation();
                 $(this).closest('.search-wrapper').addClass('error');
-            })
+            });
 
             $('.header-right-part .search-wrapper').click(function (ss) {
                 ss.stopPropagation();
-            })
+            });
 
             $('.start-search').click(function (stS) {
                 stS.preventDefault();
-            })
+            });
 
             // Поменяйте эти условия при дальнейшей разработке
             /*$('#headerSearch').click(function (e) {
@@ -2180,7 +2192,7 @@
             $('.bell-block').click(function (notifs) {
                 notifs.stopPropagation();
                 $('.notif-wrapper').fadeIn(300);
-            })
+            });
 
             //Sort
 
@@ -2188,7 +2200,7 @@
                 openSort.stopPropagation();
                 $('.chosen-sort').toggleClass('opened');
                 $('.sort-variants').fadeToggle(300);
-            })
+            });
 
             // Show more feedbacks
 
@@ -2199,7 +2211,7 @@
                 $(this).text(
                     text == "Показать больше отзывов" ? "Скрыть отзывы" : "Показать больше отзывов");
                 $('.hidden-feedbacks').fadeToggle();
-            })
+            });
 
 
             // Open Order Form
@@ -2247,28 +2259,55 @@
                 callRegPop.stopPropagation();
                 $('#regPopupWrapper').fadeIn(300);
                 $('#regPopup').fadeIn(300);
-            })
+            });
 
             $('#entranceBtn').click(function (callEntrancePop) {
                 callEntrancePop.preventDefault();
                 callEntrancePop.stopPropagation();
                 $('#regPopupWrapper').fadeIn(300);
                 $('#entrancePopup').fadeIn(300);
-            })
+            });
 
             $('#goToReg').click(function (goToReg) {
                 goToReg.preventDefault();
                 $('#entrancePopup').fadeOut(200);
                 $('#regPopup').fadeIn(300);
                 $('.mob-menu').removeClass('opened');
-            })
+            });
 
             $('#goToEntrance').click(function (goToEnt) {
                 goToEnt.preventDefault();
                 $('#regPopup').fadeOut(200);
                 $('#entrancePopup').fadeIn(300);
                 $('.mob-menu').removeClass('opened');
-            })
+            });
+
+            $('#login').click(function (toCode) {
+                toCode.preventDefault();
+                toCode.stopPropagation();
+                var $form = $(this.form),
+                    email = $form.find('input[name="email"]').val(),
+                    password = $form.find('input[name="password"]').val();
+                console.log(email);
+                API.Auth.Login(email, password).done(function (result) {
+                    if (result.success) {
+                        document.location.href = 'cabinet';
+                    }
+                });
+            });
+
+            $('a.subcateg-card').click(function (event) {
+                event.preventDefault();
+                var a = $(this);
+                API.Auth.getInfo().done(function (result) {
+                    if (result.success) {
+                        window.location.href = a.attr('href');
+                    } else {
+                        $('#regPopupWrapper').fadeIn(300);
+                        $('#entrancePopup').fadeIn(300);
+                    }
+                });
+            });
 
             $('#regist').click(function (toCode) {
                 toCode.preventDefault();
@@ -2284,13 +2323,14 @@
                         $('#finishregPopup').fadeIn(300);
                     }
                 });
-            })
+            });
+
             $('#confirmBtn').click(function (confirm) {
                 confirm.preventDefault();
                 confirm.stopPropagation();
                 $('#regPopupWrapper').fadeIn(300);
                 $('#codePopup').fadeIn(300);
-            })
+            });
 
             $('#finishReg').click(function (finishReg) {
                 finishReg.preventDefault();
@@ -2303,7 +2343,7 @@
                         $('#moderPopup').fadeIn(300);
                     }
                 });
-            })
+            });
 
             $('#exitReg').click(function (exitReg) {
                 exitReg.preventDefault();
@@ -2311,13 +2351,13 @@
                 $('.popup').fadeOut(200);
                 $('.mob-menu, .hamburger').removeClass('opened');
                 window.location.href = "cabinet";
-            })
+            });
 
             $('#goToFinish').click(function (goToFinish) {
                 goToFinish.preventDefault();
                 $('#moderPopup').fadeOut(200);
                 $('#finishregPopup').fadeIn(300);
-            })
+            });
 
             $('.popup-wrapper, .close-popup').click(function () {
                 $('.popup-wrapper').fadeOut(200);
@@ -2327,43 +2367,43 @@
                 $('.error-message').fadeOut(200);
                 $('.mob-menu, .hamburger').removeClass('opened');
                 angular.element($('.page-header')).scope().hctrl.loadHead();
-            })
+            });
 
 
             $('.popup').click(function (pop) {
                 pop.stopPropagation();
-            })
+            });
 
             $('#seeError').click(function (seeError) {
                 seeError.preventDefault();
                 $('.show-error').addClass('error');
                 $('.error-message').fadeIn(200);
-            })
+            });
 
             $('#okWait, #submitRequestPopupWrapper, #closeRequest').click(function (okWait) {
                 okWait.preventDefault();
                 $('.popup-wrapper').fadeOut(200);
                 $('.order-teaser-block').removeClass('shrinked');
                 $('.order-block').addClass('shrinked');
-            })
+            });
 
             $('#goPartner').click(function (goPartner) {
                 goPartner.stopPropagation();
                 $('#partnerPopupWrapper').fadeIn(300);
                 $('#partnerPopup').fadeIn(300);
-            })
+            });
 
             $('#cool').click(function (okWait) {
                 okWait.preventDefault();
                 $('.popup-wrapper').fadeOut(200);
-            })
+            });
 
             $('.card-showmore').click(function (showMore) {
                 showMore.preventDefault();
                 showMore.stopPropagation();
                 $('#showMorePopupWrapper').fadeIn(300);
                 $('#showMorePopup').fadeIn(300);
-            })
+            });
 
             // Video
 
@@ -2372,7 +2412,7 @@
                 $('.ipad').addClass('moved');
                 $('.video-info-block').addClass('hidden');
                 $('.video-block').delay(500).fadeIn(300);
-            })
+            });
 
 
             var iframe = document.getElementById('video');
@@ -2388,11 +2428,11 @@
             $('#play-button-mob').click(function (mobVid) {
                 mobVid.preventDefault();
                 $('.mob-video-block').fadeIn(300);
-            })
+            });
 
             $('.pagination-arrow-next, .paginatin-circle').click(function (pag) {
                 pag.preventDefault();
-            })
+            });
 
             $('.paginatin-circle').click(function () {
                 $('.paginatin-circle').removeClass('active');
@@ -27300,6 +27340,7 @@
             var ngFormDirective = formDirectiveFactory(true);
 
 
+
 // helper methods
             function setupValidity(instance) {
                 instance.$$classCache = {};
@@ -41319,8 +41360,10 @@
 
                 return elem.nodeName && elem.nodeName.toLowerCase() === name.toLowerCase();
 
-            };
+            }
+
             var rsingleTag = (/^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i);
+
 
 
 // Implement the identical functionality for filter and not
@@ -41703,6 +41746,7 @@
                 };
             });
             var rnothtmlwhite = (/[^\x20\t\r\n\f]+/g);
+
 
 
 // Convert String-formatted options into Object-formatted ones
@@ -42343,6 +42387,8 @@
             };
 
 
+
+
 // The deferred used on DOM ready
             var readyList = jQuery.Deferred();
 
@@ -42418,6 +42464,8 @@
                 // A fallback to window.onload, that will always work
                 window.addEventListener("load", completed);
             }
+
+
 
 
 // Multifunctional method to get and set values of a collection
@@ -42663,6 +42711,7 @@
             var dataPriv = new Data();
 
             var dataUser = new Data();
+
 
 
 //	Implementation Summary
@@ -43179,6 +43228,7 @@
             var rtagName = (/<([a-z][^\/\0>\x20\t\r\n\f]+)/i);
 
             var rscriptType = (/^$|^module$|\/(?:java|ecma)script/i);
+
 
 
 // We have to close these tags to support XHTML (#13200)
@@ -46643,6 +46693,8 @@
             });
 
 
+
+
 // Return jQuery for attributes-only inclusion
 
 
@@ -46880,6 +46932,7 @@
             var nonce = Date.now();
 
             var rquery = (/\?/);
+
 
 
 // Cross-browser xml parsing
@@ -48112,6 +48165,8 @@
             });
 
 
+
+
 // Prevent auto-execution of scripts when no explicit dataType was provided (See gh-2432)
             jQuery.ajaxPrefilter(function (s) {
                 if (s.crossDomain) {
@@ -48274,6 +48329,8 @@
             });
 
 
+
+
 // Support: Safari 8 only
 // In Safari 8 documents created via document.implementation.createHTMLDocument
 // collapse sibling forms: the second one becomes a child of the first one.
@@ -48399,6 +48456,8 @@
 
                 return this;
             };
+
+
 
 
 // Attach a bunch of functions for handling common AJAX events
@@ -48785,6 +48844,8 @@
                     // subtraction forces infinities to NaN
                     !isNaN(obj - parseFloat(obj));
             };
+
+
 
 
 // Register as a named AMD module, since jQuery can be concatenated with other
@@ -49425,7 +49486,7 @@
                                 t(e, o)
                             })
                         }
-                    }, R = new Object, A = function (t) {
+                    }, R = {}, A = function (t) {
                         var o = !1, a = !1, n = null;
                         if (void 0 === t ? a = "#empty" : void 0 !== e(t).attr("id") && (a = e(t).attr("id")), a !== !1 && void 0 !== R[a]) return R[a];
                         if (t) {
@@ -49896,20 +49957,7 @@
          * Copyright 2013-2018 David Deutsch
          * Licensed under: SEE LICENSE IN https://github.com/OwlCarousel2/OwlCarousel2/blob/master/LICENSE
          */
-        /**
-         * Owl carousel
-         * @version 2.3.4
-         * @author Bartosz Wojciechowski
-         * @author David Deutsch
-         * @license The MIT License (MIT)
-         * @todo Lazy Load Icon
-         * @todo prevent animationend bubling
-         * @todo itemsScaleUp
-         * @todo Test Zepto
-         * @todo stagePadding calculate wrong active classes
-         */
-        ;(function ($, window, document, undefined) {
-
+        (function ($, window, document, undefined) {
             /**
              * Creates a carousel.
              * @class The Owl Carousel.
@@ -50678,7 +50726,7 @@
                 }
 
                 if (this.is('animating')) {
-                    $.support.transform ? this.animate(stage.x) : this.$stage.stop()
+                    $.support.transform ? this.animate(stage.x) : this.$stage.stop();
                     this.invalidate('position');
                 }
 
@@ -51663,15 +51711,7 @@
 
         })(window.Zepto || window.jQuery, window, document);
 
-        /**
-         * AutoRefresh Plugin
-         * @version 2.3.4
-         * @author Artus Kolanowski
-         * @author David Deutsch
-         * @license The MIT License (MIT)
-         */
-        ;(function ($, window, document, undefined) {
-
+        (function ($, window, document, undefined) {
             /**
              * Creates the auto refresh plugin.
              * @class The Auto Refresh Plugin
@@ -51775,15 +51815,7 @@
 
         })(window.Zepto || window.jQuery, window, document);
 
-        /**
-         * Lazy Plugin
-         * @version 2.3.4
-         * @author Bartosz Wojciechowski
-         * @author David Deutsch
-         * @license The MIT License (MIT)
-         */
-        ;(function ($, window, document, undefined) {
-
+        (function ($, window, document, undefined) {
             /**
              * Creates the lazy plugin.
              * @class The Lazy Plugin
@@ -51927,15 +51959,7 @@
 
         })(window.Zepto || window.jQuery, window, document);
 
-        /**
-         * AutoHeight Plugin
-         * @version 2.3.4
-         * @author Bartosz Wojciechowski
-         * @author David Deutsch
-         * @license The MIT License (MIT)
-         */
-        ;(function ($, window, document, undefined) {
-
+        (function ($, window, document, undefined) {
             /**
              * Creates the auto height plugin.
              * @class The Auto Height Plugin
@@ -52060,15 +52084,7 @@
 
         })(window.Zepto || window.jQuery, window, document);
 
-        /**
-         * Video Plugin
-         * @version 2.3.4
-         * @author Bartosz Wojciechowski
-         * @author David Deutsch
-         * @license The MIT License (MIT)
-         */
-        ;(function ($, window, document, undefined) {
-
+        (function ($, window, document, undefined) {
             /**
              * Creates the video plugin.
              * @class The Video Plugin
@@ -52388,15 +52404,7 @@
 
         })(window.Zepto || window.jQuery, window, document);
 
-        /**
-         * Animate Plugin
-         * @version 2.3.4
-         * @author Bartosz Wojciechowski
-         * @author David Deutsch
-         * @license The MIT License (MIT)
-         */
-        ;(function ($, window, document, undefined) {
-
+        (function ($, window, document, undefined) {
             /**
              * Creates the animate plugin.
              * @class The Navigation Plugin
@@ -52510,17 +52518,7 @@
 
         })(window.Zepto || window.jQuery, window, document);
 
-        /**
-         * Autoplay Plugin
-         * @version 2.3.4
-         * @author Bartosz Wojciechowski
-         * @author Artus Kolanowski
-         * @author David Deutsch
-         * @author Tom De Caluwé
-         * @license The MIT License (MIT)
-         */
-        ;(function ($, window, document, undefined) {
-
+        (function ($, window, document, undefined) {
             /**
              * Creates the autoplay plugin.
              * @class The Autoplay Plugin
@@ -52650,7 +52648,7 @@
                     return;
                 }
                 this._core.next(speed || this._core.settings.autoplaySpeed);
-            }
+            };
 
             /**
              * Reads the current timer value when the timer is playing.
@@ -52744,14 +52742,7 @@
 
         })(window.Zepto || window.jQuery, window, document);
 
-        /**
-         * Navigation Plugin
-         * @version 2.3.4
-         * @author Artus Kolanowski
-         * @author David Deutsch
-         * @license The MIT License (MIT)
-         */
-        ;(function ($, window, document, undefined) {
+        (function ($, window, document, undefined) {
             'use strict';
 
             /**
@@ -53151,14 +53142,7 @@
 
         })(window.Zepto || window.jQuery, window, document);
 
-        /**
-         * Hash Plugin
-         * @version 2.3.4
-         * @author Artus Kolanowski
-         * @author David Deutsch
-         * @license The MIT License (MIT)
-         */
-        ;(function ($, window, document, undefined) {
+        (function ($, window, document, undefined) {
             'use strict';
 
             /**
@@ -53274,17 +53258,7 @@
 
         })(window.Zepto || window.jQuery, window, document);
 
-        /**
-         * Support Plugin
-         *
-         * @version 2.3.4
-         * @author Vivid Planet Software GmbH
-         * @author Artus Kolanowski
-         * @author David Deutsch
-         * @license The MIT License (MIT)
-         */
-        ;(function ($, window, document, undefined) {
-
+        (function ($, window, document, undefined) {
             var style = $('<support>').get(0).style,
                 prefixes = 'Webkit Moz O ms'.split(' '),
                 events = {
@@ -53340,19 +53314,19 @@
 
             if (tests.csstransitions()) {
                 /* jshint -W053 */
-                $.support.transition = new String(prefixed('transition'))
+                $.support.transition = String(prefixed('transition'));
                 $.support.transition.end = events.transition.end[$.support.transition];
             }
 
             if (tests.cssanimations()) {
                 /* jshint -W053 */
-                $.support.animation = new String(prefixed('animation'))
+                $.support.animation = String(prefixed('animation'));
                 $.support.animation.end = events.animation.end[$.support.animation];
             }
 
             if (tests.csstransforms()) {
                 /* jshint -W053 */
-                $.support.transform = new String(prefixed('transform'));
+                $.support.transform = String(prefixed('transform'));
                 $.support.transform3d = tests.csstransforms3d();
             }
 
@@ -53969,4 +53943,4 @@
         }).call(this);
 
     }, {}]
-}, {}, [18])
+}, {}, [18]);
