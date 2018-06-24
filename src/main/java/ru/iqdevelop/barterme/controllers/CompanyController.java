@@ -154,7 +154,7 @@ public class CompanyController {
             }
 
             String userEmail = userPrincipal.getName();
-            companyService.setCategories(userEmail,companyCategoriesModel);
+            companyService.setCategories(userEmail, companyCategoriesModel);
             return AnswerMessage.getSuccessMessage();
         } catch (Exception e) {
             logger.error(Arrays.toString(e.getStackTrace()));

@@ -41,7 +41,7 @@ CREATE TABLE "chat_messages" (
 	"chat_history_id" serial NOT NULL,
 	"sender_id" bigint NOT NULL,
 	"receiver_id" bigint NOT NULL,
-	"message" varchar(4000) NOT NULL,
+	"notificationInputMessage" varchar(4000) NOT NULL,
 	"send_date" TIMESTAMP NOT NULL,
 	CONSTRAINT chat_messages_pk PRIMARY KEY ("chat_history_id")
 ) WITH (
@@ -171,7 +171,7 @@ CREATE TABLE "reviews" (
 	"company_id" bigint NOT NULL,
 	"author_id" bigint NOT NULL,
 	"contact_person" varchar(300) NOT NULL,
-	"message" varchar(4000) NOT NULL,
+	"notificationInputMessage" varchar(4000) NOT NULL,
 	"is_good" BOOLEAN NOT NULL,
 	"create_date" TIMESTAMP NOT NULL,
 	CONSTRAINT reviews_pk PRIMARY KEY ("review_id")

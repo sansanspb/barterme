@@ -1,20 +1,20 @@
 'use sctrict';
 
-module.exports = function($scope, CompanyService, AuthService, CategoriesService, MarketingChannelsService, CustomService, ReviewService){
+module.exports = function ($scope, CompanyService, AuthService, CategoriesService, MarketingChannelsService, CustomService, ReviewService) {
     var $scope = self = this;
 
-    self.VOC = ['А','Б','В','Г','Д','Е','Ё','Ж','З','И','К','Л','М','Н','О','П','Р','С','Т','У','Ф','Х','Ц','Ч','Ш','Щ','Э','Ю','Я'];
-    self.VOC1 = ['А','Б','В','Г','Д','Е','Ё','Ж','З','И','К','Л','М','Н','О'];
-    self.VOC2 = ['П','Р','С','Т','У','Ф','Х','Ц','Ч','Ш','Щ','Э','Ю','Я'];
-    self.VOC3 = ['Ф','Х','Ц','Ч','Ш'];
-    self.VOC4 = ['Щ','Э','Ю','Я'];
+    self.VOC = ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Э', 'Ю', 'Я'];
+    self.VOC1 = ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'К', 'Л', 'М', 'Н', 'О'];
+    self.VOC2 = ['П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Э', 'Ю', 'Я'];
+    self.VOC3 = ['Ф', 'Х', 'Ц', 'Ч', 'Ш'];
+    self.VOC4 = ['Щ', 'Э', 'Ю', 'Я'];
     self.ratings = {
-        '1' : 'one',
-        '2' : 'two',
-        '3' : 'three',
-        '4' : 'four',
-        '5' : 'five'
-    }
+        '1': 'one',
+        '2': 'two',
+        '3': 'three',
+        '4': 'four',
+        '5': 'five'
+    };
 
     self.getFavorites = getFavorites;
     self.getInfo = getInfo;
@@ -47,14 +47,14 @@ module.exports = function($scope, CompanyService, AuthService, CategoriesService
     self.getInfo();
     self.getRegions();
 
-    function getFavorites(){
-        CompanyService.getFavorites(self.company.companyId).then(function(result){
+    function getFavorites() {
+        CompanyService.getFavorites(self.company.companyId).then(function (result) {
             self.favorites = result;
         });
     }
 
-    function getInfo(){
-        CompanyService.getInfo().then(function(result){
+    function getInfo() {
+        CompanyService.getInfo().then(function (result) {
             self.company = result;
             self.getCategories();
             self.getMarketingChannels();
@@ -62,85 +62,85 @@ module.exports = function($scope, CompanyService, AuthService, CategoriesService
             self.getCompanyReviews();
             self.getFavorites();
         });
-        CategoriesService.getAll().then(function(result) {
+        CategoriesService.getAll().then(function (result) {
             self.categories = result;
             self.categoriesTree = CustomService.mapTree(result);
         });
-        MarketingChannelsService.getAll().then(function(result){
+        MarketingChannelsService.getAll().then(function (result) {
             self.marketingChannels = result;
         });
-        MarketingChannelsService.getAll().then(function(result) {
+        MarketingChannelsService.getAll().then(function (result) {
             self.marketingChannels = result;
         });
     }
 
-    function getCategories(){
-        CompanyService.getCategories().then(function(result){
+    function getCategories() {
+        CompanyService.getCategories().then(function (result) {
             self.company.categories = result;
         });
     }
 
-    function getMarketingChannels(){
-        CompanyService.getMarketingChannels().then(function(result){
+    function getMarketingChannels() {
+        CompanyService.getMarketingChannels().then(function (result) {
             self.company.marketingChannels = result;
         });
     }
 
-    function getCompanyReviews(){
+    function getCompanyReviews() {
         ReviewService.getCompanyReviews(self.company.companyId).then(function (result) {
             self.company.reviews = result;
         });
     }
 
-    function getRaiting(raiting){
+    function getRaiting(raiting) {
         return self.ratings[Math.round(raiting)];
 
     }
 
-    function getCategoryNameById(categoryId){
+    function getCategoryNameById(categoryId) {
         if (!self.categories) return '';
-        for (var i = 0; i < self.categories.length; i++){
-            if (self.categories[i].categoryId == categoryId){
+        for (var i = 0; i < self.categories.length; i++) {
+            if (self.categories[i].categoryId == categoryId) {
                 return self.categories[i].title;
             }
         }
     }
 
-    function getRegions(){
-        CompanyService.getRegions().then(function(result){
+    function getRegions() {
+        CompanyService.getRegions().then(function (result) {
             self.regions = result;
             // console.log(result);
         });
     }
 
-    function getRegionById(){
+    function getRegionById() {
         if (!self.company || !self.regions) return '';
-        for (var i = 0; i < self.regions.length; i++){
-            if (self.company.regionId === self.regions[i].regionId){
+        for (var i = 0; i < self.regions.length; i++) {
+            if (self.company.regionId === self.regions[i].regionId) {
                 return self.regions[i].title;
             }
         }
         return 'Выберите геолокацию';
     }
 
-    function setRegion(regionId){
+    function setRegion(regionId) {
         self.company.regionId = regionId;
         $('.popup-wrapper, .popup').fadeOut(200);
     }
 
-    function isCategoryChecked(categoryId, type){
+    function isCategoryChecked(categoryId, type) {
         if (!self.company || !self.company.categories) return false;
-        switch (type){
+        switch (type) {
             case 1:
-                for (var i = 0; i < self.company.categories.offerCategories.length; i++){
-                    if (self.company.categories.offerCategories[i] == categoryId){
+                for (var i = 0; i < self.company.categories.offerCategories.length; i++) {
+                    if (self.company.categories.offerCategories[i] == categoryId) {
                         return true;
                     }
                 }
                 break;
             case 2:
-                for (var i = 0; i < self.company.categories.searchCategories.length; i++){
-                    if (self.company.categories.searchCategories[i] == categoryId){
+                for (var i = 0; i < self.company.categories.searchCategories.length; i++) {
+                    if (self.company.categories.searchCategories[i] == categoryId) {
                         return true;
                     }
                 }
@@ -149,43 +149,43 @@ module.exports = function($scope, CompanyService, AuthService, CategoriesService
         return false;
     }
 
-    function isMarketingChannelChecked(marketingChannelId){
+    function isMarketingChannelChecked(marketingChannelId) {
         if (!self.company || !self.company.marketingChannels) return false;
-        for (var i = 0; i < self.company.marketingChannels.length; i++){
-            if (self.company.marketingChannels[i].marketingChannelId == marketingChannelId){
+        for (var i = 0; i < self.company.marketingChannels.length; i++) {
+            if (self.company.marketingChannels[i].marketingChannelId == marketingChannelId) {
                 return true;
             }
         }
         return false;
     }
 
-    function pushCategory(categoryId, type){
-        switch (type){
+    function pushCategory(categoryId, type) {
+        switch (type) {
             case 1:
-                if (!self.company.categories.offerCategories){
+                if (!self.company.categories.offerCategories) {
                     self.company.categories.offerCategories = [];
                 }
-                for (var i = 0; i < self.company.categories.offerCategories.length; i++){
-                    if (self.company.categories.offerCategories[i] == categoryId){
+                for (var i = 0; i < self.company.categories.offerCategories.length; i++) {
+                    if (self.company.categories.offerCategories[i] == categoryId) {
                         break;
                     }
                 }
-                if (i == self.company.categories.offerCategories.length){
+                if (i == self.company.categories.offerCategories.length) {
                     self.company.categories.offerCategories.push(categoryId);
                 } else {
                     self.company.categories.offerCategories.splice(i, 1);
                 }
                 break;
             case 2:
-                if (!self.company.categories.searchCategories){
+                if (!self.company.categories.searchCategories) {
                     self.company.categories.searchCategories = [];
                 }
-                for (var i = 0; i < self.company.categories.searchCategories.length; i++){
-                    if (self.company.categories.searchCategories[i] == categoryId){
+                for (var i = 0; i < self.company.categories.searchCategories.length; i++) {
+                    if (self.company.categories.searchCategories[i] == categoryId) {
                         break;
                     }
                 }
-                if (i == self.company.categories.searchCategories.length){
+                if (i == self.company.categories.searchCategories.length) {
                     self.company.categories.searchCategories.push(categoryId);
                 } else {
                     self.company.categories.searchCategories.splice(i, 1);
@@ -194,47 +194,47 @@ module.exports = function($scope, CompanyService, AuthService, CategoriesService
         }
     }
 
-    function pushMarketingChannel(marketingChannel){
-        if (!self.company.marketingChannels){
+    function pushMarketingChannel(marketingChannel) {
+        if (!self.company.marketingChannels) {
             self.company.marketingChannels = [];
         }
-        for (var i = 0; i < self.company.marketingChannels.length; i++){
-            if (self.company.marketingChannels[i].marketingChannelId == marketingChannel.marketingChannelId){
+        for (var i = 0; i < self.company.marketingChannels.length; i++) {
+            if (self.company.marketingChannels[i].marketingChannelId == marketingChannel.marketingChannelId) {
                 break;
             }
         }
-        if (i == self.company.marketingChannels.length){
+        if (i == self.company.marketingChannels.length) {
             self.company.marketingChannels.push(marketingChannel);
         } else {
             self.company.marketingChannels.splice(i, 1);
         }
     }
 
-    function saveCompany(){
+    function saveCompany() {
         CompanyService.save(self.company).then(
-            function(access){
-                var one = CompanyService.setCategories(self.company.categories).then(function(result){
+            function (access) {
+                var one = CompanyService.setCategories(self.company.categories).then(function (result) {
 
                     }),
-                    two = CompanyService.setMarketingChannels(self.company.marketingChannels).then(function(result){
+                    two = CompanyService.setMarketingChannels(self.company.marketingChannels).then(function (result) {
 
                     });
                 Promise.all([one, two]).then(
-                    function(success) {
+                    function (success) {
                         window.location.href = "cabinet";
                     },
-                    function(reject){
+                    function (reject) {
                         console.log(reject);
                     }
                 );
             },
-            function(reject){
+            function (reject) {
                 alert('что то пошло не так ;-)');
             });
     }
 
-    function switchGender(type){
-        switch (type){
+    function switchGender(type) {
+        switch (type) {
             case 1:
                 self.company.genderMale = true;
                 self.company.genderFemale = false;
@@ -250,10 +250,10 @@ module.exports = function($scope, CompanyService, AuthService, CategoriesService
         }
     }
 
-    function getPartners(){
+    function getPartners() {
         CompanyService.getPartners().then(function (result) {
             self.company.partners = result;
-            for (var i = 0; i < self.company.partners.length; i++){
+            for (var i = 0; i < self.company.partners.length; i++) {
                 var partner = self.company.partners[i],
                     companyId = partner.receiverId == self.company.companyId ? partner.senderId : partner.receiverId,
                     company = self.getCompanyById(companyId);
@@ -262,14 +262,14 @@ module.exports = function($scope, CompanyService, AuthService, CategoriesService
         });
     }
 
-    function receivePartner(partner){
+    function receivePartner(partner) {
         CompanyService.receivePartner(partner.senderId).then(function (result) {
             self.getPartners();
             // TODO: show chat fragment here
         });
     }
 
-    function preCompletePartner($finishPartner, partner){
+    function preCompletePartner($finishPartner, partner) {
         self.currentPartner = partner;
         $finishPartner.preventDefault();
         $finishPartner.stopPropagation();
@@ -277,7 +277,7 @@ module.exports = function($scope, CompanyService, AuthService, CategoriesService
         $('#finishPartnerPopup').fadeIn(300);
     }
 
-    function completePartner(){
+    function completePartner() {
         var partner = self.currentPartner;
         var companyId = partner.senderId == self.company.companyId ? partner.receiverId : partner.senderId;
         var isGood = self.raiting > 2;
@@ -300,42 +300,42 @@ module.exports = function($scope, CompanyService, AuthService, CategoriesService
         $('#btns' + partner.partnersId).delay(300).fadeIn(300);
     }
 
-    function rejectPartner(partner){
-        CompanyService.rejectPartner(partner.senderId).then(function (result){
+    function rejectPartner(partner) {
+        CompanyService.rejectPartner(partner.senderId).then(function (result) {
             self.getPartners();
         });
     }
 
-    function getOtherCompanies(){
-        CompanyService.getOthersCompanies().then(function(result){
+    function getOtherCompanies() {
+        CompanyService.getOthersCompanies().then(function (result) {
             self.companies = result;
             self.getPartners();
         });
     }
 
-    function getCompanyById(companyId){
+    function getCompanyById(companyId) {
         if (!self.companies) return '';
-        for (var i = 0; i < self.companies.length; i++){
-            if (self.companies[i].companyId == companyId){
+        for (var i = 0; i < self.companies.length; i++) {
+            if (self.companies[i].companyId == companyId) {
                 return self.companies[i];
             }
         }
     }
 
-    function removeCompanyFromFavorite(companyId){
-        CompanyService.removeCompanyFromFavorite(companyId).then(function(result){
+    function removeCompanyFromFavorite(companyId) {
+        CompanyService.removeCompanyFromFavorite(companyId).then(function (result) {
             self.getFavorites();
         });
     }
 
-    function uploadImage(){
+    function uploadImage() {
         var inp = $("#ava");
         inp.unbind();
-        inp.change(function(){
+        inp.change(function () {
             var file_name;
-            if (inp[0].files[0] != undefined){
+            if (inp[0].files[0] != undefined) {
                 file_name = inp[0].files[0].name;
-                CompanyService.upload(inp[0].files[0]).then(function(result){
+                CompanyService.upload(inp[0].files[0]).then(function (result) {
                     self.company.photoId = result.photoId;
                     self.company.photoPath = result.photoPath;
                 });
@@ -343,4 +343,4 @@ module.exports = function($scope, CompanyService, AuthService, CategoriesService
         });
         inp.click();
     }
-}
+};

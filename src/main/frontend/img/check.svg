@@ -1,1 +1,7 @@
-<svg id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11.53 9.25"><defs><style>.cls-1{fill:none;stroke:#ff3c5c;stroke-miterlimit:10;stroke-width:2px;}</style></defs><title>check</title><polyline class="cls-1" points="0.67 3.96 4.92 7.8 10.75 0.63"/></svg>
+<svg id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11.53 9.25">
+    <defs>
+        <style>.cls-1{fill:none;stroke:#ff3c5c;stroke-miterlimit:10;stroke-width:2px;}</style>
+    </defs>
+    <title>check</title>
+    <polyline class="cls-1" points="0.67 3.96 4.92 7.8 10.75 0.63"/>
+</svg>

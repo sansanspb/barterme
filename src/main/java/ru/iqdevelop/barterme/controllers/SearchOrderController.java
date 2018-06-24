@@ -24,7 +24,7 @@ public class SearchOrderController {
     @Autowired
     SearchOrderService searchOrderService;
 
-    @RequestMapping(value = "/send", method = RequestMethod.POST, produces="application/json", consumes="application/json")
+    @RequestMapping(value = "/send", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
     public @ResponseBody
     AnswerMessage save(@RequestBody SearchOrderModel searchOrderModel, HttpServletRequest request) {
         try {

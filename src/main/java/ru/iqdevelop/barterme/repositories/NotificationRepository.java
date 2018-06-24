@@ -15,12 +15,12 @@ import java.util.List;
 public class NotificationRepository extends AbstractRepository<Long, NotificationEntity> {
 
     public List<NotificationEntity> getWaited() {
-            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-            CriteriaQuery<NotificationEntity> q = cb.createQuery(NotificationEntity.class);
-            Root<NotificationEntity> c = q.from(NotificationEntity.class);
-            Predicate pred = cb.equal(c.get("status"), NotificationStatusEnum.WAIT);
-            q.where(pred);
-            TypedQuery<NotificationEntity> query = entityManager.createQuery(q);
-            return query.getResultList();
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<NotificationEntity> q = cb.createQuery(NotificationEntity.class);
+        Root<NotificationEntity> c = q.from(NotificationEntity.class);
+        Predicate pred = cb.equal(c.get("status"), NotificationStatusEnum.WAIT);
+        q.where(pred);
+        TypedQuery<NotificationEntity> query = entityManager.createQuery(q);
+        return query.getResultList();
     }
 }

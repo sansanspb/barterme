@@ -25,15 +25,11 @@ public class EmailSender {
 
     private static final Logger logger = LoggerFactory.getLogger(EmailSender.class);
     private static final int REPEAT_DELAY = 60 * 1000;
-
-    private ReentrantLock locker = new ReentrantLock();
-
     @Autowired
     NotificationRepository notificationDao;
-
     @Autowired
     MailSender mailSender;
-
+    private ReentrantLock locker = new ReentrantLock();
     @Autowired
     private Environment environment;
 

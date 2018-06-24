@@ -1,451 +1,511 @@
 <!DOCTYPE html>
 <html class="no-js" lang="ru-RU" ng-app="barterme">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Личный кабинет</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
     <link rel="shortcut icon" href="img/favicon.png" type="image/png">
     <link href="css/main.css" rel="stylesheet">
-  </head>
-  <body>
-        <header class="block page-header white-header" ng-controller="HeaderController as hctrl">
-          <div class="preloader" ng-show="showLoader"></div>
-          <div class="content" ng-init="hctrl.loadHead()"><a href="/"><img class="header-logo white" src="img/logo_black.svg"><img class="header-logo black" src="img/logo_black.svg"></a>
-            <div class="header-right-part hide" ng-show="hctrl.showHead">
-              <div class="mob-menu" ng-show="hctrl.showUnreg">
-                <div class="mm-cont"><a class="entrance" id="entranceBtn" href="#" ng-click="hctrl.showLogin()">вход</a><a class="reg pink-btn regBtn" href="#" ng-click="hctrl.showReg()">регистрация</a></div>
-                <div class="mm-mail mobshow"><span>Напишите нам</span><a class="pink-link" href="mailto: friends@barterme.ru">friends@barterme.ru</a></div>
-              </div>
-              <div class="mob-menu" ng-show="hctrl.showReg">
-                <div class="mm-cont"><a class="cabinet-header-link mobshow" href="/">на главную</a><a class="cabinet-header-link cabin" href="cabinet" ng-hide="hctrl.isCabinetLocation()">личный кабинет</a></div>
-                <div class="mm-mail mobshow"><span>Напишите нам</span><a class="pink-link" href="mailto: friends@barterme.ru">friends@barterme.ru</a></div>
-              </div>
-              <div class="bell-block" ng-show="hctrl.showBell"><span class="bell-number" ng-show="hctrl.partnerNotifications.length &gt; 0">{{hctrl.partnerNotifications.length}}</span></div>
-              <div class="header-search-btn h-visible"></div>
-              <div class="hamburger">
+</head>
+<body>
+<header class="block page-header white-header" ng-controller="HeaderController as hctrl">
+    <div class="preloader" ng-show="showLoader"></div>
+    <div class="content" ng-init="hctrl.loadHead()"><a href="/"><img class="header-logo white" src="img/logo_black.svg"><img
+            class="header-logo black" src="img/logo_black.svg"></a>
+        <div class="header-right-part hide" ng-show="hctrl.showHead">
+            <div class="mob-menu" ng-show="hctrl.showUnreg">
+                <div class="mm-cont"><a class="entrance" id="entranceBtn" href="#" ng-click="hctrl.showLogin()">вход</a><a
+                        class="reg pink-btn regBtn" href="#" ng-click="hctrl.showReg()">регистрация</a></div>
+                <div class="mm-mail mobshow"><span>Напишите нам</span><a class="pink-link"
+                                                                         href="mailto: friends@barterme.ru">friends@barterme.ru</a>
+                </div>
+            </div>
+            <div class="mob-menu" ng-show="hctrl.showReg">
+                <div class="mm-cont"><a class="cabinet-header-link mobshow" href="/">на главную</a><a
+                        class="cabinet-header-link cabin" href="cabinet" ng-hide="hctrl.isCabinetLocation()">личный
+                    кабинет</a></div>
+                <div class="mm-mail mobshow"><span>Напишите нам</span><a class="pink-link"
+                                                                         href="mailto: friends@barterme.ru">friends@barterme.ru</a>
+                </div>
+            </div>
+            <div class="bell-block" ng-show="hctrl.showBell"><span class="bell-number"
+                                                                   ng-show="hctrl.partnerNotifications.length &gt; 0">{{hctrl.partnerNotifications.length}}</span>
+            </div>
+            <div class="header-search-btn h-visible"></div>
+            <div class="hamburger">
                 <div class="stripe stripe-1"></div>
                 <div class="stripe stripe-2"></div>
                 <div class="stripe stripe-3"></div>
-              </div>
-              <div class="search-result-block" id="headerSearchResults">
+            </div>
+            <div class="search-result-block" id="headerSearchResults">
                 <ul class="s-r-list">
-                  <li class="s-r-item"><a class="s-r-link" href="#">Календари</a></li>
-                  <li class="s-r-item"><a class="s-r-link" href="#">Календари настенные</a></li>
-                  <li class="s-r-item"><a class="s-r-link" href="#">Календула</a></li>
+                    <li class="s-r-item"><a class="s-r-link" href="#">Календари</a></li>
+                    <li class="s-r-item"><a class="s-r-link" href="#">Календари настенные</a></li>
+                    <li class="s-r-item"><a class="s-r-link" href="#">Календула</a></li>
                 </ul>
-              </div>
-              <div class="notif-wrapper mCustomScrollbar">
-                <div class="one-notif" ng-repeat="notification in hctrl.partnerNotifications | filter : {readed : false}" ng-class="{'reject' : notification.status == 'ERROR', 'openchat' : notification.status == 'SENDED'}"><a class="torequest" href="requests" ng-click="hctrl.readNotification(notification)"></a>
-                  <header><span class="n-status smallcaps">{{hctrl.getTitle(notification)}}</span><span class="n-date smallcaps">{{notification.createDate | date : 'dd.MM.yy hh:mm'}}</span></header>
-                  <p class="notif-text">
-                    {{notification.status == 'REJECTED' ? 'Увы! ' : (notification.status == 'ACTIVE' ? 'Ура! ' : '')}}Компания
-                    <a class="pink-link" href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&amp;subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&amp;companyId={{notification.company.companyId}}">{{notification.company.caption}}</a>
-                    {{notification.status == 'REJECTED' ? 'вам отказала. ' : (notification.status == 'ACTIVE' ? 'одобрила вашу заявку! ' : 'Хочет сотрудничать! ')}}
-                    {{notification.status == 'REJECTED' ? 'Не расстраивайтесь! Повезет с другой ;)' : (notification.status == 'ACTIVE' ? 'Начните сотрудничать прямо сейчас! ' : 'Примите решение!')}}
-                  </p>
-                </div>
-              </div>
-              <div class="search-wrapper">
-                <input type="search" id="headerSearch" placeholder="Мне нужно..." autofocus="autofocus"><a class="start-search pink-btn" href="#">Найти</a>
-              </div>
             </div>
-          </div>
-        </header>
-    <main ng-controller="CabinetController as ctrl">
-      <div class="popup-wrapper" id="selectCityPopupWrapper">
+            <div class="notif-wrapper mCustomScrollbar">
+                <div class="one-notif"
+                     ng-repeat="notification in hctrl.partnerNotifications | filter : {readed : false}"
+                     ng-class="{'reject' : notification.status == 'ERROR', 'openchat' : notification.status == 'SENDED'}">
+                    <a class="torequest" href="requests" ng-click="hctrl.readNotification(notification)"></a>
+                    <header><span class="n-status smallcaps">{{hctrl.getTitle(notification)}}</span><span
+                            class="n-date smallcaps">{{notification.createDate | date : 'dd.MM.yy hh:mm'}}</span>
+                    </header>
+                    <p class="notif-text">
+                        {{notification.status == 'REJECTED' ? 'Увы! ' : (notification.status == 'ACTIVE' ? 'Ура! ' :
+                        '')}}Компания
+                        <a class="pink-link"
+                           href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&amp;subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&amp;companyId={{notification.company.companyId}}">{{notification.company.caption}}</a>
+                        {{notification.status == 'REJECTED' ? 'вам отказала. ' : (notification.status == 'ACTIVE' ?
+                        'одобрила вашу заявку! ' : 'Хочет сотрудничать! ')}}
+                        {{notification.status == 'REJECTED' ? 'Не расстраивайтесь! Повезет с другой ;)' :
+                        (notification.status == 'ACTIVE' ? 'Начните сотрудничать прямо сейчас! ' : 'Примите решение!')}}
+                    </p>
+                </div>
+            </div>
+            <div class="search-wrapper">
+                <input type="search" id="headerSearch" placeholder="Мне нужно..." autofocus="autofocus"><a
+                    class="start-search pink-btn" href="#">Найти</a>
+            </div>
+        </div>
+    </div>
+</header>
+<main ng-controller="CabinetController as ctrl">
+    <div class="popup-wrapper" id="selectCityPopupWrapper">
         <div class="popup city-popup" id="selectCityPopup"><img class="close-popup" src="img/close-popup.svg">
-          <div class="cities-hat">
-            <h2 class="card-info-title">Ваш город</h2>
-          </div>
-          <div class="cities-wrapper mCustomScrollbar">
-            <div class="cities-col">
-              <ul class="city-select-list">
-                <li class="city-letter">А</li>
-                <li class="city-name"><a href="#">Абакан</a></li>
-                <li class="city-name"><a href="#">Архагельск</a></li>
-                <li class="city-name"><a href="#">Ангарск</a></li>
-              </ul>
-              <ul class="city-select-list">
-                <li class="city-letter">Б</li>
-                <li class="city-name"><a href="#">Брянск</a></li>
-                <li class="city-name"><a href="#">Бреды</a></li>
-                <li class="city-name"><a href="#">Белорецк</a></li>
-                <li class="city-name"><a href="#">Барнаул</a></li>
-              </ul>
-              <ul class="city-select-list">
-                <li class="city-letter">В</li>
-                <li class="city-name"><a href="#">Великий Новгород</a></li>
-                <li class="city-name"><a href="#">Бладимир</a></li>
-                <li class="city-name"><a href="#">Вологда</a></li>
-                <li class="city-name"><a href="#">Всеволожск</a></li>
-              </ul>
-              <ul class="city-select-list">
-                <li class="city-letter">Г</li>
-                <li class="city-name"><a href="#">Великий Новгород</a></li>
-                <li class="city-name"><a href="#">Бладимир</a></li>
-                <li class="city-name"><a href="#">Вологда</a></li>
-                <li class="city-name"><a href="#">Всеволожск</a></li>
-              </ul>
-              <ul class="city-select-list">
-                <li class="city-letter">Д</li>
-                <li class="city-name"><a href="#">Великий Новгород</a></li>
-                <li class="city-name"><a href="#">Бладимир</a></li>
-                <li class="city-name"><a href="#">Вологда</a></li>
-                <li class="city-name"><a href="#">Всеволожск</a></li>
-              </ul>
-              <ul class="city-select-list">
-                <li class="city-letter">Е</li>
-                <li class="city-name"><a href="#">Великий Новгород</a></li>
-                <li class="city-name"><a href="#">Бладимир</a></li>
-                <li class="city-name"><a href="#">Вологда</a></li>
-                <li class="city-name"><a href="#">Всеволожск</a></li>
-              </ul>
-              <ul class="city-select-list">
-                <li class="city-letter">Ж</li>
-                <li class="city-name"><a href="#">Великий Новгород</a></li>
-                <li class="city-name"><a href="#">Бладимир</a></li>
-                <li class="city-name"><a href="#">Вологда</a></li>
-                <li class="city-name"><a href="#">Всеволожск</a></li>
-              </ul>
+            <div class="cities-hat">
+                <h2 class="card-info-title">Ваш город</h2>
             </div>
-            <div class="cities-col">
-              <ul class="city-select-list">
-                <li class="city-letter">З</li>
-                <li class="city-name"><a href="#">Великий Новгород</a></li>
-                <li class="city-name"><a href="#">Бладимир</a></li>
-                <li class="city-name"><a href="#">Вологда</a></li>
-                <li class="city-name"><a href="#">Всеволожск</a></li>
-              </ul>
-              <ul class="city-select-list">
-                <li class="city-letter">И</li>
-                <li class="city-name"><a href="#">Великий Новгород</a></li>
-                <li class="city-name"><a href="#">Бладимир</a></li>
-                <li class="city-name"><a href="#">Вологда</a></li>
-                <li class="city-name"><a href="#">Всеволожск</a></li>
-              </ul>
-              <ul class="city-select-list">
-                <li class="city-letter">К</li>
-                <li class="city-name"><a href="#">Великий Новгород</a></li>
-                <li class="city-name"><a href="#">Бладимир</a></li>
-                <li class="city-name"><a href="#">Вологда</a></li>
-                <li class="city-name"><a href="#">Всеволожск</a></li>
-              </ul>
-              <ul class="city-select-list">
-                <li class="city-letter">Л</li>
-                <li class="city-name"><a href="#">Великий Новгород</a></li>
-                <li class="city-name"><a href="#">Бладимир</a></li>
-                <li class="city-name"><a href="#">Вологда</a></li>
-                <li class="city-name"><a href="#">Всеволожск</a></li>
-              </ul>
-              <ul class="city-select-list">
-                <li class="city-letter">М</li>
-                <li class="city-name"><a href="#">Великий Новгород</a></li>
-                <li class="city-name"><a href="#">Бладимир</a></li>
-                <li class="city-name"><a href="#">Вологда</a></li>
-                <li class="city-name"><a href="#">Всеволожск</a></li>
-              </ul>
-              <ul class="city-select-list">
-                <li class="city-letter">Н</li>
-                <li class="city-name"><a href="#">Великий Новгород</a></li>
-                <li class="city-name"><a href="#">Бладимир</a></li>
-                <li class="city-name"><a href="#">Вологда</a></li>
-                <li class="city-name"><a href="#">Всеволожск</a></li>
-              </ul>
-              <ul class="city-select-list">
-                <li class="city-letter">О</li>
-                <li class="city-name"><a href="#">Великий Новгород</a></li>
-                <li class="city-name"><a href="#">Бладимир</a></li>
-                <li class="city-name"><a href="#">Вологда</a></li>
-                <li class="city-name"><a href="#">Всеволожск</a></li>
-              </ul>
+            <div class="cities-wrapper mCustomScrollbar">
+                <div class="cities-col">
+                    <ul class="city-select-list">
+                        <li class="city-letter">А</li>
+                        <li class="city-name"><a href="#">Абакан</a></li>
+                        <li class="city-name"><a href="#">Архагельск</a></li>
+                        <li class="city-name"><a href="#">Ангарск</a></li>
+                    </ul>
+                    <ul class="city-select-list">
+                        <li class="city-letter">Б</li>
+                        <li class="city-name"><a href="#">Брянск</a></li>
+                        <li class="city-name"><a href="#">Бреды</a></li>
+                        <li class="city-name"><a href="#">Белорецк</a></li>
+                        <li class="city-name"><a href="#">Барнаул</a></li>
+                    </ul>
+                    <ul class="city-select-list">
+                        <li class="city-letter">В</li>
+                        <li class="city-name"><a href="#">Великий Новгород</a></li>
+                        <li class="city-name"><a href="#">Бладимир</a></li>
+                        <li class="city-name"><a href="#">Вологда</a></li>
+                        <li class="city-name"><a href="#">Всеволожск</a></li>
+                    </ul>
+                    <ul class="city-select-list">
+                        <li class="city-letter">Г</li>
+                        <li class="city-name"><a href="#">Великий Новгород</a></li>
+                        <li class="city-name"><a href="#">Бладимир</a></li>
+                        <li class="city-name"><a href="#">Вологда</a></li>
+                        <li class="city-name"><a href="#">Всеволожск</a></li>
+                    </ul>
+                    <ul class="city-select-list">
+                        <li class="city-letter">Д</li>
+                        <li class="city-name"><a href="#">Великий Новгород</a></li>
+                        <li class="city-name"><a href="#">Бладимир</a></li>
+                        <li class="city-name"><a href="#">Вологда</a></li>
+                        <li class="city-name"><a href="#">Всеволожск</a></li>
+                    </ul>
+                    <ul class="city-select-list">
+                        <li class="city-letter">Е</li>
+                        <li class="city-name"><a href="#">Великий Новгород</a></li>
+                        <li class="city-name"><a href="#">Бладимир</a></li>
+                        <li class="city-name"><a href="#">Вологда</a></li>
+                        <li class="city-name"><a href="#">Всеволожск</a></li>
+                    </ul>
+                    <ul class="city-select-list">
+                        <li class="city-letter">Ж</li>
+                        <li class="city-name"><a href="#">Великий Новгород</a></li>
+                        <li class="city-name"><a href="#">Бладимир</a></li>
+                        <li class="city-name"><a href="#">Вологда</a></li>
+                        <li class="city-name"><a href="#">Всеволожск</a></li>
+                    </ul>
+                </div>
+                <div class="cities-col">
+                    <ul class="city-select-list">
+                        <li class="city-letter">З</li>
+                        <li class="city-name"><a href="#">Великий Новгород</a></li>
+                        <li class="city-name"><a href="#">Бладимир</a></li>
+                        <li class="city-name"><a href="#">Вологда</a></li>
+                        <li class="city-name"><a href="#">Всеволожск</a></li>
+                    </ul>
+                    <ul class="city-select-list">
+                        <li class="city-letter">И</li>
+                        <li class="city-name"><a href="#">Великий Новгород</a></li>
+                        <li class="city-name"><a href="#">Бладимир</a></li>
+                        <li class="city-name"><a href="#">Вологда</a></li>
+                        <li class="city-name"><a href="#">Всеволожск</a></li>
+                    </ul>
+                    <ul class="city-select-list">
+                        <li class="city-letter">К</li>
+                        <li class="city-name"><a href="#">Великий Новгород</a></li>
+                        <li class="city-name"><a href="#">Бладимир</a></li>
+                        <li class="city-name"><a href="#">Вологда</a></li>
+                        <li class="city-name"><a href="#">Всеволожск</a></li>
+                    </ul>
+                    <ul class="city-select-list">
+                        <li class="city-letter">Л</li>
+                        <li class="city-name"><a href="#">Великий Новгород</a></li>
+                        <li class="city-name"><a href="#">Бладимир</a></li>
+                        <li class="city-name"><a href="#">Вологда</a></li>
+                        <li class="city-name"><a href="#">Всеволожск</a></li>
+                    </ul>
+                    <ul class="city-select-list">
+                        <li class="city-letter">М</li>
+                        <li class="city-name"><a href="#">Великий Новгород</a></li>
+                        <li class="city-name"><a href="#">Бладимир</a></li>
+                        <li class="city-name"><a href="#">Вологда</a></li>
+                        <li class="city-name"><a href="#">Всеволожск</a></li>
+                    </ul>
+                    <ul class="city-select-list">
+                        <li class="city-letter">Н</li>
+                        <li class="city-name"><a href="#">Великий Новгород</a></li>
+                        <li class="city-name"><a href="#">Бладимир</a></li>
+                        <li class="city-name"><a href="#">Вологда</a></li>
+                        <li class="city-name"><a href="#">Всеволожск</a></li>
+                    </ul>
+                    <ul class="city-select-list">
+                        <li class="city-letter">О</li>
+                        <li class="city-name"><a href="#">Великий Новгород</a></li>
+                        <li class="city-name"><a href="#">Бладимир</a></li>
+                        <li class="city-name"><a href="#">Вологда</a></li>
+                        <li class="city-name"><a href="#">Всеволожск</a></li>
+                    </ul>
+                </div>
+                <div class="cities-col">
+                    <ul class="city-select-list">
+                        <li class="city-letter">П</li>
+                        <li class="city-name"><a href="#">Абакан</a></li>
+                        <li class="city-name"><a href="#">Архагельск</a></li>
+                        <li class="city-name"><a href="#">Ангарск</a></li>
+                    </ul>
+                    <ul class="city-select-list">
+                        <li class="city-letter">Р</li>
+                        <li class="city-name"><a href="#">Брянск</a></li>
+                        <li class="city-name"><a href="#">Бреды</a></li>
+                        <li class="city-name"><a href="#">Белорецк</a></li>
+                        <li class="city-name"><a href="#">Барнаул</a></li>
+                    </ul>
+                    <ul class="city-select-list">
+                        <li class="city-letter">С</li>
+                        <li class="city-name"><a href="#">Великий Новгород</a></li>
+                        <li class="city-name"><a href="#">Бладимир</a></li>
+                        <li class="city-name"><a href="#">Вологда</a></li>
+                        <li class="city-name"><a href="#">Всеволожск</a></li>
+                    </ul>
+                    <ul class="city-select-list">
+                        <li class="city-letter">Т</li>
+                        <li class="city-name"><a href="#">Великий Новгород</a></li>
+                        <li class="city-name"><a href="#">Бладимир</a></li>
+                        <li class="city-name"><a href="#">Вологда</a></li>
+                        <li class="city-name"><a href="#">Всеволожск</a></li>
+                    </ul>
+                    <ul class="city-select-list">
+                        <li class="city-letter">У</li>
+                        <li class="city-name"><a href="#">Великий Новгород</a></li>
+                        <li class="city-name"><a href="#">Бладимир</a></li>
+                        <li class="city-name"><a href="#">Вологда</a></li>
+                        <li class="city-name"><a href="#">Всеволожск</a></li>
+                    </ul>
+                    <ul class="city-select-list">
+                        <li class="city-letter">Ф</li>
+                        <li class="city-name"><a href="#">Великий Новгород</a></li>
+                        <li class="city-name"><a href="#">Бладимир</a></li>
+                        <li class="city-name"><a href="#">Вологда</a></li>
+                        <li class="city-name"><a href="#">Всеволожск</a></li>
+                    </ul>
+                    <ul class="city-select-list">
+                        <li class="city-letter">Х</li>
+                        <li class="city-name"><a href="#">Великий Новгород</a></li>
+                        <li class="city-name"><a href="#">Бладимир</a></li>
+                        <li class="city-name"><a href="#">Вологда</a></li>
+                        <li class="city-name"><a href="#">Всеволожск</a></li>
+                    </ul>
+                </div>
+                <div class="cities-col">
+                    <ul class="city-select-list">
+                        <li class="city-letter">Ц</li>
+                        <li class="city-name"><a href="#">Великий Новгород</a></li>
+                        <li class="city-name"><a href="#">Бладимир</a></li>
+                        <li class="city-name"><a href="#">Вологда</a></li>
+                        <li class="city-name"><a href="#">Всеволожск</a></li>
+                    </ul>
+                    <ul class="city-select-list">
+                        <li class="city-letter">Ч</li>
+                        <li class="city-name"><a href="#">Великий Новгород</a></li>
+                        <li class="city-name"><a href="#">Бладимир</a></li>
+                        <li class="city-name"><a href="#">Вологда</a></li>
+                        <li class="city-name"><a href="#">Всеволожск</a></li>
+                    </ul>
+                    <ul class="city-select-list">
+                        <li class="city-letter">Ш</li>
+                        <li class="city-name"><a href="#">Великий Новгород</a></li>
+                        <li class="city-name"><a href="#">Бладимир</a></li>
+                        <li class="city-name"><a href="#">Вологда</a></li>
+                        <li class="city-name"><a href="#">Всеволожск</a></li>
+                    </ul>
+                    <ul class="city-select-list">
+                        <li class="city-letter">Щ</li>
+                        <li class="city-name"><a href="#">Абакан</a></li>
+                        <li class="city-name"><a href="#">Архагельск</a></li>
+                        <li class="city-name"><a href="#">Ангарск</a></li>
+                    </ul>
+                    <ul class="city-select-list">
+                        <li class="city-letter">Э</li>
+                        <li class="city-name"><a href="#">Брянск</a></li>
+                        <li class="city-name"><a href="#">Бреды</a></li>
+                        <li class="city-name"><a href="#">Белорецк</a></li>
+                        <li class="city-name"><a href="#">Барнаул</a></li>
+                    </ul>
+                    <ul class="city-select-list">
+                        <li class="city-letter">Ю</li>
+                        <li class="city-name"><a href="#">Великий Новгород</a></li>
+                        <li class="city-name"><a href="#">Бладимир</a></li>
+                        <li class="city-name"><a href="#">Вологда</a></li>
+                        <li class="city-name"><a href="#">Всеволожск</a></li>
+                    </ul>
+                    <ul class="city-select-list">
+                        <li class="city-letter">Я</li>
+                        <li class="city-name"><a href="#">Великий Новгород</a></li>
+                        <li class="city-name"><a href="#">Бладимир</a></li>
+                        <li class="city-name"><a href="#">Вологда</a></li>
+                        <li class="city-name"><a href="#">Всеволожск</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="cities-col">
-              <ul class="city-select-list">
-                <li class="city-letter">П</li>
-                <li class="city-name"><a href="#">Абакан</a></li>
-                <li class="city-name"><a href="#">Архагельск</a></li>
-                <li class="city-name"><a href="#">Ангарск</a></li>
-              </ul>
-              <ul class="city-select-list">
-                <li class="city-letter">Р</li>
-                <li class="city-name"><a href="#">Брянск</a></li>
-                <li class="city-name"><a href="#">Бреды</a></li>
-                <li class="city-name"><a href="#">Белорецк</a></li>
-                <li class="city-name"><a href="#">Барнаул</a></li>
-              </ul>
-              <ul class="city-select-list">
-                <li class="city-letter">С</li>
-                <li class="city-name"><a href="#">Великий Новгород</a></li>
-                <li class="city-name"><a href="#">Бладимир</a></li>
-                <li class="city-name"><a href="#">Вологда</a></li>
-                <li class="city-name"><a href="#">Всеволожск</a></li>
-              </ul>
-              <ul class="city-select-list">
-                <li class="city-letter">Т</li>
-                <li class="city-name"><a href="#">Великий Новгород</a></li>
-                <li class="city-name"><a href="#">Бладимир</a></li>
-                <li class="city-name"><a href="#">Вологда</a></li>
-                <li class="city-name"><a href="#">Всеволожск</a></li>
-              </ul>
-              <ul class="city-select-list">
-                <li class="city-letter">У</li>
-                <li class="city-name"><a href="#">Великий Новгород</a></li>
-                <li class="city-name"><a href="#">Бладимир</a></li>
-                <li class="city-name"><a href="#">Вологда</a></li>
-                <li class="city-name"><a href="#">Всеволожск</a></li>
-              </ul>
-              <ul class="city-select-list">
-                <li class="city-letter">Ф</li>
-                <li class="city-name"><a href="#">Великий Новгород</a></li>
-                <li class="city-name"><a href="#">Бладимир</a></li>
-                <li class="city-name"><a href="#">Вологда</a></li>
-                <li class="city-name"><a href="#">Всеволожск</a></li>
-              </ul>
-              <ul class="city-select-list">
-                <li class="city-letter">Х</li>
-                <li class="city-name"><a href="#">Великий Новгород</a></li>
-                <li class="city-name"><a href="#">Бладимир</a></li>
-                <li class="city-name"><a href="#">Вологда</a></li>
-                <li class="city-name"><a href="#">Всеволожск</a></li>
-              </ul>
-            </div>
-            <div class="cities-col">
-              <ul class="city-select-list">
-                <li class="city-letter">Ц</li>
-                <li class="city-name"><a href="#">Великий Новгород</a></li>
-                <li class="city-name"><a href="#">Бладимир</a></li>
-                <li class="city-name"><a href="#">Вологда</a></li>
-                <li class="city-name"><a href="#">Всеволожск</a></li>
-              </ul>
-              <ul class="city-select-list">
-                <li class="city-letter">Ч</li>
-                <li class="city-name"><a href="#">Великий Новгород</a></li>
-                <li class="city-name"><a href="#">Бладимир</a></li>
-                <li class="city-name"><a href="#">Вологда</a></li>
-                <li class="city-name"><a href="#">Всеволожск</a></li>
-              </ul>
-              <ul class="city-select-list">
-                <li class="city-letter">Ш</li>
-                <li class="city-name"><a href="#">Великий Новгород</a></li>
-                <li class="city-name"><a href="#">Бладимир</a></li>
-                <li class="city-name"><a href="#">Вологда</a></li>
-                <li class="city-name"><a href="#">Всеволожск</a></li>
-              </ul>
-              <ul class="city-select-list">
-                <li class="city-letter">Щ</li>
-                <li class="city-name"><a href="#">Абакан</a></li>
-                <li class="city-name"><a href="#">Архагельск</a></li>
-                <li class="city-name"><a href="#">Ангарск</a></li>
-              </ul>
-              <ul class="city-select-list">
-                <li class="city-letter">Э</li>
-                <li class="city-name"><a href="#">Брянск</a></li>
-                <li class="city-name"><a href="#">Бреды</a></li>
-                <li class="city-name"><a href="#">Белорецк</a></li>
-                <li class="city-name"><a href="#">Барнаул</a></li>
-              </ul>
-              <ul class="city-select-list">
-                <li class="city-letter">Ю</li>
-                <li class="city-name"><a href="#">Великий Новгород</a></li>
-                <li class="city-name"><a href="#">Бладимир</a></li>
-                <li class="city-name"><a href="#">Вологда</a></li>
-                <li class="city-name"><a href="#">Всеволожск</a></li>
-              </ul>
-              <ul class="city-select-list">
-                <li class="city-letter">Я</li>
-                <li class="city-name"><a href="#">Великий Новгород</a></li>
-                <li class="city-name"><a href="#">Бладимир</a></li>
-                <li class="city-name"><a href="#">Вологда</a></li>
-                <li class="city-name"><a href="#">Всеволожск</a></li>
-              </ul>
-            </div>
-          </div>
         </div>
-      </div>
-      <div class="popup-wrapper" id="selectGeoPopupWrapper">
+    </div>
+    <div class="popup-wrapper" id="selectGeoPopupWrapper">
         <div class="popup city-popup" id="selectGeoPopup"><img class="close-popup" src="img/close-popup.svg">
-          <div class="cities-hat">
-            <h2 class="card-info-title">Ваша геолокация</h2>
-          </div>
-          <div class="cities-wrapper mCustomScrollbar">
-            <div class="cities-col">
-              <ul class="city-select-list" ng-repeat="char in ctrl.VOC1 track by $index" ng-show="regions.length != 0" ng-if="ctrl.company">
-                <li class="city-letter">{{char}}</li>
-                <li class="city-name" ng-repeat="region in regions = (ctrl.regions | regionsFilter : char)"><a href="" ng-click="ctrl.setRegion(region.regionId)">{{region.title}}</a></li>
-              </ul>
+            <div class="cities-hat">
+                <h2 class="card-info-title">Ваша геолокация</h2>
             </div>
-            <div class="cities-col">
-              <ul class="city-select-list" ng-repeat="char in ctrl.VOC2 track by $index" ng-show="regions.length != 0" ng-if="ctrl.company">
-                <li class="city-letter">{{char}}</li>
-                <li class="city-name" ng-repeat="region in regions = (ctrl.regions | regionsFilter : char)"><a href="" ng-click="ctrl.setRegion(region.regionId)">{{region.title}}</a></li>
-              </ul>
+            <div class="cities-wrapper mCustomScrollbar">
+                <div class="cities-col">
+                    <ul class="city-select-list" ng-repeat="char in ctrl.VOC1 track by $index"
+                        ng-show="regions.length != 0" ng-if="ctrl.company">
+                        <li class="city-letter">{{char}}</li>
+                        <li class="city-name" ng-repeat="region in regions = (ctrl.regions | regionsFilter : char)"><a
+                                href="" ng-click="ctrl.setRegion(region.regionId)">{{region.title}}</a></li>
+                    </ul>
+                </div>
+                <div class="cities-col">
+                    <ul class="city-select-list" ng-repeat="char in ctrl.VOC2 track by $index"
+                        ng-show="regions.length != 0" ng-if="ctrl.company">
+                        <li class="city-letter">{{char}}</li>
+                        <li class="city-name" ng-repeat="region in regions = (ctrl.regions | regionsFilter : char)"><a
+                                href="" ng-click="ctrl.setRegion(region.regionId)">{{region.title}}</a></li>
+                    </ul>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-      <div class="popup-wrapper" id="deleteUserPicWrapper">
-        <div class="popup remove-userpic-popup" id="deleteUserPicPopup"><img class="close-popup" src="img/close-popup.svg">
-          <div class="pop-cont"><img class="popup-emoji" src="img/emoji/remove-userpic.png">
-            <h2 class="mid-title">Точно удалить?</h2>
-            <button class="pink-btn" id="removePic" href="#" ng-click="ctrl.company.photoId = null">Да-да</button>
-            <button class="grey-btn" id="notRemovePic" href="#">Так..падажжи</button>
-          </div>
+    </div>
+    <div class="popup-wrapper" id="deleteUserPicWrapper">
+        <div class="popup remove-userpic-popup" id="deleteUserPicPopup"><img class="close-popup"
+                                                                             src="img/close-popup.svg">
+            <div class="pop-cont"><img class="popup-emoji" src="img/emoji/remove-userpic.png">
+                <h2 class="mid-title">Точно удалить?</h2>
+                <button class="pink-btn" id="removePic" href="#" ng-click="ctrl.company.photoId = null">Да-да</button>
+                <button class="grey-btn" id="notRemovePic" href="#">Так..падажжи</button>
+            </div>
         </div>
-      </div>
-      <div class="block page-top-block cabinet-top-block">
+    </div>
+    <div class="block page-top-block cabinet-top-block">
         <div class="content">
-          <ul class="breadcrumbs">
-            <li class="bc-item"><a class="bc-link" href="/">Главная /</a></li>
-            <li class="bc-item"><a class="bc-link current" href="cabinet"> Личный кабинет</a></li>
-          </ul>
-          <div class="nopic-header cabinet left-align">
-            <h2 class="page-title">Привет, {{ctrl.company.caption}}!</h2>
-            <p class="page-undertitle grey">Заполните обязательные поля,<br> чтобы получить доступ к нашей базе партнеров</p><a class="pink-link editcab" href="" ng-click="ctrl.saveCompany()">Сохранить</a>
-          </div>
-          <div class="cabinet-hat edit">
-            <div class="img-wrapper cab">
-              <p class="empty-logo-text grey common-text">Логотип вашей компании</p><img class="cab-userpic" src="image/get/{{ctrl.company.photoPath}}">
-              <input hidden type="file" id="ava" name="ava">
-              <div class="ava-btns">
-                <div class="wrap"><a class="ava-btn change-ava" id="loadBtn" href="#" ng-click="ctrl.uploadImage()">Изменить</a><a class="ava-btn delete-ava" href="#">Удалить</a></div>
-              </div>
+            <ul class="breadcrumbs">
+                <li class="bc-item"><a class="bc-link" href="/">Главная /</a></li>
+                <li class="bc-item"><a class="bc-link current" href="cabinet"> Личный кабинет</a></li>
+            </ul>
+            <div class="nopic-header cabinet left-align">
+                <h2 class="page-title">Привет, {{ctrl.company.caption}}!</h2>
+                <p class="page-undertitle grey">Заполните обязательные поля,<br> чтобы получить доступ к нашей базе
+                    партнеров</p><a class="pink-link editcab" href="" ng-click="ctrl.saveCompany()">Сохранить</a>
             </div>
-            <div class="cabinet-hat-info">
-              <div class="one-line"><span class="grey label-like">Компания:</span>
-                <input class="cab-edit-input full-i" placeholder="Название компании" ng-model="ctrl.company.caption">
-              </div>
-              <div class="one-line"><span class="grey">Город:</span><span class="pink editgeo">{{ctrl.getRegionById()}}</span></div>
-              <div class="one-line"><span class="grey label-like">Контактное лицо:</span>
-                <input class="cab-edit-input full-i" placeholder="Введите имя" ng-model="ctrl.company.contactPerson">
-              </div>
-              <div class="one-line"><span class="grey label-like">Почта:</span>
-                <input class="cab-edit-input full-i" placeholder="Введите почту" ng-model="ctrl.company.contactEmail">
-              </div>
+            <div class="cabinet-hat edit">
+                <div class="img-wrapper cab">
+                    <p class="empty-logo-text grey common-text">Логотип вашей компании</p><img class="cab-userpic"
+                                                                                               src="image/get/{{ctrl.company.photoPath}}">
+                    <input hidden type="file" id="ava" name="ava">
+                    <div class="ava-btns">
+                        <div class="wrap"><a class="ava-btn change-ava" id="loadBtn" href="#"
+                                             ng-click="ctrl.uploadImage()">Изменить</a><a class="ava-btn delete-ava"
+                                                                                          href="#">Удалить</a></div>
+                    </div>
+                </div>
+                <div class="cabinet-hat-info">
+                    <div class="one-line"><span class="grey label-like">Компания:</span>
+                        <input class="cab-edit-input full-i" placeholder="Название компании"
+                               ng-model="ctrl.company.caption">
+                    </div>
+                    <div class="one-line"><span class="grey">Город:</span><span class="pink editgeo">{{ctrl.getRegionById()}}</span>
+                    </div>
+                    <div class="one-line"><span class="grey label-like">Контактное лицо:</span>
+                        <input class="cab-edit-input full-i" placeholder="Введите имя"
+                               ng-model="ctrl.company.contactPerson">
+                    </div>
+                    <div class="one-line"><span class="grey label-like">Почта:</span>
+                        <input class="cab-edit-input full-i" placeholder="Введите почту"
+                               ng-model="ctrl.company.contactEmail">
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="cabinet-main-part">
-            <div class="cabinet-tab" id="cab-info">
-              <div class="one-cab-cols-row">
-                <div class="one-cab-col">
-                  <h2 class="card-info-title">Мы предлагаем</h2>
-                  <ul class="card-edit-list">
-                    <li class="openable" ng-repeat="categ in ctrl.categoriesTree"><span ng-click="categ.opened1 = !categ.opened1;">{{categ.title}}</span>
-                      <ul class="card-vars-list" ng-if="categ.childs.length != 0" ng-show="categ.opened1">
-                        <li class="card-var" ng-repeat="child in categ.childs">
-                          <input class="checkbox" type="checkbox" name="foo" hidden ng-checked="ctrl.isCategoryChecked(child.categoryId, 1)">
-                          <label class="checkbox-label" ng-click="ctrl.pushCategory(child.categoryId, 1)">{{child.title}}</label>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                  <input class="cab-edit-input nm wm full-i" placeholder="Другое">
-                </div>
-                <div class="one-cab-col">
-                  <h2 class="card-info-title">Мы ищем</h2>
-                  <ul class="card-edit-list">
-                    <li class="openable" ng-repeat="categ in ctrl.categoriesTree"><span ng-click="categ.opened2 = !categ.opened2;">{{categ.title}}</span>
-                      <ul class="card-vars-list" ng-if="categ.childs.length != 0" ng-show="categ.opened2">
-                        <li class="card-var" ng-repeat="child in categ.childs">
-                          <input class="checkbox" type="checkbox" name="foo" hidden ng-checked="ctrl.isCategoryChecked(child.categoryId, 2)">
-                          <label class="checkbox-label" ng-click="ctrl.pushCategory(child.categoryId, 2)">{{child.title}}</label>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                  <input class="cab-edit-input nm wm full-i" placeholder="Другое">
-                </div>
-              </div>
-              <div class="one-cab-cols-row data-block">
-                <div class="one-cab-col">
-                  <h2 class="card-info-title">Моя клиентская база</h2>
-                  <div class="one-base-line"><span class="grey label-like">Размер:</span>
-                    <input class="cab-edit-input size nm" placeholder="тыс." ng-model="ctrl.company.clientCount"><span class="grey after">человек</span>
-                  </div>
-                  <div class="one-base-line"><span class="grey m-lab nom">Пол:</span>
-                    <div class="options-part">
-                      <div class="option-line">
-                        <input class="radio" id="male" type="radio" name="gender" ng-checked="ctrl.company.genderMale &amp;&amp; !ctrl.company.genderMale" ng-click="ctrl.switchGender(1)">
-                        <label class="radio-label" for="male">М</label>
-                      </div>
-                      <div class="option-line">
-                        <input class="radio" id="female" type="radio" name="gender" ng-checked="!ctrl.company.genderMale &amp;&amp; ctrl.company.genderFemale" ng-click="ctrl.switchGender(2)">
-                        <label class="radio-label" for="female">Ж</label>
-                      </div>
-                      <div class="option-line">
-                        <input class="radio" id="both" type="radio" ng-checked="ctrl.company.genderMale &amp;&amp; ctrl.company.genderFemale" name="gender" ng-click="ctrl.switchGender(3)">
-                        <label class="radio-label" for="both">М/Ж</label>
-                      </div>
+            <div class="cabinet-main-part">
+                <div class="cabinet-tab" id="cab-info">
+                    <div class="one-cab-cols-row">
+                        <div class="one-cab-col">
+                            <h2 class="card-info-title">Мы предлагаем</h2>
+                            <ul class="card-edit-list">
+                                <li class="openable" ng-repeat="categ in ctrl.categoriesTree"><span
+                                        ng-click="categ.opened1 = !categ.opened1;">{{categ.title}}</span>
+                                    <ul class="card-vars-list" ng-if="categ.childs.length != 0" ng-show="categ.opened1">
+                                        <li class="card-var" ng-repeat="child in categ.childs">
+                                            <input class="checkbox" type="checkbox" name="foo" hidden
+                                                   ng-checked="ctrl.isCategoryChecked(child.categoryId, 1)">
+                                            <label class="checkbox-label"
+                                                   ng-click="ctrl.pushCategory(child.categoryId, 1)">{{child.title}}</label>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <input class="cab-edit-input nm wm full-i" placeholder="Другое">
+                        </div>
+                        <div class="one-cab-col">
+                            <h2 class="card-info-title">Мы ищем</h2>
+                            <ul class="card-edit-list">
+                                <li class="openable" ng-repeat="categ in ctrl.categoriesTree"><span
+                                        ng-click="categ.opened2 = !categ.opened2;">{{categ.title}}</span>
+                                    <ul class="card-vars-list" ng-if="categ.childs.length != 0" ng-show="categ.opened2">
+                                        <li class="card-var" ng-repeat="child in categ.childs">
+                                            <input class="checkbox" type="checkbox" name="foo" hidden
+                                                   ng-checked="ctrl.isCategoryChecked(child.categoryId, 2)">
+                                            <label class="checkbox-label"
+                                                   ng-click="ctrl.pushCategory(child.categoryId, 2)">{{child.title}}</label>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <input class="cab-edit-input nm wm full-i" placeholder="Другое">
+                        </div>
                     </div>
-                  </div>
-                  <div class="one-base-line mb"><span class="grey m-lab">Возраст:</span><span class="grey before">от</span>
-                    <input class="cab-edit-input year nm" ng-model="ctrl.company.ageMin"><span class="grey inthemiddle">до</span>
-                    <input class="cab-edit-input year nm" ng-model="ctrl.company.ageMax"><span class="grey after">лет</span>
-                  </div>
-                  <div class="one-base-line mbl"><span class="grey m-lab">Доход:</span><span class="grey before">от</span>
-                    <input class="cab-edit-input year nm" ng-model="ctrl.company.incomeMin"><span class="grey inthemiddle">до</span>
-                    <input class="cab-edit-input year nm" ng-model="ctrl.company.incomeMax"><span class="grey after">т.р.</span>
-                  </div>
-                  <div class="one-base-line"><span class="grey">Геолокация:</span><span class="pink editgeo">{{ctrl.getRegionById()}}</span></div>
-                </div>
-                <div class="one-cab-col big">
-                  <h2 class="card-info-title">Мои маркетинг каналы</h2>
-                  <div class="select-channels">
-                    <div class="col">
-                      <div class="channel" ng-repeat="channel in ctrl.marketingChannels | marketingChannels : 1">
-                        <input class="checkbox" type="checkbox" name="foo" hidden ng-checked="ctrl.isMarketingChannelChecked(channel.marketingChannelId)">
-                        <label class="checkbox-label" ng-click="ctrl.pushMarketingChannel(channel)">{{channel.title}}</label>
-                      </div>
+                    <div class="one-cab-cols-row data-block">
+                        <div class="one-cab-col">
+                            <h2 class="card-info-title">Моя клиентская база</h2>
+                            <div class="one-base-line"><span class="grey label-like">Размер:</span>
+                                <input class="cab-edit-input size nm" placeholder="тыс."
+                                       ng-model="ctrl.company.clientCount"><span class="grey after">человек</span>
+                            </div>
+                            <div class="one-base-line"><span class="grey m-lab nom">Пол:</span>
+                                <div class="options-part">
+                                    <div class="option-line">
+                                        <input class="radio" id="male" type="radio" name="gender"
+                                               ng-checked="ctrl.company.genderMale &amp;&amp; !ctrl.company.genderMale"
+                                               ng-click="ctrl.switchGender(1)">
+                                        <label class="radio-label" for="male">М</label>
+                                    </div>
+                                    <div class="option-line">
+                                        <input class="radio" id="female" type="radio" name="gender"
+                                               ng-checked="!ctrl.company.genderMale &amp;&amp; ctrl.company.genderFemale"
+                                               ng-click="ctrl.switchGender(2)">
+                                        <label class="radio-label" for="female">Ж</label>
+                                    </div>
+                                    <div class="option-line">
+                                        <input class="radio" id="both" type="radio"
+                                               ng-checked="ctrl.company.genderMale &amp;&amp; ctrl.company.genderFemale"
+                                               name="gender" ng-click="ctrl.switchGender(3)">
+                                        <label class="radio-label" for="both">М/Ж</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="one-base-line mb"><span class="grey m-lab">Возраст:</span><span
+                                    class="grey before">от</span>
+                                <input class="cab-edit-input year nm" ng-model="ctrl.company.ageMin"><span
+                                        class="grey inthemiddle">до</span>
+                                <input class="cab-edit-input year nm" ng-model="ctrl.company.ageMax"><span
+                                        class="grey after">лет</span>
+                            </div>
+                            <div class="one-base-line mbl"><span class="grey m-lab">Доход:</span><span
+                                    class="grey before">от</span>
+                                <input class="cab-edit-input year nm" ng-model="ctrl.company.incomeMin"><span
+                                        class="grey inthemiddle">до</span>
+                                <input class="cab-edit-input year nm" ng-model="ctrl.company.incomeMax"><span
+                                        class="grey after">т.р.</span>
+                            </div>
+                            <div class="one-base-line"><span class="grey">Геолокация:</span><span class="pink editgeo">{{ctrl.getRegionById()}}</span>
+                            </div>
+                        </div>
+                        <div class="one-cab-col big">
+                            <h2 class="card-info-title">Мои маркетинг каналы</h2>
+                            <div class="select-channels">
+                                <div class="col">
+                                    <div class="channel"
+                                         ng-repeat="channel in ctrl.marketingChannels | marketingChannels : 1">
+                                        <input class="checkbox" type="checkbox" name="foo" hidden
+                                               ng-checked="ctrl.isMarketingChannelChecked(channel.marketingChannelId)">
+                                        <label class="checkbox-label" ng-click="ctrl.pushMarketingChannel(channel)">{{channel.title}}</label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="channel"
+                                         ng-repeat="channel in ctrl.marketingChannels | marketingChannels : 2">
+                                        <input class="checkbox" type="checkbox" name="foo" hidden
+                                               ng-checked="ctrl.isMarketingChannelChecked(channel.marketingChannelId)">
+                                        <label class="checkbox-label" ng-click="ctrl.pushMarketingChannel(channel)">{{channel.title}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <input class="cab-edit-input nm wm" placeholder="Другое">
+                        </div>
                     </div>
-                    <div class="col">
-                      <div class="channel" ng-repeat="channel in ctrl.marketingChannels | marketingChannels : 2">
-                        <input class="checkbox" type="checkbox" name="foo" hidden ng-checked="ctrl.isMarketingChannelChecked(channel.marketingChannelId)">
-                        <label class="checkbox-label" ng-click="ctrl.pushMarketingChannel(channel)">{{channel.title}}</label>
-                      </div>
+                    <div class="one-cab-cols-row">
+                        <h3 class="card-info-title">О компании</h3>
+                        <textarea class="company-edit" placeholder="Расскажите о вашей компании"
+                                  ng-model="ctrl.company.about"></textarea>
                     </div>
-                  </div>
-                  <input class="cab-edit-input nm wm" placeholder="Другое">
+                    <button class="pink-btn big savecab" ng-click="ctrl.saveCompany()">Сохранить изменения</button>
                 </div>
-              </div>
-              <div class="one-cab-cols-row">
-                <h3 class="card-info-title">О компании</h3>
-                <textarea class="company-edit" placeholder="Расскажите о вашей компании" ng-model="ctrl.company.about"></textarea>
-              </div>
-              <button class="pink-btn big savecab" ng-click="ctrl.saveCompany()">Сохранить изменения</button>
             </div>
-          </div>
         </div>
-      </div>
-            <footer class="block page-footer">
-              <div class="content"><a href="index.html"><img class="footer-logo" src="img/logo_white.svg"></a>
-                <div class="footer-cols">
-                  <ul class="footer-col">
+    </div>
+    <footer class="block page-footer">
+        <div class="content"><a href="#"><img class="footer-logo" src="img/logo_white.svg"></a>
+            <div class="footer-cols">
+                <ul class="footer-col">
                     <li><a href="index.html#videoBlock" target="_blank">Как это работает?</a></li>
                     <li><a href="index.html#companies" target="_blank">Компании-партнеры</a></li>
                     <li><a href="index.html#blog" target="_blank">Блог</a></li>
-                  </ul>
-                  <ul class="footer-col wm">
+                </ul>
+                <ul class="footer-col wm">
                     <li><a href="#">СМИ о нас</a></li>
                     <li><a href="#">FAQ</a></li>
-                  </ul>
-                  <ul class="footer-col">
+                </ul>
+                <ul class="footer-col">
                     <li>
-                      <p>Напишите нам</p>
+                        <p>Напишите нам</p>
                     </li>
                     <li><a class="pink-link" href="mailto: friends@barterme.ru">friends@barterme.ru</a></li>
-                  </ul>
-                  <ul class="footer-col right-align wm">
+                </ul>
+                <ul class="footer-col right-align wm">
                     <li><a href="#">Присоединяйтесь</a></li>
                     <li>
-                      <div class="sn"><a class="vk" href="#" target="_blank"></a><a class="fb" href="#" target="_blank"></a><a class="inst" href="#" target="_blank"></a></div>
+                        <div class="sn"><a class="vk" href="#" target="_blank"></a><a class="fb" href="#"
+                                                                                      target="_blank"></a><a
+                                class="inst" href="#" target="_blank"></a></div>
                     </li>
-                  </ul>
-                </div>
-                <div class="clearfix"></div>
-              </div>
-              <p class="copyright">BarterMe, 2018</p>
-            </footer>
-    </main>
-    <script src="js/main.js"></script>
-  </body>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <p class="copyright">BarterMe, 2018</p>
+    </footer>
+</main>
+<script src="js/main.js"></script>
+</body>
 </html>

@@ -24,13 +24,13 @@ import java.net.URLEncoder;
 @RequestMapping("/image")
 public class PhotoController {
 
+    private static final Logger logger = LoggerFactory.getLogger(PhotoController.class);
     @Autowired
     PhotoService photoService;
 
-    private static final Logger logger = LoggerFactory.getLogger(PhotoController.class);
-
-    @RequestMapping(value = "/upload", method = RequestMethod.POST, consumes = {"multipart/form-data"}, produces={"application/json"})
-    public @ResponseBody AnswerMessage uploadPhoto(@RequestPart("uploadimage") MultipartFile file) {
+    @RequestMapping(value = "/upload", method = RequestMethod.POST, consumes = {"multipart/form-data"}, produces = {"application/json"})
+    public @ResponseBody
+    AnswerMessage uploadPhoto(@RequestPart("uploadimage") MultipartFile file) {
         try {
             PhotoEntity newPhoto = photoService.saveImage(file.getOriginalFilename(), file.getBytes());
             return AnswerMessage.getSuccessMessage(newPhoto);
