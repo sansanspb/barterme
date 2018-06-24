@@ -28,9 +28,10 @@ public class ChatRepository extends AbstractRepository<Long, ChatMessageEntity> 
         );
 
         TypedQuery<ChatMessageEntity> query = entityManager.createQuery(q);
-        query.setFirstResult(20 * stage);
-        query.setMaxResults(20);
-        return query.getResultList();
+        List<ChatMessageEntity> rsQuery = query.getResultList();
+        rsQuery.sort((msg1, msg2) -> msg2.getSendDate().compareTo(msg1.getSendDate()));
+
+        return rsQuery.subList(stage * 20, (stage + 1) * 20 <= rsQuery.size() ? (stage + 1) * 20 : rsQuery.size());
     }
 
     public boolean put(ChatMessageEntity messageEntity) {
