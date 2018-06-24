@@ -7,7 +7,7 @@ require('vimeo-froogaloop2/javascript/froogaloop.min');
 require('./angularjs/app.js');
 API = require('./API.js');
 
-$(document).ready(function() {
+$(document).ready(function () {
     console.log('current version: 1.7');
     $('.hide').removeClass('hide');
     API.Categories.getAll().done(function (result) {
@@ -76,7 +76,7 @@ $(document).ready(function() {
         $('.chosen-sort').removeClass('opened');
         $('.sort-variants').fadeOut(200);
         $('.search-wrapper').removeClass('error');
-    })
+    });
 
     const bodyScrollLock = require('body-scroll-lock');
     const disableBodyScroll = bodyScrollLock.disableBodyScroll;
@@ -102,7 +102,7 @@ $(document).ready(function() {
 
     new WOW().init();
 
-    $(window).scroll(function() {
+    $(window).scroll(function () {
 
         var y = $(this).scrollTop();
         if (y > 10) {
@@ -116,36 +116,36 @@ $(document).ready(function() {
     // Smooth footer anchors
 
     $('.footer-col').on('click', '.smooth-anchor', function (event) {
-        event.preventDefault()
+        event.preventDefault();
         let id = $(this).attr('href'),
-            top = $(id).offset().top
+            top = $(id).offset().top;
 
         $('body,html').animate({scrollTop: top}, 1500)
-    })
-    
+    });
+
     // Requests
-    
+
     $('.decline').click(function (declineRequest) {
         declineRequest.preventDefault();
         $(this).closest('.one-request').find('.request-btns').fadeOut(100);
         $(this).closest('.one-request').find('.request-remove-alert').delay(300).fadeIn(300);
-    })
+    });
 
     $('.yesremove').click(function (removeRequest) {
         removeRequest.preventDefault();
         $(this).closest('.one-request').fadeOut(200);
-    })
+    });
     $('.noremove').click(function (returnRequest) {
         returnRequest.preventDefault();
         $(this).closest('.one-request').find('.request-btns').delay(300).fadeIn(300);
         $(this).closest('.one-request').find('.request-remove-alert').fadeOut(100);
-    })
+    });
 
     // Эта механика тоже кривоватая, надо будет сделать нормально
 
     $('.one-request:last-of-type .yesremove').click(function () {
         $('.norequests').delay(200).fadeIn(300);
-    })
+    });
 
     // Favourite
 
@@ -157,38 +157,38 @@ $(document).ready(function() {
 
     $('.close-chat').click(function () {
         $('.chat-wrapper').addClass('hidden');
-    })
+    });
 
     // Cabinet
 
     $('.ok').click(function () {
         $(this).closest('.one-time-notif').fadeOut(300);
-    })
+    });
 
     $('.cabinet-tab-container, .partner-tabs').easytabs();
 
     $('.remove-fav').click(function (removeFav) {
         removeFav.preventDefault();
-       $(this).closest('.common-plate').fadeOut(300);
+        $(this).closest('.common-plate').fadeOut(300);
     });
 
     $('.common-plate.inside-categ-plate.cab-fav-plate:last-of-type .remove-fav').click(function () {
         $('.nofav-block').delay(200).fadeIn(300);
-    })
+    });
 
     $('.editcity').click(function (editCity) {
         editCity.preventDefault();
         editCity.stopPropagation();
         $('#selectCityPopupWrapper').fadeIn(300);
         $('#selectCityPopup').fadeIn(300);
-    })
+    });
 
     $('.finish-partner').click(function (finishPartner) {
         finishPartner.preventDefault();
         finishPartner.stopPropagation();
         $('#finishPartnerWrapper').fadeIn(300);
         $('#finishPartnerPopup').fadeIn(300);
-    })
+    });
 
     $("#closePartnership").click(function (closeP) {
         closeP.preventDefault();
@@ -196,47 +196,47 @@ $(document).ready(function() {
         $('#finishPartnerPopup').fadeOut(300);
         $(".tofinish").fadeOut(100);
         $(".nopartners").fadeIn(400);
-    })
+    });
 
     $('.editgeo').click(function (editGeo) {
         editGeo.preventDefault();
         editGeo.stopPropagation();
         $('#selectGeoPopupWrapper').fadeIn(300);
         $('#selectGeoPopup').fadeIn(300);
-    })
+    });
 
     $('.city-name').click(function () {
         $('.popup-wrapper, .popup').fadeOut(200);
-    })
+    });
 
     $('#removePic').click(function (deleteAva) {
         deleteAva.preventDefault();
         $('.img-wrapper.cab').addClass('empty');
-    })
+    });
 
     $('.delete-ava').click(function (deleteAva) {
         deleteAva.preventDefault();
         deleteAva.stopPropagation();
         $('#deleteUserPicWrapper').fadeIn(300);
         $('#deleteUserPicPopup').fadeIn(300);
-    })
+    });
 
     $('#removePic').click(function (deleteAva) {
         deleteAva.preventDefault();
         $('.img-wrapper.cab').addClass('empty');
         $('#deleteUserPicWrapper').fadeOut(300);
         $('#deleteUserPicPopup').fadeOut(300);
-    })
+    });
 
     $('#notRemovePic').click(function (deleteAva) {
         deleteAva.preventDefault();
         $('#deleteUserPicWrapper').fadeOut(300);
         $('#deleteUserPicPopup').fadeOut(300);
-    })
+    });
 
     $('.openable span').click(function () {
         $(this).parent('.openable').find('.card-vars-list').fadeToggle(200);
-    })
+    });
 
     // Slider
 
@@ -256,7 +256,7 @@ $(document).ready(function() {
                 items: 4
             }
         }
-    })
+    });
 
     $('.card-slider').owlCarousel({
         loop: true,
@@ -266,7 +266,7 @@ $(document).ready(function() {
         pagination: true,
         autoplay: true,
         responsiveClass: false
-    })
+    });
 
     // Header search
 
@@ -274,10 +274,33 @@ $(document).ready(function() {
         hSearch.stopPropagation();
         API.Auth.getInfo()
             .then(
-                function(result){
-                    if (result.success){
-                        for (var i = 0; i < result.data.roles.length; i++){
-                            if (result.data.roles[i] == 'ROLE_CONFIRMED_USER'){
+                function (result) {
+                    if (result.success) {
+                        for (var i = 0; i < result.data.roles.length; i++) {
+                            if (result.data.roles[i] == 'ROLE_CONFIRMED_USER') {
+                                API.Auth.isRegistered = true;
+                                API.Companies.getOthersCompanies().done(function (result) {
+                                    API.Companies.otherCompanies = result.data;
+                                });
+                            }
+                        }
+                    } else {
+                        API.Auth.isRegistered = false;
+                    }
+
+                }
+            );
+        $('.notif-wrapper').fadeOut(200);
+        $('.header-right-part .search-wrapper').toggleClass('opened');
+        $('#headerSearch').focus();
+    });
+    $('#mainSearch').click(function () {
+        API.Auth.getInfo()
+            .then(
+                function (result) {
+                    if (result.success) {
+                        for (var i = 0; i < result.data.roles.length; i++) {
+                            if (result.data.roles[i] == 'ROLE_CONFIRMED_USER') {
                                 API.Auth.isRegistered = true;
                                 API.Companies.getOthersCompanies().done(function (result) {
                                     API.Companies.otherCompanies = result.data;
@@ -290,65 +313,42 @@ $(document).ready(function() {
 
                 }
             )
-        $('.notif-wrapper').fadeOut(200);
-        $('.header-right-part .search-wrapper').toggleClass('opened');
-        $('#headerSearch').focus();
-    })
-    $('#mainSearch').click(function () {
-       API.Auth.getInfo()
-           .then(
-               function(result){
-                   if (result.success){
-                       for (var i = 0; i < result.data.roles.length; i++){
-                           if (result.data.roles[i] == 'ROLE_CONFIRMED_USER'){
-                               API.Auth.isRegistered = true;
-                               API.Companies.getOthersCompanies().done(function (result) {
-                                   API.Companies.otherCompanies = result.data;
-                               });
-                           }
-                       }
-                   } else {
-                       API.Auth.isRegistered = false;
-                   }
-
-               }
-           )
     });
 
     $('.start-search').click(function (searchError) {
         searchError.preventDefault();
         searchError.stopPropagation();
         $(this).closest('.search-wrapper').addClass('error');
-    })
+    });
 
     $('.header-right-part .search-wrapper').click(function (ss) {
         ss.stopPropagation();
-    })
+    });
 
     $('.start-search').click(function (stS) {
         stS.preventDefault();
-    })
+    });
 
     // Поменяйте эти условия при дальнейшей разработке
     /*$('#headerSearch').click(function (e) {
         $( "#headerSearch" ).keyup();
     });*/
-    $( "#headerSearch" ).on('keyup', function(e) {
+    $("#headerSearch").on('keyup', function (e) {
 
         $('#headerSearchResults>.s-r-list>.s-r-item').remove();
         var categs = API.Categories.allCategories,
             resultTags = '',
             companies = API.Companies.otherCompanies;
-        if (API.Auth.isRegistered){
-            for (var i = 0; i < companies.length; i++){
-                if (companies[i].caption.toUpperCase().indexOf($("#headerSearch").val().toUpperCase()) != -1){
+        if (API.Auth.isRegistered) {
+            for (var i = 0; i < companies.length; i++) {
+                if (companies[i].caption.toUpperCase().indexOf($("#headerSearch").val().toUpperCase()) != -1) {
                     resultTags += '<li class="s-r-item"><a class="s-r-link" href="card?parentId=1&subId=9&companyId=' + companies[i].companyId + '">' + companies[i].caption + '</a></li>';
                 }
             }
         }
-        for (var i = 0; i < categs.length; i++){
-            if (categs[i].title.toUpperCase().indexOf($("#headerSearch").val().toUpperCase()) != -1){
-                if (API.Auth.isRegistered){
+        for (var i = 0; i < categs.length; i++) {
+            if (categs[i].title.toUpperCase().indexOf($("#headerSearch").val().toUpperCase()) != -1) {
+                if (API.Auth.isRegistered) {
                     if (categs[i].parentId == null) {
                         resultTags += '<li class="s-r-item"><a class="s-r-link" href="listing?id=' + categs[i].categoryId + '">' + categs[i].title + '</a></li>';
                     } else {
@@ -362,7 +362,7 @@ $(document).ready(function() {
                 }
             }
         }
-        if (resultTags == ''){
+        if (resultTags == '') {
             $('#headerSearchResults>.s-r-list').append('<li class="s-r-item"><a class="s-r-link" href="#">Ничего не найдено</a></li>');
         } else {
             $('#headerSearchResults>.s-r-list').append(resultTags);
@@ -374,21 +374,21 @@ $(document).ready(function() {
     /*$('#mainSearch').click(function (e) {
         $( "#mainSearch" ).keyup();
     });*/
-    $( "#mainSearch" ).on('keyup', function(e) {
+    $("#mainSearch").on('keyup', function (e) {
         $('#mainSearchResults>.s-r-list>.s-r-item').remove();
         var categs = API.Categories.allCategories,
             resultTags = '',
             companies = API.Companies.otherCompanies;
-        if (API.Auth.isRegistered){
-            for (var i = 0; i < companies.length; i++){
-                if (companies[i].caption.toUpperCase().indexOf($("#mainSearch").val().toUpperCase()) != -1){
+        if (API.Auth.isRegistered) {
+            for (var i = 0; i < companies.length; i++) {
+                if (companies[i].caption.toUpperCase().indexOf($("#mainSearch").val().toUpperCase()) != -1) {
                     resultTags += '<li class="s-r-item"><a class="s-r-link" href="card?parentId=1&subId=9&companyId=' + companies[i].companyId + '">' + companies[i].caption + '</a></li>';
                 }
             }
         }
-        for (var i = 0; i < categs.length; i++){
-            if (categs[i].title.toUpperCase().indexOf($("#mainSearch").val().toUpperCase()) != -1){
-                if (API.Auth.isRegistered){
+        for (var i = 0; i < categs.length; i++) {
+            if (categs[i].title.toUpperCase().indexOf($("#mainSearch").val().toUpperCase()) != -1) {
+                if (API.Auth.isRegistered) {
                     if (categs[i].parentId == null) {
                         resultTags += '<li class="s-r-item"><a class="s-r-link" href="listing?id=' + categs[i].categoryId + '">' + categs[i].title + '</a></li>';
                     } else {
@@ -402,7 +402,7 @@ $(document).ready(function() {
                 }
             }
         }
-        if (resultTags == ''){
+        if (resultTags == '') {
             $('#mainSearchResults>.s-r-list').append('<li class="s-r-item"><a class="s-r-link" href="#">Ничего не найдено</a></li>');
         } else {
             $('#mainSearchResults>.s-r-list').append(resultTags);
@@ -416,7 +416,7 @@ $(document).ready(function() {
     $('.bell-block').click(function (notifs) {
         notifs.stopPropagation();
         $('.notif-wrapper').fadeIn(300);
-    })
+    });
 
     //Sort
 
@@ -424,7 +424,7 @@ $(document).ready(function() {
         openSort.stopPropagation();
         $('.chosen-sort').toggleClass('opened');
         $('.sort-variants').fadeToggle(300);
-    })
+    });
 
     // Show more feedbacks
 
@@ -435,7 +435,7 @@ $(document).ready(function() {
         $(this).text(
             text == "Показать больше отзывов" ? "Скрыть отзывы" : "Показать больше отзывов");
         $('.hidden-feedbacks').fadeToggle();
-    })
+    });
 
 
     // Open Order Form
@@ -456,21 +456,21 @@ $(document).ready(function() {
 
     //select all checkboxes
 
-    $("#selectAll").change(function(){  //"select all" change
+    $("#selectAll").change(function () {  //"select all" change
         var status = this.checked; // "select all" checked status
-        $('.checkbox.sall').each(function(){ //iterate all listed checkbox items
+        $('.checkbox.sall').each(function () { //iterate all listed checkbox items
             this.click(); //change ".checkbox" checked status
         });
     });
 
-    $('.checkbox.sall').change(function(){ //".checkbox" change
+    $('.checkbox.sall').change(function () { //".checkbox" change
         //uncheck "select all", if one of the listed checkbox item is unchecked
-        if(this.checked == false){ //if this item is unchecked
+        if (this.checked == false) { //if this item is unchecked
             $("#selectAll")[0].checked = false; //change "select all" checked status to false
         }
 
         //check "select all" if all checkbox items are checked
-        if ($('.checkbox.sall:checked').length == $('.checkbox').length ){
+        if ($('.checkbox.sall:checked').length == $('.checkbox').length) {
             $("#selectAll")[0].checked = true; //change "select all" checked status to true
         }
     });
@@ -483,28 +483,28 @@ $(document).ready(function() {
         callRegPop.stopPropagation();
         $('#regPopupWrapper').fadeIn(300);
         $('#regPopup').fadeIn(300);
-    })
+    });
 
     $('#entranceBtn').click(function (callEntrancePop) {
         callEntrancePop.preventDefault();
         callEntrancePop.stopPropagation();
         $('#regPopupWrapper').fadeIn(300);
         $('#entrancePopup').fadeIn(300);
-    })
+    });
 
     $('#goToReg').click(function (goToReg) {
         goToReg.preventDefault();
         $('#entrancePopup').fadeOut(200);
         $('#regPopup').fadeIn(300);
         $('.mob-menu').removeClass('opened');
-    })
+    });
 
     $('#goToEntrance').click(function (goToEnt) {
         goToEnt.preventDefault();
         $('#regPopup').fadeOut(200);
         $('#entrancePopup').fadeIn(300);
         $('.mob-menu').removeClass('opened');
-    })
+    });
 
     $('#login').click(function (toCode) {
         toCode.preventDefault();
@@ -526,12 +526,12 @@ $(document).ready(function() {
         toCode.preventDefault();
         toCode.stopPropagation();
         var $form = $(this.form),
-            title = $form.find( 'input[name="comName"]' ).val(),
-            email = $form.find( 'input[name="corpMail"]' ).val(),
-            phone = $form.find( 'input[name="regPhone"]' ).val(),
-            password = $form.find( 'input[name="regPass"]' ).val();
-        API.Auth.Register(title, email, phone, password).done(function(result){
-            if (result.success){
+            title = $form.find('input[name="comName"]').val(),
+            email = $form.find('input[name="corpMail"]').val(),
+            phone = $form.find('input[name="regPhone"]').val(),
+            password = $form.find('input[name="regPass"]').val();
+        API.Auth.Register(title, email, phone, password).done(function (result) {
+            if (result.success) {
                 $('#regPopup').fadeOut(200);
                 $('#finishregPopup').fadeIn(300);
             }
@@ -543,20 +543,20 @@ $(document).ready(function() {
         confirm.stopPropagation();
         $('#regPopupWrapper').fadeIn(300);
         $('#codePopup').fadeIn(300);
-    })
+    });
 
     $('#finishReg').click(function (finishReg) {
         finishReg.preventDefault();
-        finishReg.stopPropagation(); 
+        finishReg.stopPropagation();
         var $form = $(this.form),
-            confirmToken = $form.find( 'input[name="code"]' ).val();
-        API.Auth.Confirm(confirmToken).done(function(result){
-            if (result.success){
+            confirmToken = $form.find('input[name="code"]').val();
+        API.Auth.Confirm(confirmToken).done(function (result) {
+            if (result.success) {
                 $('#codePopup').fadeOut(200);
                 $('#moderPopup').fadeIn(300);
             }
-        });        
-    })
+        });
+    });
 
     $('#exitReg').click(function (exitReg) {
         exitReg.preventDefault();
@@ -564,13 +564,13 @@ $(document).ready(function() {
         $('.popup').fadeOut(200);
         $('.mob-menu, .hamburger').removeClass('opened');
         window.location.href = "cabinet";
-    })
+    });
 
     $('#goToFinish').click(function (goToFinish) {
         goToFinish.preventDefault();
         $('#moderPopup').fadeOut(200);
         $('#finishregPopup').fadeIn(300);
-    })
+    });
 
     $('.popup-wrapper, .close-popup').click(function () {
         $('.popup-wrapper').fadeOut(200);
@@ -580,44 +580,43 @@ $(document).ready(function() {
         $('.error-message').fadeOut(200);
         $('.mob-menu, .hamburger').removeClass('opened');
         angular.element($('.page-header')).scope().hctrl.loadHead();
-    })
-
+    });
 
 
     $('.popup').click(function (pop) {
         pop.stopPropagation();
-    })
+    });
 
-    $('#seeError').click(function(seeError) {
+    $('#seeError').click(function (seeError) {
         seeError.preventDefault();
         $('.show-error').addClass('error');
         $('.error-message').fadeIn(200);
-    })
+    });
 
     $('#okWait, #submitRequestPopupWrapper, #closeRequest').click(function (okWait) {
         okWait.preventDefault();
         $('.popup-wrapper').fadeOut(200);
         $('.order-teaser-block').removeClass('shrinked');
         $('.order-block').addClass('shrinked');
-    })
+    });
 
     $('#goPartner').click(function (goPartner) {
         goPartner.stopPropagation();
         $('#partnerPopupWrapper').fadeIn(300);
         $('#partnerPopup').fadeIn(300);
-    })
+    });
 
     $('#cool').click(function (okWait) {
         okWait.preventDefault();
         $('.popup-wrapper').fadeOut(200);
-    })
+    });
 
     $('.card-showmore').click(function (showMore) {
         showMore.preventDefault();
         showMore.stopPropagation();
         $('#showMorePopupWrapper').fadeIn(300);
         $('#showMorePopup').fadeIn(300);
-    })
+    });
 
     // Video
 
@@ -626,7 +625,7 @@ $(document).ready(function() {
         $('.ipad').addClass('moved');
         $('.video-info-block').addClass('hidden');
         $('.video-block').delay(500).fadeIn(300);
-    })
+    });
 
 
     var iframe = document.getElementById('video');
@@ -642,18 +641,18 @@ $(document).ready(function() {
     $('#play-button-mob').click(function (mobVid) {
         mobVid.preventDefault();
         $('.mob-video-block').fadeIn(300);
-    })
+    });
 
     $('.pagination-arrow-next, .paginatin-circle').click(function (pag) {
         pag.preventDefault();
-    })
+    });
 
     $('.paginatin-circle').click(function () {
         $('.paginatin-circle').removeClass('active');
         $(this).addClass('active');
     });
 
-    if($(window).width() < 705) {
+    if ($(window).width() < 705) {
         $('.editcity, .regBtn').click(function () {
             disableBodyScroll(targetElement);
         })
@@ -661,4 +660,5 @@ $(document).ready(function() {
 
 });
 
-document.addEventListener("touchstart", function(){}, true);
+document.addEventListener("touchstart", function () {
+}, true);

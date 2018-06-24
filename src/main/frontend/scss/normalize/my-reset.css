@@ -6,11 +6,16 @@
     border: none;
     text-decoration: none;
     -webkit-font-smoothing: antialiased;
-    
-}
-li {list-style: none;}
 
-.clearfix {clear: both;}
+}
+
+li {
+    list-style: none;
+}
+
+.clearfix {
+    clear: both;
+}
 
 a {
     color: inherit;
@@ -20,20 +25,34 @@ a {
 
 button {
     transition: all 0.3s linear;
-    cursor: pointer; 
+    cursor: pointer;
 }
 
-input, textarea {-webkit-appearance: none;}
+input, textarea {
+    -webkit-appearance: none;
+}
 
-::-webkit-input-placeholder {color: #000;}
-::-moz-placeholder          {color: #000;}
-:-moz-placeholder           {color: #000;}
-:-ms-input-placeholder      {color: #000;}
+::-webkit-input-placeholder {
+    color: #000;
+}
+
+::-moz-placeholder {
+    color: #000;
+}
+
+:-moz-placeholder {
+    color: #000;
+}
+
+:-ms-input-placeholder {
+    color: #000;
+}
 
 .error, .success {
     display: block;
     width: 100%;
 }
+
 .error {
     color: darkred;
 }

@@ -1,6 +1,6 @@
 'use sctrict';
 
-module.exports = function($scope, CompanyService, AuthService){
+module.exports = function ($scope, CompanyService, AuthService) {
     var self = this;
 
 
@@ -16,9 +16,9 @@ module.exports = function($scope, CompanyService, AuthService){
     self.showReg = showReg;
     self.isCabinetLocation = isCabinetLocation;
 
-        function loadHead(){
+    function loadHead() {
         AuthService.getUserInfo().then(
-            function(accept){
+            function (accept) {
                 CompanyService.getOthersCompanies().then(function (result) {
                     CompanyService.getPartnerNotifications().then(function (result) {
                         self.partnerNotifications = CompanyService.getNotifications();
@@ -28,7 +28,7 @@ module.exports = function($scope, CompanyService, AuthService){
                 self.showBell = self.showReg = AuthService.reg && !AuthService.regCode;
                 self.showRegCode = self.showUnreg = AuthService.reg && AuthService.regCode;
             },
-            function(reject){
+            function (reject) {
                 self.showHead = true;
                 self.showUnreg = !AuthService.reg && !AuthService.regCode;
                 self.showBell = self.showReg = AuthService.reg && !AuthService.regCode;
@@ -37,19 +37,19 @@ module.exports = function($scope, CompanyService, AuthService){
         )
     }
 
-    function getTitle(notif){
-        if (notif.status == 'WAIT'){
+    function getTitle(notif) {
+        if (notif.status == 'WAIT') {
             return 'Новая заявка';
         }
-        if (notif.status == 'ACTIVE'){
+        if (notif.status == 'ACTIVE') {
             return 'Успех';
         }
-        if (notif.status == 'REJECTED'){
+        if (notif.status == 'REJECTED') {
             return 'Отказ';
         }
     }
 
-    function readNotification(notif){
+    function readNotification(notif) {
         CompanyService.setPartnerNotificationReaded(notif.partnersNotificationId).then(function (result) {
             CompanyService.getOthersCompanies().then(function (result) {
                 CompanyService.getPartnerNotifications().then(function (result) {
@@ -59,8 +59,8 @@ module.exports = function($scope, CompanyService, AuthService){
         });
     }
 
-    function showLogin(){
-        if (self.showRegCode){
+    function showLogin() {
+        if (self.showRegCode) {
             $('#regPopupWrapper').fadeIn(300);
             $('#codePopup').fadeIn(300);
         } else {
@@ -69,16 +69,16 @@ module.exports = function($scope, CompanyService, AuthService){
         }
     }
 
-    function showReg(){
+    function showReg() {
         $('#regPopupWrapper').fadeIn(300);
         $('#regPopup').fadeIn(300);
     }
 
-    function isCabinetLocation(){
-        if (window.location.href.indexOf('cabinet') != -1){
+    function isCabinetLocation() {
+        if (window.location.href.indexOf('cabinet') != -1) {
             return true;
         }
         return false;
     }
 
-}
+};

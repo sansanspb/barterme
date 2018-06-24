@@ -222,14 +222,14 @@ body(ng-controller="CabinetController as ctrl")
                             .feedback-hat
                                 p.feedback-name(ng-class="ctrl.getRaiting(review.rating)") {{review.contactPerson}}
                                 p.feedback-date.grey {{review.createDate | date : 'dd.MM.yy'}}
-                            p.feedback-text.common-text {{review.message}}
+                            p.feedback-text.common-text {{review.notificationInputMessage}}
 
                         .hidden-feedbacks
                             .one-feedback(ng-repeat="review in ctrl.company.reviews | reviewFilter")
                                 .feedback-hat
                                     p.feedback-name(ng-class="ctrl.getRaiting(review.rating)") {{review.contactPerson}}
                                     p.feedback-date.grey {{review.createDate | date : 'dd.MM.yy'}}
-                                p.feedback-text.common-text {{review.message}}
+                                p.feedback-text.common-text {{review.notificationInputMessage}}
                         a.grey-btn#showMoreFeedbacks(href='' ng-show="ctrl.company.reviews.length > 3") Показать больше отзывов
 
             include ./components/blocks/footer

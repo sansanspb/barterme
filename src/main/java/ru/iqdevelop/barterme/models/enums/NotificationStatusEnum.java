@@ -6,22 +6,9 @@ public enum NotificationStatusEnum {
     private int id;
     private String code;
 
-    private NotificationStatusEnum(int id, String code) {
+    NotificationStatusEnum(int id, String code) {
         this.id = id;
         this.code = code;
-    }
-
-    public boolean isEqual(int id) {
-        return this.getId() == id;
-    }
-
-
-    public String getCode() {
-        return code;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public static NotificationStatusEnum getById(Integer id) {
@@ -40,5 +27,17 @@ public enum NotificationStatusEnum {
         }
 
         return null;
+    }
+
+    public boolean isEqual(int id) {
+        return this.getId() == id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public int getId() {
+        return id;
     }
 }

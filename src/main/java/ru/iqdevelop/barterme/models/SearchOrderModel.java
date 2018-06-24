@@ -1,9 +1,5 @@
 package ru.iqdevelop.barterme.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import java.sql.Timestamp;
-
 public class SearchOrderModel {
     private String search;
     private String marketingTask;

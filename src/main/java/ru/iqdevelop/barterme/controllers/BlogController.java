@@ -17,13 +17,13 @@ import java.util.List;
 @RequestMapping("/blogs")
 public class BlogController {
 
+    private static final Logger logger = LoggerFactory.getLogger(BlogController.class);
     @Autowired
     BlogService blogService;
 
-    private static final Logger logger = LoggerFactory.getLogger(BlogController.class);
-
     @RequestMapping(value = "/getAll", method = RequestMethod.POST)
-    public @ResponseBody AnswerMessage getAll() {
+    public @ResponseBody
+    AnswerMessage getAll() {
         try {
             List<BlogModelView> models = blogService.getAllModels();
             return AnswerMessage.getSuccessMessage(models);

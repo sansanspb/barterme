@@ -22,10 +22,9 @@ import java.util.List;
 @RequestMapping("/admin/blogs")
 public class ABlogController {
 
+    private static final Logger logger = LoggerFactory.getLogger(BlogController.class);
     @Autowired
     BlogService blogService;
-
-    private static final Logger logger = LoggerFactory.getLogger(BlogController.class);
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public @ResponseBody

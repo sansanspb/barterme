@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iqdevelop.barterme.entities.CompanyEntity;
-import ru.iqdevelop.barterme.entities.PhotoEntity;
 import ru.iqdevelop.barterme.entities.SearchOrderEntity;
 import ru.iqdevelop.barterme.entities.UserEntity;
 import ru.iqdevelop.barterme.models.SearchOrderModel;

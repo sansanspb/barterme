@@ -6,6 +6,29 @@ public class AnswerMessage {
     private Object data;
     private Boolean success;
 
+    private AnswerMessage() {
+    }
+
+    public static AnswerMessage getSuccessMessage() {
+        return getSuccessMessage("");
+    }
+
+    public static AnswerMessage getSuccessMessage(Object sendData) {
+        AnswerMessage result = new AnswerMessage();
+        result.setMessage("");
+        result.setData(sendData);
+        result.setSuccess(true);
+        return result;
+    }
+
+    public static AnswerMessage getFailMessage(String message) {
+        AnswerMessage result = new AnswerMessage();
+        result.setMessage(message);
+        result.setData(null);
+        result.setSuccess(false);
+        return result;
+    }
+
     public String getMessage() {
         return message;
     }
@@ -28,28 +51,5 @@ public class AnswerMessage {
 
     public void setSuccess(Boolean success) {
         this.success = success;
-    }
-
-    private AnswerMessage() {
-    }
-
-    public static AnswerMessage getSuccessMessage() {
-        return getSuccessMessage("");
-    }
-
-    public static AnswerMessage getSuccessMessage(Object sendData) {
-        AnswerMessage result = new AnswerMessage();
-        result.setMessage("");
-        result.setData(sendData);
-        result.setSuccess(true);
-        return result;
-    }
-
-    public static AnswerMessage getFailMessage(String message) {
-        AnswerMessage result = new AnswerMessage();
-        result.setMessage(message);
-        result.setData(null);
-        result.setSuccess(false);
-        return result;
     }
 }

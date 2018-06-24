@@ -52,7 +52,7 @@ public class AuthService {
 
         RoleEntity userRole = roleDao.getByTitle(BASE_USER_ROLE);
         RoleEntity confirmedUserRole = roleDao.getByTitle(CONFIRMED_USER_ROLE);
-        assert(userRole != null);
+        assert (userRole != null);
         newUser.getRoles().add(userRole);
         newUser.getRoles().add(confirmedUserRole);
 

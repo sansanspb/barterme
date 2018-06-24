@@ -21,33 +21,33 @@ import java.util.List;
 @EnableTransactionManagement
 public class CustomUserDetailService implements UserDetailsService {
 
-	@Autowired
-	private UserRepository userDao;
+    @Autowired
+    private UserRepository userDao;
 
-	@Transactional(readOnly = true)
-	@Override
-	public UserDetails loadUserByUsername(final String email) {
-		UserEntity user = userDao.findByEmail(email);
-		if (user == null) {
-			throw new UsernameNotFoundException(email);
-		}
-		List<GrantedAuthority> authorities = buildUserAuthority(user.getRoles());
+    @Transactional(readOnly = true)
+    @Override
+    public UserDetails loadUserByUsername(final String email) {
+        UserEntity user = userDao.findByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException(email);
+        }
+        List<GrantedAuthority> authorities = buildUserAuthority(user.getRoles());
 
-		return buildUserForAuthentication(user, authorities);
-	}
+        return buildUserForAuthentication(user, authorities);
+    }
 
-	private UserDetails buildUserForAuthentication(UserEntity user, List<GrantedAuthority> authorities) {
-		return new User(user.getEmail(), user.getPassword(), user.getEnabled(), true, true, true, authorities);
-	}
+    private UserDetails buildUserForAuthentication(UserEntity user, List<GrantedAuthority> authorities) {
+        return new User(user.getEmail(), user.getPassword(), user.getEnabled(), true, true, true, authorities);
+    }
 
-	private List<GrantedAuthority> buildUserAuthority(List<RoleEntity> roles) {
-		List<GrantedAuthority> result = new ArrayList<>();
+    private List<GrantedAuthority> buildUserAuthority(List<RoleEntity> roles) {
+        List<GrantedAuthority> result = new ArrayList<>();
 
-		for (RoleEntity userRole : roles) {
-			result.add(new SimpleGrantedAuthority(userRole.getTitle()));
-		}
+        for (RoleEntity userRole : roles) {
+            result.add(new SimpleGrantedAuthority(userRole.getTitle()));
+        }
 
-		return result;
-	}
+        return result;
+    }
 
 }

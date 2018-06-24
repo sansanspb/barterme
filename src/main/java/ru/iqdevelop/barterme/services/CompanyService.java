@@ -129,7 +129,7 @@ public class CompanyService {
             partnerRepository.insert(newPartner);
 
 
-            NotificationEntity newNot = NotificationBuilder.buildSendedPartnerNotification(currCompany.getCaption(),  userRepository.getById(newPartner.getReceiver().getCompanyId()));
+            NotificationEntity newNot = NotificationBuilder.buildSendedPartnerNotification(currCompany.getCaption(), userRepository.getById(newPartner.getReceiver().getCompanyId()));
             notificationRepository.insert(newNot);
 
             PartnersNotificationEntity ent = new PartnersNotificationEntity();
@@ -158,7 +158,7 @@ public class CompanyService {
             ent.setStatus(PartnerStatusEnum.ACTIVE);
             partnersNotificationRepository.insert(ent);
 
-            NotificationEntity newNot = NotificationBuilder.buildReceivedPartnerNotification(currCompany.getCaption(),  userRepository.getById(partner.getFkSenderId()));
+            NotificationEntity newNot = NotificationBuilder.buildReceivedPartnerNotification(currCompany.getCaption(), userRepository.getById(partner.getFkSenderId()));
             notificationRepository.insert(newNot);
         }
     }
@@ -180,11 +180,10 @@ public class CompanyService {
             ent.setStatus(PartnerStatusEnum.REJECTED);
             partnersNotificationRepository.insert(ent);
 
-            NotificationEntity newNot = NotificationBuilder.buildRejectedPartnerNotification(currCompany.getCaption(),  userRepository.getById(partner.getFkSenderId()));
+            NotificationEntity newNot = NotificationBuilder.buildRejectedPartnerNotification(currCompany.getCaption(), userRepository.getById(partner.getFkSenderId()));
             notificationRepository.insert(newNot);
         }
     }
-
 
 
     @Transactional(readOnly = true)

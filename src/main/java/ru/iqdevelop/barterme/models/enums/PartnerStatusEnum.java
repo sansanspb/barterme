@@ -6,21 +6,9 @@ public enum PartnerStatusEnum {
     private int id;
     private String code;
 
-    private PartnerStatusEnum(int id, String code) {
+    PartnerStatusEnum(int id, String code) {
         this.id = id;
         this.code = code;
-    }
-
-    public boolean isEqual(int id) {
-        return this.getId() == id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public static PartnerStatusEnum getById(Integer id) {
@@ -37,5 +25,17 @@ public enum PartnerStatusEnum {
                 return status;
         }
         return null;
+    }
+
+    public boolean isEqual(int id) {
+        return this.getId() == id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public int getId() {
+        return id;
     }
 }

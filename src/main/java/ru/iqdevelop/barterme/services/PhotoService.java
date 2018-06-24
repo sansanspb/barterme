@@ -82,7 +82,7 @@ public class PhotoService {
         }
 
 
-        try (FileOutputStream fileOutputStream = new FileOutputStream(newFile);) {
+        try (FileOutputStream fileOutputStream = new FileOutputStream(newFile)) {
             if ((bytes != null) && (bytes.length > 0)) {
                 int count = bytes.length;
                 if (count != -1) {
@@ -112,6 +112,6 @@ public class PhotoService {
     }
 
     public File getTempFilePath(String imageName) {
-        return new File(getFileDirectory().getAbsolutePath() + File.separator  + imageName);
+        return new File(getFileDirectory().getAbsolutePath() + File.separator + imageName);
     }
 }
