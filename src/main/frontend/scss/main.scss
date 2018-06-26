@@ -2485,6 +2485,14 @@ main {
   background: #fff;
   overflow: hidden;
   display: none;
+  &.opened {transform: translateY(0);}
+  &.shrinked {
+    transform: translateY(486px);
+    .chat-hat {height: 50px;}
+    .chat-img-wrapper {width: 0;}
+    .close-chat, .shrink-chat {height: 50px;}
+    .chat-title {margin-left: 22px; height: 50px; line-height: 50px;}
+  }
 }
 .chat-hat {
   background: $pink;
@@ -2506,6 +2514,22 @@ main {
   cursor: pointer; top: 0; right: 10px;
   background: url("../img/close-chat.svg") center no-repeat;
   background-size: 16px;
+}
+.shrink-chat {
+  position: absolute; top: 0; right: 56px; width: 40px; height: 90px;
+  cursor: pointer;
+}
+.shrink-chat-line {
+  display: block;
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px; height: 2px; background: #fff;
+  transition: all .3s ease-out;
+  &.opened {
+    width: 16px !important; height: 14px !important;
+    border: 2px solid #fff !important;
+    background: transparent !important;
+  }
 }
 .chat-title {
   font-size: 16px; color: #fff;

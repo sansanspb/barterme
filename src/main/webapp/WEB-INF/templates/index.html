@@ -122,6 +122,9 @@
         <div class="chat-hat"><a class="img-wrapper chat-img-wrapper" href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&amp;subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&amp;companyId={{Cctrl.currentChatPartner.company.companyId}}"><img src="img/chat-ava.jpg"></a>
           <h3 class="chat-title">{{Cctrl.currentChatPartner.company.caption}}</h3>
           <div class="close-chat" ng-click="Cctrl.disconnectChat()"></div>
+          <div class="shrink-chat">
+            <div class="shrink-chat-line"></div>
+          </div>
         </div>
         <div class="chat-scroll mCustomScrollbar">
           <div class="chat-messages-area">
@@ -141,6 +144,9 @@
         <div class="chat-hat"><a class="img-wrapper chat-img-wrapper" href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&amp;subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&amp;companyId={{Cctrl.currentChatPartner.company.companyId}}"><img src="img/chat-ava.jpg"></a>
           <h3 class="chat-title">{{Cctrl.currentChatPartner.company.caption}}</h3>
           <div class="close-chat" ng-click="Cctrl.disconnectChat()"></div>
+          <div class="shrink-chat">
+            <div class="shrink-chat-line"></div>
+          </div>
         </div>
         <div class="chat-scroll mCustomScrollbar">
           <div class="chat-messages-area">
@@ -280,7 +286,10 @@
                   <ul class="footer-col right-align wm">
                     <li><a href="#">Присоединяйтесь</a></li>
                     <li>
-                      <div class="sn"><a class="vk" href="#" target="_blank"></a><a class="fb" href="#" target="_blank"></a><a class="inst" href="#" target="_blank"></a></div>
+                      <div class="sn">
+                        <!-- a.vk(href='#', target='_blank')--><a class="fb" href="#" target="_blank"></a>
+                        <!-- a.inst(href='#', target='_blank')-->
+                      </div>
                     </li>
                   </ul>
                 </div>

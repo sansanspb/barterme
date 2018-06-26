@@ -2434,6 +2434,12 @@ $(document).ready(function () {
         $('.pass-line').fadeToggle();
     })
 
+    $('.shrink-chat').click(function (closeChat) {
+        closeChat.preventDefault();
+        $('.chat-wrapper').toggleClass('shrinked');
+        $('.shrink-chat-line').toggleClass('opened');
+    })
+
     // Open Order Form
 
     $('.submit-request').on('click', function () {
