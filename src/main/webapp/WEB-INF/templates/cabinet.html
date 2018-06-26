@@ -61,8 +61,11 @@
       </div>
       <div class="chat-scroll mCustomScrollbar">
         <div class="chat-messages-area">
-          <div class="bubble" ng-repeat="message in Cctrl.messages | orderBy : 'sendDate'" ng-class="{'to' : message.senderId == Cctrl.currentChatPartner.senderId, 'from' : message.receiverId == Cctrl.currentChatPartner.senderId}">
-            <div class="bubble-message" ng-class="{'to' : message.senderId == Cctrl.currentChatPartner.senderId, 'from' : message.receiverId == Cctrl.currentChatPartner.senderId}">{{message.message}}</div>
+          <div class="block-message" ng-repeat="message in Cctrl.messages">
+            <div class="time-bubble grey-btn" ng-show="message.showDate">{{message.sendDate | date : 'dd:MM'}}</div>
+            <div class="bubble" ng-class="{'to' : message.senderId == Cctrl.currentChatPartner.senderId, 'from' : message.receiverId == Cctrl.currentChatPartner.senderId}">
+              <div class="bubble-message" ng-class="{'to' : message.senderId == Cctrl.currentChatPartner.senderId, 'from' : message.receiverId == Cctrl.currentChatPartner.senderId}">{{message.message}}</div>
+            </div>
           </div>
         </div>
       </div>

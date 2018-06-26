@@ -58,7 +58,6 @@ module.exports = function ($scope, CompanyService, AuthService, ChatService) {
                 receiverId : notif.senderId
             }
             ChatService.setCurrentChatPartner(newPartner);
-            $('.chat-wrapper').fadeIn();
         }
         CompanyService.setPartnerNotificationReaded(notif.partnersNotificationId).then(function (result) {
             CompanyService.getOthersCompanies().then(function (result) {

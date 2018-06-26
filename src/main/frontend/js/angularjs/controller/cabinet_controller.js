@@ -357,6 +357,5 @@ module.exports = function ($scope, CompanyService, AuthService, CategoriesServic
             newPartner.senderId = self.company.companyId;
         }
         ChatService.setCurrentChatPartner(newPartner);
-        $('.chat-wrapper').fadeIn();
     }
 };
