@@ -1,6 +1,6 @@
 'use sctrict';
 
-module.exports = function ($scope, CompanyService, AuthService) {
+module.exports = function ($scope, CompanyService, AuthService, ChatService) {
     var self = this;
 
 
@@ -49,7 +49,16 @@ module.exports = function ($scope, CompanyService, AuthService) {
         }
     }
 
-    function readNotification(notif) {
+    function readNotification(notif, $event) {
+        if (notif.status == 'ACTIVE'){
+            $event.preventDefault();
+            var newPartner = {
+                company : notif.company,
+                senderId : notif.receiverId,
+                receiverId : notif.senderId
+            }
+            ChatService.setCurrentChatPartner(newPartner);
+        }
         CompanyService.setPartnerNotificationReaded(notif.partnersNotificationId).then(function (result) {
             CompanyService.getOthersCompanies().then(function (result) {
                 CompanyService.getPartnerNotifications().then(function (result) {

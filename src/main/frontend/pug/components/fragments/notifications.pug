@@ -1,6 +1,6 @@
 .notif-wrapper.mCustomScrollbar
     .one-notif(ng-repeat="notification in hctrl.partnerNotifications | filter : {readed : false}" ng-class="{'reject' : notification.status == 'ERROR', 'openchat' : notification.status == 'SENDED'}")
-        a.torequest(href='requests' ng-click="hctrl.readNotification(notification)")
+        a.torequest(href='requests' ng-click="hctrl.readNotification(notification, $event)")
         header
             span.n-status.smallcaps {{hctrl.getTitle(notification)}}
             span.n-date.smallcaps {{notification.createDate | date : 'dd.MM.yy hh:mm'}}

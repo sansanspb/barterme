@@ -1,380 +1,322 @@
 <!DOCTYPE html>
 <html class="no-js" lang="ru-RU" ng-app="barterme">
-<head>
+  <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Личный кабинет</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
     <link rel="shortcut icon" href="img/favicon.png" type="image/png">
     <link href="css/main.css" rel="stylesheet">
-</head>
+  </head>
 </html>
 <body ng-controller="CabinetController as ctrl">
-<header class="block page-header white-header" ng-controller="HeaderController as hctrl">
-    <div class="preloader" ng-show="showLoader"></div>
-    <div class="content" ng-init="hctrl.loadHead()"><a href="/"><img class="header-logo white" src="img/logo_black.svg"><img
-            class="header-logo black" src="img/logo_black.svg"></a>
+    <header class="block page-header white-header" ng-controller="HeaderController as hctrl">
+      <div class="preloader" ng-show="showLoader"></div>
+      <div class="content" ng-init="hctrl.loadHead()"><a href="/"><img class="header-logo white" src="img/logo_black.svg"><img class="header-logo black" src="img/logo_black.svg"></a>
         <div class="header-right-part hide" ng-show="hctrl.showHead">
-            <div class="mob-menu" ng-show="hctrl.showUnreg">
-                <div class="mm-cont"><a class="entrance" id="entranceBtn" href="#" ng-click="hctrl.showLogin()">вход</a><a
-                        class="reg pink-btn regBtn" href="#" ng-click="hctrl.showReg()">регистрация</a></div>
-                <div class="mm-mail mobshow"><span>Напишите нам</span><a class="pink-link"
-                                                                         href="mailto: friends@barterme.ru">friends@barterme.ru</a>
-                </div>
+          <div class="mob-menu" ng-show="hctrl.showUnreg">
+            <div class="mm-cont"><a class="entrance" id="entranceBtn" href="#" ng-click="hctrl.showLogin()">вход</a><a class="reg pink-btn regBtn" href="#" ng-click="hctrl.showReg()">регистрация</a></div>
+            <div class="mm-mail mobshow"><span>Напишите нам</span><a class="pink-link" href="mailto: friends@barterme.ru">friends@barterme.ru</a></div>
+          </div>
+          <div class="mob-menu" ng-show="hctrl.showReg">
+            <div class="mm-cont"><a class="cabinet-header-link mobshow" href="/">на главную</a><a class="cabinet-header-link cabin" href="cabinet" ng-hide="hctrl.isCabinetLocation()">личный кабинет</a></div>
+            <div class="mm-mail mobshow"><span>Напишите нам</span><a class="pink-link" href="mailto: friends@barterme.ru">friends@barterme.ru</a></div>
+          </div>
+          <div class="bell-block" ng-show="hctrl.showBell"><span class="bell-number" ng-show="hctrl.partnerNotifications.length &gt; 0">{{hctrl.partnerNotifications.length}}</span></div>
+          <div class="header-search-btn h-visible"></div>
+          <div class="hamburger">
+            <div class="stripe stripe-1"></div>
+            <div class="stripe stripe-2"></div>
+            <div class="stripe stripe-3"></div>
+          </div>
+          <div class="search-result-block" id="headerSearchResults">
+            <ul class="s-r-list">
+              <li class="s-r-item"><a class="s-r-link" href="#">Календари</a></li>
+              <li class="s-r-item"><a class="s-r-link" href="#">Календари настенные</a></li>
+              <li class="s-r-item"><a class="s-r-link" href="#">Календула</a></li>
+            </ul>
+          </div>
+          <div class="notif-wrapper mCustomScrollbar">
+            <div class="one-notif" ng-repeat="notification in hctrl.partnerNotifications | filter : {readed : false}" ng-class="{'reject' : notification.status == 'ERROR', 'openchat' : notification.status == 'SENDED'}"><a class="torequest" href="requests" ng-click="hctrl.readNotification(notification, $event)"></a>
+              <header><span class="n-status smallcaps">{{hctrl.getTitle(notification)}}</span><span class="n-date smallcaps">{{notification.createDate | date : 'dd.MM.yy hh:mm'}}</span></header>
+              <p class="notif-text">
+                {{notification.status == 'REJECTED' ? 'Увы! ' : (notification.status == 'ACTIVE' ? 'Ура! ' : '')}}Компания
+                <a class="pink-link" href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&amp;subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&amp;companyId={{notification.company.companyId}}">{{notification.company.caption}}</a>
+                {{notification.status == 'REJECTED' ? 'вам отказала. ' : (notification.status == 'ACTIVE' ? 'одобрила вашу заявку! ' : 'Хочет сотрудничать! ')}}
+                {{notification.status == 'REJECTED' ? 'Не расстраивайтесь! Повезет с другой ;)' : (notification.status == 'ACTIVE' ? 'Начните сотрудничать прямо сейчас! ' : 'Примите решение!')}}
+              </p>
             </div>
-            <div class="mob-menu" ng-show="hctrl.showReg">
-                <div class="mm-cont"><a class="cabinet-header-link mobshow" href="/">на главную</a><a
-                        class="cabinet-header-link cabin" href="cabinet" ng-hide="hctrl.isCabinetLocation()">личный
-                    кабинет</a></div>
-                <div class="mm-mail mobshow"><span>Напишите нам</span><a class="pink-link"
-                                                                         href="mailto: friends@barterme.ru">friends@barterme.ru</a>
-                </div>
-            </div>
-            <div class="bell-block" ng-show="hctrl.showBell"><span class="bell-number"
-                                                                   ng-show="hctrl.partnerNotifications.length &gt; 0">{{hctrl.partnerNotifications.length}}</span>
-            </div>
-            <div class="header-search-btn h-visible"></div>
-            <div class="hamburger">
-                <div class="stripe stripe-1"></div>
-                <div class="stripe stripe-2"></div>
-                <div class="stripe stripe-3"></div>
-            </div>
-            <div class="search-result-block" id="headerSearchResults">
-                <ul class="s-r-list">
-                    <li class="s-r-item"><a class="s-r-link" href="#">Календари</a></li>
-                    <li class="s-r-item"><a class="s-r-link" href="#">Календари настенные</a></li>
-                    <li class="s-r-item"><a class="s-r-link" href="#">Календула</a></li>
-                </ul>
-            </div>
-            <div class="notif-wrapper mCustomScrollbar">
-                <div class="one-notif"
-                     ng-repeat="notification in hctrl.partnerNotifications | filter : {readed : false}"
-                     ng-class="{'reject' : notification.status == 'ERROR', 'openchat' : notification.status == 'SENDED'}">
-                    <a class="torequest" href="requests" ng-click="hctrl.readNotification(notification)"></a>
-                    <header><span class="n-status smallcaps">{{hctrl.getTitle(notification)}}</span><span
-                            class="n-date smallcaps">{{notification.createDate | date : 'dd.MM.yy hh:mm'}}</span>
-                    </header>
-                    <p class="notif-text">
-                        {{notification.status == 'REJECTED' ? 'Увы! ' : (notification.status == 'ACTIVE' ? 'Ура! ' :
-                        '')}}Компания
-                        <a class="pink-link"
-                           href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&amp;subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&amp;companyId={{notification.company.companyId}}">{{notification.company.caption}}</a>
-                        {{notification.status == 'REJECTED' ? 'вам отказала. ' : (notification.status == 'ACTIVE' ?
-                        'одобрила вашу заявку! ' : 'Хочет сотрудничать! ')}}
-                        {{notification.status == 'REJECTED' ? 'Не расстраивайтесь! Повезет с другой ;)' :
-                        (notification.status == 'ACTIVE' ? 'Начните сотрудничать прямо сейчас! ' : 'Примите решение!')}}
-                    </p>
-                </div>
-            </div>
-            <div class="search-wrapper">
-                <input type="search" id="headerSearch" placeholder="Мне нужно..." autofocus="autofocus"><a
-                    class="start-search pink-btn" href="#">Найти</a>
-            </div>
+          </div>
+          <div class="search-wrapper">
+            <input type="search" id="headerSearch" placeholder="Мне нужно..." autofocus="autofocus"><a class="start-search pink-btn" href="#">Найти</a>
+          </div>
         </div>
+      </div>
+    </header>
+  <main>
+    <div class="chat-wrapper" ng-controller="ChatController as Cctrl">
+      <div class="chat-hat"><a class="img-wrapper chat-img-wrapper" href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&amp;subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&amp;companyId={{Cctrl.currentChatPartner.company.companyId}}"><img src="img/chat-ava.jpg"></a>
+        <h3 class="chat-title">{{Cctrl.currentChatPartner.company.caption}}</h3>
+        <div class="close-chat" ng-click="Cctrl.disconnectChat()"></div>
+      </div>
+      <div class="chat-scroll mCustomScrollbar">
+        <div class="chat-messages-area">
+          <div class="block-message" ng-repeat="message in Cctrl.messages">
+            <div class="time-bubble grey-btn" ng-show="message.showDate">{{message.sendDate | date : 'dd:MM'}}</div>
+            <div class="bubble" ng-class="{'to' : message.senderId == Cctrl.currentChatPartner.senderId, 'from' : message.receiverId == Cctrl.currentChatPartner.senderId}">
+              <div class="bubble-message" ng-class="{'to' : message.senderId == Cctrl.currentChatPartner.senderId, 'from' : message.receiverId == Cctrl.currentChatPartner.senderId}">{{message.message}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-texting-area">
+        <textarea class="chat-textarea autoExpand" placeholder="Ваше сообщение" rows="1" data-min-rows="1" ng-model="Cctrl.chatMessage" ng-enter="Cctrl.sendMsg()"></textarea>
+      </div>
     </div>
-</header>
-<main>
     <div class="popup-wrapper" id="finishPartnerWrapper">
-        <div class="popup partner-popup" id="finishPartnerPopup"><img class="close-popup" src="img/close-popup.svg">
-            <div class="pop-cont long">
-                <h2 class="mid-title">Расскажи,<br> как все прошло?</h2>
-                <p class="common-text">Оцени по пятибальной шкале</p>
-                <div class="popup-raiting-block">
-                    <div class="one-raiting-part">
-                        <div class="raiting-mark one"></div>
-                        <input class="radio" id="one" type="radio" name="raiting" ng-model="ctrl.raiting" value="1">
-                        <label class="radio-label emoji" for="one"></label>
-                    </div>
-                    <div class="one-raiting-part">
-                        <div class="raiting-mark two"></div>
-                        <input class="radio" id="two" type="radio" name="raiting" ng-model="ctrl.raiting" value="2">
-                        <label class="radio-label emoji" for="two"></label>
-                    </div>
-                    <div class="one-raiting-part">
-                        <div class="raiting-mark three"></div>
-                        <input class="radio" id="three" type="radio" name="raiting" ng-model="ctrl.raiting" value="3">
-                        <label class="radio-label emoji" for="three"></label>
-                    </div>
-                    <div class="one-raiting-part">
-                        <div class="raiting-mark four"></div>
-                        <input class="radio" id="four" type="radio" name="raiting" ng-model="ctrl.raiting" value="4">
-                        <label class="radio-label emoji" for="four"></label>
-                    </div>
-                    <div class="one-raiting-part">
-                        <div class="raiting-mark five"></div>
-                        <input class="radio" id="five" type="radio" name="raiting" ng-model="ctrl.raiting" value="5">
-                        <label class="radio-label emoji" for="five"></label>
-                    </div>
-                </div>
-                <textarea class="company-edit feedback-textarea" placeholder="Ваш отзыв"
-                          ng-model="ctrl.raitingMessage"></textarea>
-                <form>
-                    <button class="pink-btn" id="closePartnership" ng-click="ctrl.completePartner()">Завершить
-                        партнерство
-                    </button>
-                </form>
+      <div class="popup partner-popup" id="finishPartnerPopup"><img class="close-popup" src="img/close-popup.svg">
+        <div class="pop-cont long">
+          <h2 class="mid-title">Расскажи,<br> как все прошло?</h2>
+          <p class="common-text">Оцени по пятибальной шкале</p>
+          <div class="popup-raiting-block">
+            <div class="one-raiting-part">
+              <div class="raiting-mark one"></div>
+              <input class="radio" id="one" type="radio" name="raiting" ng-model="ctrl.raiting" value="1">
+              <label class="radio-label emoji" for="one"></label>
             </div>
+            <div class="one-raiting-part">
+              <div class="raiting-mark two"></div>
+              <input class="radio" id="two" type="radio" name="raiting" ng-model="ctrl.raiting" value="2">
+              <label class="radio-label emoji" for="two"></label>
+            </div>
+            <div class="one-raiting-part">
+              <div class="raiting-mark three"></div>
+              <input class="radio" id="three" type="radio" name="raiting" ng-model="ctrl.raiting" value="3">
+              <label class="radio-label emoji" for="three"></label>
+            </div>
+            <div class="one-raiting-part">
+              <div class="raiting-mark four"></div>
+              <input class="radio" id="four" type="radio" name="raiting" ng-model="ctrl.raiting" value="4">
+              <label class="radio-label emoji" for="four"></label>
+            </div>
+            <div class="one-raiting-part">
+              <div class="raiting-mark five"></div>
+              <input class="radio" id="five" type="radio" name="raiting" ng-model="ctrl.raiting" value="5">
+              <label class="radio-label emoji" for="five"></label>
+            </div>
+          </div>
+          <textarea class="company-edit feedback-textarea" placeholder="Ваш отзыв" ng-model="ctrl.raitingMessage"></textarea>
+          <form>
+            <button class="pink-btn" id="closePartnership" ng-click="ctrl.completePartner()">Завершить партнерство</button>
+          </form>
         </div>
+      </div>
     </div>
     <div class="block page-top-block cabinet-top-block">
-        <div class="content">
-            <ul class="breadcrumbs">
-                <li class="bc-item"><a class="bc-link" href="/">Главная /</a></li>
-                <li class="bc-item"><a class="bc-link current" href="cabinet"> Личный кабинет</a></li>
-            </ul>
-            <div class="nopic-header cabinet left-align">
-                <h2 class="page-title">Привет, {{ctrl.company.caption}}!</h2>
-                <p class="page-undertitle grey">Здесь вся информация о вашей компании.<br> Следите за её точностью и
-                    актуальностью.</p><a class="pink-link editcab" href="cabinet-edit">Редактировать</a>
-            </div>
-            <div class="cabinet-hat static">
-                <div class="img-wrapper"><img class="cab-userpic" src="image/get/{{ctrl.company.photoPath}}"></div>
-                <div class="cabinet-hat-info">
-                    <div class="one-line" ng-show="ctrl.getRegionById() != 'Выберите геолокацию'"><span class="grey">Город:</span><span
-                            class="pink">{{ctrl.getRegionById()}}</span></div>
-                    <div class="one-line"><span class="grey">Контактное лицо:</span><span class="pink">{{ctrl.company.contactPerson}}</span>
-                    </div>
-                    <div class="one-line"><span class="grey">Почта:</span><span class="pink">{{ctrl.company.contactEmail}}</span>
-                    </div>
-                    <div class="one-line"><span class="grey" ng-show="ctrl.company.rating">Рейтинг:</span>
-                        <p class="raiting-mark" ng-class="ctrl.getRaiting(ctrl.company.rating)">
-                            {{ctrl.company.rating}}</p>
-                    </div>
-                </div>
-                <div class="one-time-notif">
-                    <p class="grey">Мы не передаем ваши контакты никому.<br> Вы общаетесь через сообщения на
-                        BarterMe.<br> Там вы можете обменяться прямыми контактами, если хотите</p><span class="pink ok">OK</span>
-                </div>
-            </div>
-            <div class="cabinet-main-part">
-                <div class="cabinet-tab-container tab-container">
-                    <ul class="etabs">
-                        <li class="tab"><a href="#cab-info">О компании</a></li>
-                        <li class="tab"><a href="#cab-fav">Избранное</a></li>
-                        <li class="tab mobhide"><a href="#cab-part">Мои партнерства</a></li>
-                        <li class="tab mobshow"><a href="#cab-part">Партнерства</a></li>
-                    </ul>
-                    <div class="cabinet-tab" id="cab-info">
-                        <div class="one-cab-cols-row">
-                            <div class="one-cab-col">
-                                <h2 class="card-info-title">Мы предлагаем</h2>
-                                <ul class="card-info-list">
-                                    <li ng-repeat="offerCat in ctrl.company.categories.offerCategories">
-                                        {{ctrl.getCategoryNameById(offerCat)}}
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="one-cab-col">
-                                <h2 class="card-info-title">Мы ищем</h2>
-                                <ul class="card-info-list">
-                                    <li ng-repeat="searchCat in ctrl.company.categories.searchCategories">
-                                        {{ctrl.getCategoryNameById(searchCat)}}
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="one-cab-cols-row">
-                            <div class="one-cab-col">
-                                <h2 class="card-info-title">Моя клиентская база</h2>
-                                <div class="one-base-line"><span class="grey">Размер:</span><span class="pink">{{ctrl.company.clientCount}}</span>
-                                </div>
-                                <div class="one-base-line"><span class="grey">Пол:</span><span class="pink">{{ctrl.company.genderMale ? ctrl.company.genderFemale ? 'М/Ж' : 'М' : 'Ж'}}</span>
-                                </div>
-                                <div class="one-base-line"><span class="grey">Возраст:</span><span class="pink">{{ctrl.company.ageMin}} - {{ctrl.company.ageMax}}</span>
-                                </div>
-                                <div class="one-base-line"><span class="grey">Доход:</span><span class="pink">{{ctrl.company.incomeMin}} - {{ctrl.company.incomeMax}}</span>
-                                </div>
-                                <div class="one-base-line" ng-show="ctrl.getRegionById() != 'Выберите геолокацию'"><span
-                                        class="grey">Геолокация:</span><span
-                                        class="pink">{{ctrl.getRegionById()}}</span></div>
-                            </div>
-                            <div class="one-cab-col">
-                                <h2 class="card-info-title">Мои маркетинг каналы</h2>
-                                <ul class="mar-channels-list grey">
-                                    <li ng-repeat="channel in ctrl.company.marketingChannels">{{channel.title}}</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="one-cab-cols-row">
-                            <h3 class="card-info-title">О компании</h3>
-                            <p class="common-text grey about-company">{{ctrl.company.about}}</p>
-                        </div>
-                        <div class="one-cab-cols-row">
-                            <p class="common-text share-text">Поделитесь своим предложением в соц сетях</p>
-                            <div class="share-btns"><a class="share-btn s-vk" href="#"></a><a class="share-btn s-ok"
-                                                                                              href="#"></a><a
-                                    class="share-btn s-fb" href="#"></a><a class="share-btn s-tw" href="#"></a></div>
-                        </div>
-                    </div>
-                    <div class="cabinet-tab" id="cab-fav">
-                        <div class="nofav-block" ng-show="ctrl.favorites.length == 0"><img class="nofav-ill"
-                                                                                           src="img/cabinet/nofav.png">
-                            <div class="nofav-text">
-                                <h3 class="card-info-title">У вас еще нет избранного</h3>
-                                <p class="common-text grey">Мы думаем, что вам нужно посмотреть повнимательнее!<br> На
-                                    нашем сайте просто тонна интересностей</p><a class="pink-btn big" href="/#categs">Бегом
-                                выбирать</a>
-                            </div>
-                        </div>
-                        <div class="common-plate inside-categ-plate cab-fav-plate"
-                             ng-repeat="favorite in ctrl.favorites"><a class="remove-fav" href=""
-                                                                       ng-click="ctrl.removeCompanyFromFavorite(favorite.companyId)"></a><a
-                                class="img-wrapper"
-                                href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&amp;subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&amp;companyId={{favorite.companyId}}"><img
-                                src="image/get/{{favorite.photoPath}}"></a>
-                            <div class="text-wrapper">
-                                <div class="overf">
-                                    <h3 class="mid-title">{{favorite.caption}}</h3>
-                                    <p class="com-desc">{{favorite.description}}</p>
-                                    <p class="common-text grey">{{favorite.about}}</p>
-                                </div>
-                                <div class="raiting-block" ng-if="favorite.rating">
-                                    <p class="raiting-mark" ng-class="ctrl.getRaiting(favorite.rating)">
-                                        {{favorite.rating}}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="cabinet-tab" id="cab-part">
-                        <div class="partner-tabs">
-                            <ul class="etabs">
-                                <li class="tab"><a href="#wait">Жду ответа</a></li>
-                                <li class="tab"><a href="#now">Партнерюсь</a></li>
-                                <li class="tab"><a href="#done">Завершено</a></li>
-                                <div class="clearfix"></div>
-                            </ul>
-                            <div class="cab-partners-block" id="wait">
-                                <div class="one-request"
-                                     ng-repeat="partner in ctrl.company.partners | filter : {status : 'WAIT', senderId : ctrl.company.companyId}">
-                                    <div class="request-body"><a class="img-wrapper"
-                                                                 href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&amp;subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&amp;companyId={{partner.company.companyId}}"><img
-                                            src="image/get/{{partner.company.photoPath}}"></a>
-                                        <div class="request-text-part">
-                                            <h3 class="mid-title">{{partner.company.caption}}</h3>
-                                            <p class="common-text">{{partner.company.about}}</p><span
-                                                class="raiting-word grey" ng-if="partner.company.rating">Рейтинг</span>
-                                            <p class="raiting-mark small"
-                                               ng-class="ctrl.getRaiting(partner.company.rating)">
-                                                {{partner.company.rating}}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="cab-partners-block" id="now">
-                                <div class="nofav-block nopartners" ng-show="partners.length == 0"><img
-                                        class="nofav-ill" src="img/cabinet/nofav.png">
-                                    <div class="nofav-text">
-                                        <h3 class="card-info-title">В данный момент<br> вы ни с кем не партнеритесь</h3>
-                                        <p class="common-text grey">Надеемся, это продлится недолго,<br>ведь в нашем
-                                            деле время - деньги!</p><a class="pink-btn big" href="/#categs">Исправить
-                                        ситуацию</a>
-                                    </div>
-                                </div>
-                                <div class="one-request tofinish"
-                                     ng-repeat="partner in partners = (ctrl.company.partners | filter : {status : 'ACTIVE'} | partnersFilter : ctrl.company.companyId)">
-                                    <div class="request-body"><a class="img-wrapper"
-                                                                 href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&amp;subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&amp;companyId={{partner.company.companyId}}"><img
-                                            src="image/get/{{partner.company.photoPath}}"></a>
-                                        <div class="request-text-part">
-                                            <h3 class="mid-title">{{partner.company.caption}}</h3>
-                                            <p class="common-text">{{partner.company.about}}</p><span
-                                                class="raiting-word grey" ng-if="partner.company.rating">Рейтинг</span>
-                                            <p class="raiting-mark small"
-                                               ng-class="ctrl.getRaiting(partner.company.rating)">
-                                                {{partner.company.rating}}</p>
-                                        </div>
-                                    </div>
-                                    <div class="request-btns"><!--button.pink-btn.write Написать-->
-                                        <button class="grey-btn finish-partner"
-                                                ng-click="ctrl.preCompletePartner($event, partner)">Завершить
-                                            партнерство
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="cab-partners-block" id="done">
-                                <div class="one-request"
-                                     ng-repeat="partner in ctrl.company.partners | filter : {status : 'COMPLETE'} | partnersFilter : ctrl.company.companyId">
-                                    <div class="request-body"><a class="img-wrapper"
-                                                                 href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&amp;subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&amp;companyId={{partner.company.companyId}}"><img
-                                            src="image/get/{{partner.company.photoPath}}"></a>
-                                        <div class="request-text-part">
-                                            <h3 class="mid-title">{{partner.company.caption}}</h3>
-                                            <p class="common-text">{{partner.company.about}}</p><span
-                                                class="raiting-word grey" ng-if="partner.company.rating">Рейтинг</span>
-                                            <p class="raiting-mark small"
-                                               ng-class="ctrl.getRaiting(partner.company.rating)">
-                                                {{partner.company.rating}}</p>
-                                        </div>
-                                    </div><!--.request-btns
-                    <button class="pink-btn write">Написать-->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="content">
+        <ul class="breadcrumbs">
+          <li class="bc-item"><a class="bc-link" href="/">Главная /</a></li>
+          <li class="bc-item"><a class="bc-link current" href="cabinet"> Личный кабинет</a></li>
+        </ul>
+        <div class="nopic-header cabinet left-align">
+          <h2 class="page-title">Привет, {{ctrl.company.caption}}!</h2>
+          <p class="page-undertitle grey">Здесь вся информация о вашей компании.<br> Следите за её точностью и актуальностью.</p><a class="pink-link editcab" href="cabinet-edit">Редактировать</a>
         </div>
+        <div class="cabinet-hat static">
+          <div class="img-wrapper"><img class="cab-userpic" src="image/get/{{ctrl.company.photoPath}}"></div>
+          <div class="cabinet-hat-info">
+            <div class="one-line" ng-show="ctrl.getRegionById() != 'Выберите геолокацию'"><span class="grey">Город:</span><span class="pink">{{ctrl.getRegionById()}}</span></div>
+            <div class="one-line"><span class="grey">Контактное лицо:</span><span class="pink">{{ctrl.company.contactPerson}}</span></div>
+            <div class="one-line"><span class="grey">Почта:</span><span class="pink">{{ctrl.company.contactEmail}}</span></div>
+            <div class="one-line"><span class="grey" ng-show="ctrl.company.rating">Рейтинг:</span>
+              <p class="raiting-mark" ng-class="ctrl.getRaiting(ctrl.company.rating)">{{ctrl.company.rating}}</p>
+            </div>
+          </div>
+          <div class="one-time-notif">
+            <p class="grey">Мы не передаем ваши контакты никому.<br> Вы общаетесь через сообщения на BarterMe.<br> Там вы можете обменяться прямыми контактами, если хотите</p><span class="pink ok">OK</span>
+          </div>
+        </div>
+        <div class="cabinet-main-part">
+          <div class="cabinet-tab-container tab-container">
+            <ul class="etabs">
+              <li class="tab"><a href="#cab-info">О компании</a></li>
+              <li class="tab"><a href="#cab-fav">Избранное</a></li>
+              <li class="tab mobhide"><a href="#cab-part">Мои партнерства</a></li>
+              <li class="tab mobshow"><a href="#cab-part">Партнерства</a></li>
+            </ul>
+            <div class="cabinet-tab" id="cab-info">
+              <div class="one-cab-cols-row">
+                <div class="one-cab-col">
+                  <h2 class="card-info-title">Мы предлагаем</h2>
+                  <ul class="card-info-list">
+                    <li ng-repeat="offerCat in ctrl.company.categories.offerCategories">{{ctrl.getCategoryNameById(offerCat)}}</li>
+                  </ul>
+                </div>
+                <div class="one-cab-col">
+                  <h2 class="card-info-title">Мы ищем</h2>
+                  <ul class="card-info-list">
+                    <li ng-repeat="searchCat in ctrl.company.categories.searchCategories">{{ctrl.getCategoryNameById(searchCat)}}</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="one-cab-cols-row">
+                <div class="one-cab-col">
+                  <h2 class="card-info-title">Моя клиентская база</h2>
+                  <div class="one-base-line"><span class="grey">Размер:</span><span class="pink">{{ctrl.company.clientCount}}</span></div>
+                  <div class="one-base-line"><span class="grey">Пол:</span><span class="pink">{{ctrl.company.genderMale ? ctrl.company.genderFemale ? 'М/Ж' : 'М' : 'Ж'}}</span></div>
+                  <div class="one-base-line"><span class="grey">Возраст:</span><span class="pink">{{ctrl.company.ageMin}} - {{ctrl.company.ageMax}}</span></div>
+                  <div class="one-base-line"><span class="grey">Доход:</span><span class="pink">{{ctrl.company.incomeMin}} - {{ctrl.company.incomeMax}}</span></div>
+                  <div class="one-base-line" ng-show="ctrl.getRegionById() != 'Выберите геолокацию'"><span class="grey">Геолокация:</span><span class="pink">{{ctrl.getRegionById()}}</span></div>
+                </div>
+                <div class="one-cab-col">
+                  <h2 class="card-info-title">Мои маркетинг каналы</h2>
+                  <ul class="mar-channels-list grey">
+                    <li ng-repeat="channel in ctrl.company.marketingChannels">{{channel.title}}</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="one-cab-cols-row">
+                <h3 class="card-info-title">О компании</h3>
+                <p class="common-text grey about-company">{{ctrl.company.about}}</p>
+              </div>
+              <div class="one-cab-cols-row">
+                <p class="common-text share-text">Поделитесь своим предложением в соц сетях</p>
+                <div class="share-btns"><a class="share-btn s-vk" href="#"></a><a class="share-btn s-ok" href="#"></a><a class="share-btn s-fb" href="#"></a><a class="share-btn s-tw" href="#"></a></div>
+              </div>
+            </div>
+            <div class="cabinet-tab" id="cab-fav">
+              <div class="nofav-block" ng-show="ctrl.favorites.length == 0"><img class="nofav-ill" src="img/cabinet/nofav.png">
+                <div class="nofav-text">
+                  <h3 class="card-info-title">У вас еще нет избранного</h3>
+                  <p class="common-text grey">Мы думаем, что вам нужно посмотреть повнимательнее!<br> На нашем сайте просто тонна интересностей</p><a class="pink-btn big" href="/#categs">Бегом выбирать</a>
+                </div>
+              </div>
+              <div class="common-plate inside-categ-plate cab-fav-plate" ng-repeat="favorite in ctrl.favorites"><a class="remove-fav" href="" ng-click="ctrl.removeCompanyFromFavorite(favorite.companyId)"></a><a class="img-wrapper" href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&amp;subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&amp;companyId={{favorite.companyId}}"><img src="image/get/{{favorite.photoPath}}"></a>
+                <div class="text-wrapper">
+                  <div class="overf">
+                    <h3 class="mid-title">{{favorite.caption}}</h3>
+                    <p class="com-desc">{{favorite.description}}</p>
+                    <p class="common-text grey">{{favorite.about}}</p>
+                  </div>
+                  <div class="raiting-block" ng-if="favorite.rating">
+                    <p class="raiting-mark" ng-class="ctrl.getRaiting(favorite.rating)">{{favorite.rating}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="cabinet-tab" id="cab-part">
+              <div class="partner-tabs">
+                <ul class="etabs">
+                  <li class="tab"><a href="#wait">Жду ответа</a></li>
+                  <li class="tab"><a href="#now">Партнерюсь</a></li>
+                  <li class="tab"><a href="#done">Завершено</a></li>
+                  <div class="clearfix"></div>
+                </ul>
+                <div class="cab-partners-block" id="wait">
+                  <div class="one-request" ng-repeat="partner in ctrl.company.partners | filter : {status : 'WAIT', senderId : ctrl.company.companyId}">
+                    <div class="request-body"><a class="img-wrapper" href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&amp;subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&amp;companyId={{partner.company.companyId}}"><img src="image/get/{{partner.company.photoPath}}"></a>
+                      <div class="request-text-part">
+                        <h3 class="mid-title">{{partner.company.caption}}</h3>
+                        <p class="common-text">{{partner.company.about}}</p><span class="raiting-word grey" ng-if="partner.company.rating">Рейтинг</span>
+                        <p class="raiting-mark small" ng-class="ctrl.getRaiting(partner.company.rating)">{{partner.company.rating}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="cab-partners-block" id="now">
+                  <div class="nofav-block nopartners" ng-show="partners.length == 0"><img class="nofav-ill" src="img/cabinet/nofav.png">
+                    <div class="nofav-text">
+                      <h3 class="card-info-title">В данный момент<br> вы ни с кем не партнеритесь</h3>
+                      <p class="common-text grey">Надеемся, это продлится недолго,<br>ведь в нашем деле время - деньги!</p><a class="pink-btn big" href="/#categs">Исправить ситуацию</a>
+                    </div>
+                  </div>
+                  <div class="one-request tofinish" ng-repeat="partner in partners = (ctrl.company.partners | filter : {status : 'ACTIVE'} | partnersFilter : ctrl.company.companyId)">
+                    <div class="request-body"><a class="img-wrapper" href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&amp;subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&amp;companyId={{partner.company.companyId}}"><img src="image/get/{{partner.company.photoPath}}"></a>
+                      <div class="request-text-part">
+                        <h3 class="mid-title">{{partner.company.caption}}</h3>
+                        <p class="common-text">{{partner.company.about}}</p><span class="raiting-word grey" ng-if="partner.company.rating">Рейтинг</span>
+                        <p class="raiting-mark small" ng-class="ctrl.getRaiting(partner.company.rating)">{{partner.company.rating}}</p>
+                      </div>
+                    </div>
+                    <div class="request-btns">
+                      <button class="pink-btn write" ng-click="ctrl.openChat(partner)">Написать</button>
+                      <button class="grey-btn finish-partner" ng-click="ctrl.preCompletePartner($event, partner)">Завершить партнерство</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="cab-partners-block" id="done">
+                  <div class="one-request" ng-repeat="partner in ctrl.company.partners | filter : {status : 'COMPLETE'} | partnersFilter : ctrl.company.companyId">
+                    <div class="request-body"><a class="img-wrapper" href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&amp;subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&amp;companyId={{partner.company.companyId}}"><img src="image/get/{{partner.company.photoPath}}"></a>
+                      <div class="request-text-part">
+                        <h3 class="mid-title">{{partner.company.caption}}</h3>
+                        <p class="common-text">{{partner.company.about}}</p><span class="raiting-word grey" ng-if="partner.company.rating">Рейтинг</span>
+                        <p class="raiting-mark small" ng-class="ctrl.getRaiting(partner.company.rating)">{{partner.company.rating}}</p>
+                      </div>
+                    </div>
+                    <div class="request-btns">
+                      <button class="pink-btn write" ng-click="ctrl.openChat(partner)">Написать</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="block cabinet-feedbacks">
-        <div class="content">
-            <div class="feedbacks">
-                <h3 class="card-info-title bigger">Отзывы</h3>
-                <p class="common-text grey" ng-show="ctrl.company.reviews.length == 0">Никто еще не оставлял отзывы о
-                    компании</p>
-                <div class="one-feedback" ng-repeat="review in ctrl.company.reviews | limitTo : 3">
-                    <div class="feedback-hat">
-                        <p class="feedback-name" ng-class="ctrl.getRaiting(review.rating)">{{review.contactPerson}}</p>
-                        <p class="feedback-date grey">{{review.createDate | date : 'dd.MM.yy'}}</p>
-                    </div>
-                    <p class="feedback-text common-text">{{review.notificationInputMessage}}</p>
-                </div>
-                <div class="hidden-feedbacks">
-                    <div class="one-feedback" ng-repeat="review in ctrl.company.reviews | reviewFilter">
-                        <div class="feedback-hat">
-                            <p class="feedback-name" ng-class="ctrl.getRaiting(review.rating)">
-                                {{review.contactPerson}}</p>
-                            <p class="feedback-date grey">{{review.createDate | date : 'dd.MM.yy'}}</p>
-                        </div>
-                        <p class="feedback-text common-text">{{review.notificationInputMessage}}</p>
-                    </div>
-                </div>
-                <a class="grey-btn" id="showMoreFeedbacks" href="" ng-show="ctrl.company.reviews.length &gt; 3">Показать
-                    больше отзывов</a>
+      <div class="content">
+        <div class="feedbacks">
+          <h3 class="card-info-title bigger">Отзывы</h3>
+          <p class="common-text grey" ng-show="ctrl.company.reviews.length == 0">Никто еще не оставлял отзывы о компании</p>
+          <div class="one-feedback" ng-repeat="review in ctrl.company.reviews | limitTo : 3">
+            <div class="feedback-hat">
+              <p class="feedback-name" ng-class="ctrl.getRaiting(review.rating)">{{review.contactPerson}}</p>
+              <p class="feedback-date grey">{{review.createDate | date : 'dd.MM.yy'}}</p>
             </div>
+            <p class="feedback-text common-text">{{review.notificationInputMessage}}</p>
+          </div>
+          <div class="hidden-feedbacks">
+            <div class="one-feedback" ng-repeat="review in ctrl.company.reviews | reviewFilter">
+              <div class="feedback-hat">
+                <p class="feedback-name" ng-class="ctrl.getRaiting(review.rating)">{{review.contactPerson}}</p>
+                <p class="feedback-date grey">{{review.createDate | date : 'dd.MM.yy'}}</p>
+              </div>
+              <p class="feedback-text common-text">{{review.notificationInputMessage}}</p>
+            </div>
+          </div><a class="grey-btn" id="showMoreFeedbacks" href="" ng-show="ctrl.company.reviews.length &gt; 3">Показать больше отзывов</a>
         </div>
+      </div>
     </div>
-    <footer class="block page-footer">
-        <div class="content"><a href="#"><img class="footer-logo" src="img/logo_white.svg"></a>
+        <footer class="block page-footer">
+          <div class="content"><a href="#"><img class="footer-logo" src="img/logo_white.svg"></a>
             <div class="footer-cols">
-                <ul class="footer-col">
-                    <li><a href="index.html#videoBlock" target="_blank">Как это работает?</a></li>
-                    <li><a href="index.html#companies" target="_blank">Компании-партнеры</a></li>
-                    <li><a href="index.html#blog" target="_blank">Блог</a></li>
-                </ul>
-                <ul class="footer-col wm">
-                    <li><a href="#">СМИ о нас</a></li>
-                    <li><a href="#">FAQ</a></li>
-                </ul>
-                <ul class="footer-col">
-                    <li>
-                        <p>Напишите нам</p>
-                    </li>
-                    <li><a class="pink-link" href="mailto: friends@barterme.ru">friends@barterme.ru</a></li>
-                </ul>
-                <ul class="footer-col right-align wm">
-                    <li><a href="#">Присоединяйтесь</a></li>
-                    <li>
-                        <div class="sn"><a class="vk" href="#" target="_blank"></a><a class="fb" href="#"
-                                                                                      target="_blank"></a><a
-                                class="inst" href="#" target="_blank"></a></div>
-                    </li>
-                </ul>
+              <ul class="footer-col">
+                <li><a href="index.html#videoBlock" target="_blank">Как это работает?</a></li>
+                <li><a href="index.html#companies" target="_blank">Компании-партнеры</a></li>
+                <li><a href="index.html#blog" target="_blank">Блог</a></li>
+              </ul>
+              <ul class="footer-col wm">
+                <li><a href="#">СМИ о нас</a></li>
+                <li><a href="#">FAQ</a></li>
+              </ul>
+              <ul class="footer-col">
+                <li>
+                  <p>Напишите нам</p>
+                </li>
+                <li><a class="pink-link" href="mailto: friends@barterme.ru">friends@barterme.ru</a></li>
+              </ul>
+              <ul class="footer-col right-align wm">
+                <li><a href="#">Присоединяйтесь</a></li>
+                <li>
+                  <div class="sn"><a class="vk" href="#" target="_blank"></a><a class="fb" href="#" target="_blank"></a><a class="inst" href="#" target="_blank"></a></div>
+                </li>
+              </ul>
             </div>
             <div class="clearfix"></div>
-        </div>
-        <p class="copyright">BarterMe, 2018</p>
-    </footer>
-</main>
-<script src="js/main.js"></script>
+          </div>
+          <p class="copyright">BarterMe, 2018</p>
+        </footer>
+  </main>
+  <script src="js/main.js"></script>
 </body>

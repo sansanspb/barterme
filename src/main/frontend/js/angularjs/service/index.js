@@ -9,4 +9,5 @@ angular.module('barterme')
     .service('CustomService', require('./custom_service.js'))
     .service('ReviewService', require('./review_service.js'))
     .service('PreloaderService', require('./preloader_service.js'))
-    .service('OrderService', require('./order_service.js'));
+    .service('OrderService', require('./order_service.js'))
+    .service('ChatService', require('./chat_service.js'));

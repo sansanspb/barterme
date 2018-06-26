@@ -155,10 +155,6 @@ $(document).ready(function () {
 
     // Chat
 
-    $('.close-chat').click(function () {
-        $('.chat-wrapper').addClass('hidden');
-    })
-
     // Cabinet
 
     $('.ok').click(function () {
