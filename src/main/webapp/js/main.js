@@ -599,6 +599,16 @@ module.exports = function ($scope, CompanyService, CategoriesService, ReviewServ
 
     function sendPartner() {
         CompanyService.sendPartner($('#companyId').val()).then(function (result) {
+            CompanyService.getPartners().then(function (result) {
+                self.company.partners = result;
+                for (var i = 0; i < self.company.partners.length; i++) {
+                    var partner = self.company.partners[i];
+                    if (partner.receiverId == self.company.companyId || partner.senderId == self.company.companyId){
+                        self.company.isWait = true;
+                        break;
+                    }
+                }
+            });
         });
     }
 
@@ -617,6 +627,16 @@ module.exports = function ($scope, CompanyService, CategoriesService, ReviewServ
                 for (var i = 0; i < result.length; i++) {
                     if (compId == result[i].companyId) {
                         self.company = result[i];
+                        CompanyService.getPartners().then(function (result) {
+                            self.company.partners = result;
+                            for (var i = 0; i < self.company.partners.length; i++) {
+                                var partner = self.company.partners[i];
+                                if (partner.receiverId == self.company.companyId || partner.senderId == self.company.companyId){
+                                    self.company.isWait = true;
+                                    break;
+                                }
+                            }
+                        });
                         self.getCategories(compId);
                         self.getFavorites();
                         self.getRegions();
@@ -2405,6 +2425,14 @@ $(document).ready(function () {
         $('.hidden-feedbacks').fadeToggle();
     })
 
+    // Change Password
+    $(".change-password").click(function (chP) {
+        chP.preventDefault();
+        var text = $(this).text();
+        $(this).text(
+            text == "Изменить пароль" ? "Сохранить пароль" : "Изменить пароль");
+        $('.pass-line').fadeToggle();
+    })
 
     // Open Order Form
 

@@ -29,8 +29,8 @@ block content
                         | Заполните обязательные поля,
                         br
                         |  чтобы получить доступ к нашей базе партнеров
-
-                    a.pink-link.editcab(href='' ng-click="ctrl.saveCompany()") Сохранить
+                    .edit-log-btns
+                        a.pink-link.editcab(href='' ng-click="ctrl.saveCompany()") Сохранить
 
                 .cabinet-hat.edit
                     .img-wrapper.cab
@@ -43,17 +43,28 @@ block content
                                 a.ava-btn.delete-ava(href='#') Удалить
                     .cabinet-hat-info
                         .one-line
-                            span.grey.label-like Компания
-                            input.cab-edit-input.full-i(placeholder='Название компании', ng-model="ctrl.company.caption")
-                        .one-line
                             span.grey Город:
                             span.pink.editgeo {{ctrl.getRegionById()}}
+                        .one-line
+                            span.grey.label-like Компания
+                            input.cab-edit-input.full-i(placeholder='Название компании', ng-model="ctrl.company.caption")
                         .one-line
                             span.grey.label-like Контактное лицо:
                             input.cab-edit-input.full-i(placeholder='Введите имя', ng-model="ctrl.company.contactPerson")
                         .one-line
                             span.grey.label-like Почта:
                             input.cab-edit-input.full-i(placeholder='Введите почту', ng-model="ctrl.company.contactEmail")
+                        .one-line.pass-line
+                            span.grey.label-like Старый пароль:
+                            input.cab-edit-input.full-i(type="password", placeholder='')
+                        .one-line.pass-line
+                            span.grey.label-like Новый пароль:
+                            input.cab-edit-input.full-i(type="password", placeholder='')
+                        .one-line.pass-line
+                            span.grey.label-like Пароль еще раз:
+                            input.cab-edit-input.full-i(type="password", placeholder='')
+                        .one-line
+                            a.pink-link.change-password(href="#") Изменить пароль
 
 
                 .cabinet-main-part

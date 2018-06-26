@@ -320,7 +320,8 @@
           </ul>
           <div class="nopic-header cabinet left-align">
             <h2 class="page-title">Привет, {{ctrl.company.caption}}!</h2>
-            <p class="page-undertitle grey">Заполните обязательные поля,<br> чтобы получить доступ к нашей базе партнеров</p><a class="pink-link editcab" href="" ng-click="ctrl.saveCompany()">Сохранить</a>
+            <p class="page-undertitle grey">Заполните обязательные поля,<br> чтобы получить доступ к нашей базе партнеров</p>
+            <div class="edit-log-btns"><a class="pink-link editcab" href="" ng-click="ctrl.saveCompany()">Сохранить</a></div>
           </div>
           <div class="cabinet-hat edit">
             <div class="img-wrapper cab">
@@ -331,16 +332,26 @@
               </div>
             </div>
             <div class="cabinet-hat-info">
+              <div class="one-line"><span class="grey">Город:</span><span class="pink editgeo">{{ctrl.getRegionById()}}</span></div>
               <div class="one-line"><span class="grey label-like">Компания</span>
                 <input class="cab-edit-input full-i" placeholder="Название компании" ng-model="ctrl.company.caption">
               </div>
-              <div class="one-line"><span class="grey">Город:</span><span class="pink editgeo">{{ctrl.getRegionById()}}</span></div>
               <div class="one-line"><span class="grey label-like">Контактное лицо:</span>
                 <input class="cab-edit-input full-i" placeholder="Введите имя" ng-model="ctrl.company.contactPerson">
               </div>
               <div class="one-line"><span class="grey label-like">Почта:</span>
                 <input class="cab-edit-input full-i" placeholder="Введите почту" ng-model="ctrl.company.contactEmail">
               </div>
+              <div class="one-line pass-line"><span class="grey label-like">Старый пароль:</span>
+                <input class="cab-edit-input full-i" type="password" placeholder="">
+              </div>
+              <div class="one-line pass-line"><span class="grey label-like">Новый пароль:</span>
+                <input class="cab-edit-input full-i" type="password" placeholder="">
+              </div>
+              <div class="one-line pass-line"><span class="grey label-like">Пароль еще раз:</span>
+                <input class="cab-edit-input full-i" type="password" placeholder="">
+              </div>
+              <div class="one-line"><a class="pink-link change-password" href="#">Изменить пароль</a></div>
             </div>
           </div>
           <div class="cabinet-main-part">

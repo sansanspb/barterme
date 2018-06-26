@@ -433,6 +433,14 @@ $(document).ready(function () {
         $('.hidden-feedbacks').fadeToggle();
     })
 
+    // Change Password
+    $(".change-password").click(function (chP) {
+        chP.preventDefault();
+        var text = $(this).text();
+        $(this).text(
+            text == "Изменить пароль" ? "Сохранить пароль" : "Изменить пароль");
+        $('.pass-line').fadeToggle();
+    })
 
     // Open Order Form
 

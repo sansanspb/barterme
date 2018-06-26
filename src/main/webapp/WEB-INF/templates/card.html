@@ -120,7 +120,7 @@
               <div class="add-to-favs" ng-class="{pressed : ctrl.company.isFavorite}" ng-click="ctrl.favoriteClick()"></div>
               <div class="card-slider"><img src="image/get/{{ctrl.company.photoPath}}"><img src="image/get/{{ctrl.company.photoPath}}"><img src="image/get/{{ctrl.company.photoPath}}"><img src="image/get/{{ctrl.company.photoPath}}"></div>
               <div class="card-info">
-                <button class="pink-btn big" id="goPartner" ng-click="ctrl.sendPartner()">Запартнериться</button>
+                <button class="pink-btn big" id="goPartner" ng-click="ctrl.sendPartner()">{{ctrl.company.isWait ? 'Жду ответа' : 'Запартнериться'}}</button>
                 <p class="raiting-mark" ng-class="ctrl.getRaiting(ctrl.company.rating)">{{ctrl.company.rating}}</p>
                 <h2 class="card-info-title">Кто мои клиенты?</h2>
                 <div class="ci-col">

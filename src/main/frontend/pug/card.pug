@@ -39,7 +39,7 @@ block content
                             img(src='image/get/{{ctrl.company.photoPath}}')
                             img(src='image/get/{{ctrl.company.photoPath}}')
                         .card-info
-                            button.pink-btn.big#goPartner(ng-click="ctrl.sendPartner()") Запартнериться
+                            button.pink-btn.big#goPartner(ng-click="ctrl.sendPartner()") {{ctrl.company.isWait ? 'Жду ответа' : 'Запартнериться'}}
                             p.raiting-mark(ng-class="ctrl.getRaiting(ctrl.company.rating)") {{ctrl.company.rating}}
                             h2.card-info-title Кто мои клиенты?
                             .ci-col

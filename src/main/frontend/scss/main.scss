@@ -1788,7 +1788,10 @@ main {
     margin-left: 40px;
   }
 }
-
+.cabinet-hat.edit {
+  .cabinet-hat-info, .img-wrapper.hat {vertical-align: top;}
+}
+.pass-line {display: none;}
 .one-line {
   margin-bottom: 10px;
   &:last-of-type {
@@ -2139,9 +2142,19 @@ main {
 .cabinet.left-align {
   width: 100%;
 }
-
-.editcab {
+.edit-log-btns {
   position: absolute;
+  right: 0; top: 12px;
+  text-align: right;
+  .pink-link {
+    text-decoration: none;
+    display: block;
+    &:first-of-type {margin-bottom: 10px;}
+  }
+  a:hover {text-decoration: underline;}
+}
+.editcab {
+  position: static;
   right: 0;
   top: 12px;
   text-decoration: none;
@@ -2578,6 +2591,8 @@ main {
     color: $grey;
   }
 }
+
+.change-password {margin-top: 20px; display: block}
 
 /*MEDIA*/
 
@@ -3287,6 +3302,9 @@ main {
   .nofav-block.norequests {
     margin: 35px 0 40px 0;
   }
+  .edit-log-btns {
+    position: static; width: 100%;
+  }
   .editcab {
     position: static;
     color: #fff;
@@ -3304,6 +3322,10 @@ main {
       text-decoration: none
     }
     margin-top: 30px;
+  }
+  .logout {
+    width: 100%; display: block; height: 51px; line-height: 51px;
+    border-radius: 50px; border: 1px solid $grey-border; text-align: center;
   }
   .cabinet-hat {
     .cabinet-hat-info {

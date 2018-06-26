@@ -37,8 +37,9 @@ body(ng-controller="CabinetController as ctrl")
                             | Здесь вся информация о вашей компании.
                             br
                             |  Следите за её точностью и актуальностью.
-
-                        a.pink-link.editcab(href='cabinet-edit') Редактировать
+                        .edit-log-btns
+                            a.pink-link.editcab(href='cabinet-edit') Редактировать
+                            a.grey.logout(href='#') Выйти
 
                     .cabinet-hat.static
                         .img-wrapper
