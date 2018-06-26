@@ -196,7 +196,7 @@ body(ng-controller="CabinetController as ctrl")
                                                     span.raiting-word.grey(ng-if="partner.company.rating") Рейтинг
                                                     p.raiting-mark.small(ng-class="ctrl.getRaiting(partner.company.rating)") {{partner.company.rating}}
                                             .request-btns
-                                                <!--button.pink-btn.write Написать-->
+                                                button.pink-btn.write(ng-click="ctrl.openChat(partner)") Написать
                                                 button.grey-btn.finish-partner(ng-click="ctrl.preCompletePartner($event, partner)") Завершить партнерство
 
                                     .cab-partners-block#done
@@ -209,8 +209,8 @@ body(ng-controller="CabinetController as ctrl")
                                                     p.common-text {{partner.company.about}}
                                                     span.raiting-word.grey(ng-if="partner.company.rating") Рейтинг
                                                     p.raiting-mark.small(ng-class="ctrl.getRaiting(partner.company.rating)") {{partner.company.rating}}
-                                            <!--.request-btns
-                                                button.pink-btn.write Написать-->
+                                            .request-btns
+                                                button.pink-btn.write(ng-click="ctrl.openChat(partner)") Написать
 
 
             .block.cabinet-feedbacks

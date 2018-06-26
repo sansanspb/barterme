@@ -7,3 +7,4 @@ var barterme = angular.module('barterme', []);
 require('./controller');
 require('./service');
 require('./filter');
+require('./directive');

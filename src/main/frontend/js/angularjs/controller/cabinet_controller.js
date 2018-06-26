@@ -1,6 +1,6 @@
 'use sctrict';
 
-module.exports = function ($scope, CompanyService, AuthService, CategoriesService, MarketingChannelsService, CustomService, ReviewService) {
+module.exports = function ($scope, CompanyService, AuthService, CategoriesService, MarketingChannelsService, CustomService, ReviewService, ChatService) {
     var $scope = self = this;
 
     self.VOC = ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Э', 'Ю', 'Я'];
@@ -43,6 +43,7 @@ module.exports = function ($scope, CompanyService, AuthService, CategoriesServic
     self.getCompanyById = getCompanyById;
     self.removeCompanyFromFavorite = removeCompanyFromFavorite;
     self.uploadImage = uploadImage;
+    self.openChat = openChat;
 
     self.getInfo();
     self.getRegions();
@@ -342,5 +343,20 @@ module.exports = function ($scope, CompanyService, AuthService, CategoriesServic
             }
         });
         inp.click();
+    }
+
+    function openChat(partner){
+
+        var newPartner = {
+            company : partner.company,
+            senderId : partner.senderId,
+            receiverId : partner.receiverId
+        }
+        if (partner.receiverId == self.company.companyId){
+            newPartner.receiverId = partner.senderId;
+            newPartner.senderId = self.company.companyId;
+        }
+        ChatService.setCurrentChatPartner(newPartner);
+        $('.chat-wrapper').fadeIn();
     }
 };
