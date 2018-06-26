@@ -23,8 +23,8 @@ public class ChatRepository extends AbstractRepository<Long, ChatMessageEntity> 
         Root<ChatMessageEntity> c = q.from(ChatMessageEntity.class);
 
         q.where(cb.and(cb.equal(
-                c.get("senderId"), senderId),
-                cb.equal(c.get("receiverId"), receiverId))
+                c.get("fkSenderId"), senderId),
+                cb.equal(c.get("fkReceiverId"), receiverId))
         );
 
         TypedQuery<ChatMessageEntity> query = entityManager.createQuery(q);
