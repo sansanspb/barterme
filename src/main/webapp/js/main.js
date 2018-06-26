@@ -477,7 +477,7 @@ module.exports = function ($scope, ChatService, $interval) {
     self.sendMsg = sendMsg;
     self.getMsg = getMsg;
     self.disconnectChat = disconnectChat;
-    self.chat = $interval(self.getMsg, 5000);
+    self.chat = $interval(self.getMsg, 1000);
 
     function sendMsg(){
         ChatService.sendMsg(self.currentChatPartner.senderId, self.currentChatPartner.receiverId, self.chatMessage).then(function (result) {
@@ -753,13 +753,13 @@ module.exports = function ($scope, CompanyService, AuthService, ChatService) {
             ChatService.setCurrentChatPartner(newPartner);
             $('.chat-wrapper').fadeIn();
         }
-        /*CompanyService.setPartnerNotificationReaded(notif.partnersNotificationId).then(function (result) {
+        CompanyService.setPartnerNotificationReaded(notif.partnersNotificationId).then(function (result) {
             CompanyService.getOthersCompanies().then(function (result) {
                 CompanyService.getPartnerNotifications().then(function (result) {
                     self.partnerNotifications = CompanyService.getNotifications();
                 });
             });
-        });*/
+        });
     }
 
     function showLogin() {
