@@ -2,7 +2,7 @@
     .chat-wrapper(ng-controller="ChatController as Cctrl" ng-class="{'shrinked' : Cctrl.currentChatPartner.isClosed, 'opened' : Cctrl.currentChatPartner, 'hidden' : !Cctrl.currentChatPartner}")
         .chat-hat
             a.img-wrapper.chat-img-wrapper(href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&companyId={{Cctrl.currentChatPartner.company.companyId}}")
-                img(src='img/chat-ava.jpg')
+                img(src='image/get/{{Cctrl.currentChatPartner.company.photoPath}}')
             h3.chat-title {{Cctrl.currentChatPartner.company.caption}}
             .close-chat(ng-click="Cctrl.disconnectChat()")
             .shrink-chat(ng-click="Cctrl.shrinkChat()")

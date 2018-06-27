@@ -54,7 +54,7 @@
     <main ng-cloak ng-controller="CompanyController as ctrl">
       <div class="chats">
         <div class="chat-wrapper" ng-controller="ChatController as Cctrl" ng-class="{'shrinked' : Cctrl.currentChatPartner.isClosed, 'opened' : Cctrl.currentChatPartner, 'hidden' : !Cctrl.currentChatPartner}">
-          <div class="chat-hat"><a class="img-wrapper chat-img-wrapper" href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&amp;subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&amp;companyId={{Cctrl.currentChatPartner.company.companyId}}"><img src="img/chat-ava.jpg"></a>
+          <div class="chat-hat"><a class="img-wrapper chat-img-wrapper" href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&amp;subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&amp;companyId={{Cctrl.currentChatPartner.company.companyId}}"><img src="image/get/{{Cctrl.currentChatPartner.company.photoPath}}"></a>
             <h3 class="chat-title">{{Cctrl.currentChatPartner.company.caption}}</h3>
             <div class="close-chat" ng-click="Cctrl.disconnectChat()"></div>
             <div class="shrink-chat" ng-click="Cctrl.shrinkChat()">
