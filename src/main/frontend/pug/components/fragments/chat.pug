@@ -1,5 +1,5 @@
 .chats
-    .chat-wrapper(ng-controller="ChatController as Cctrl" ng-class="{'shrinked' : Cctrl.currentChatPartner.isClosed}")
+    .chat-wrapper(ng-controller="ChatController as Cctrl" ng-class="{'shrinked' : Cctrl.currentChatPartner.isClosed, 'opened' : Cctrl.currentChatPartner, 'hidden' : !Cctrl.currentChatPartner}")
         .chat-hat
             a.img-wrapper.chat-img-wrapper(href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&companyId={{Cctrl.currentChatPartner.company.companyId}}")
                 img(src='img/chat-ava.jpg')
@@ -16,3 +16,4 @@
                         .bubble-message(ng-class="{'from' : message.senderId == Cctrl.currentChatPartner.senderId, 'to' : message.receiverId == Cctrl.currentChatPartner.senderId}") {{message.message}}
         .chat-texting-area
             textarea.chat-textarea.autoExpand(placeholder="Ваше сообщение", rows='1', data-min-rows='1' ng-model="Cctrl.chatMessage" ng-Enter="Cctrl.sendMsg()")
+            .chat-btn(ng-click="Cctrl.sendMsg()")

@@ -15,7 +15,8 @@ module.exports = function ($scope, ChatService, $interval) {
     function sendMsg(){
         ChatService.sendMsg(self.currentChatPartner.senderId, self.currentChatPartner.receiverId, self.chatMessage).then(function (result) {
             self.onEnter = true;
-           self.getMsg();
+            self.chatMessage = '';
+            self.getMsg();
         });
     }
 
@@ -92,7 +93,6 @@ module.exports = function ($scope, ChatService, $interval) {
                         self.currentChatPartner.isClosed = false;
                         window.localStorage.setItem('chatPartner', JSON.stringify(self.currentChatPartner));
                     }
-                    $('.chat-wrapper').fadeIn();
                 }
                 self.firstload = false;
                 self.onEnter = false;
@@ -102,7 +102,8 @@ module.exports = function ($scope, ChatService, $interval) {
 
     function disconnectChat(){
         window.localStorage.removeItem('chatPartner');
-        $('.chat-wrapper').fadeOut(200);
+        self.currentChatPartner = undefined;
+        ChatService.setCurrentChatPartner(self.currentChatPartner);
     }
 
     function shrinkChat(){
