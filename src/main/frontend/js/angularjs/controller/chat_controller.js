@@ -9,6 +9,7 @@ module.exports = function ($scope, ChatService, $interval) {
     self.sendMsg = sendMsg;
     self.getMsg = getMsg;
     self.disconnectChat = disconnectChat;
+    self.shrinkChat = shrinkChat;
     self.chat = $interval(self.getMsg, 1000);
 
     function sendMsg(){
@@ -20,6 +21,11 @@ module.exports = function ($scope, ChatService, $interval) {
 
     function getMsg(){
         self.currentChatPartner = ChatService.getCurrentChatPartner();
+        if (!self.currentChatPartner){
+            if (window.localStorage.getItem('chatPartner') != null) {
+                ChatService.setCurrentChatPartner(JSON.parse(window.localStorage.getItem('chatPartner')));
+            }
+        }
         if (self.currentChatPartner){
             Promise.all([
                 ChatService.getMsg(self.currentChatPartner.senderId, self.currentChatPartner.receiverId, 0).then(function (result) {
@@ -82,18 +88,25 @@ module.exports = function ($scope, ChatService, $interval) {
                     $('.chat-scroll').mCustomScrollbar("scrollTo", "bottom");
                 }
                 if (self.firstload){
+                    if (window.localStorage.getItem('chatPartner') == null){
+                        self.currentChatPartner.isClosed = false;
+                        window.localStorage.setItem('chatPartner', JSON.stringify(self.currentChatPartner));
+                    }
                     $('.chat-wrapper').fadeIn();
                 }
                 self.firstload = false;
                 self.onEnter = false;
-
             });
-
-
         }
     }
 
     function disconnectChat(){
+        window.localStorage.removeItem('chatPartner');
         $('.chat-wrapper').fadeOut(200);
+    }
+
+    function shrinkChat(){
+        self.currentChatPartner.isClosed = !self.currentChatPartner.isClosed;
+        window.localStorage.setItem('chatPartner', JSON.stringify(self.currentChatPartner));
     }
 };

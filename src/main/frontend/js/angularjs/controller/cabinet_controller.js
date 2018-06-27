@@ -266,7 +266,16 @@ module.exports = function ($scope, CompanyService, AuthService, CategoriesServic
     function receivePartner(partner) {
         CompanyService.receivePartner(partner.senderId).then(function (result) {
             self.getPartners();
-            // TODO: show chat fragment here
+            var newPartner = {
+                company : partner.company,
+                senderId : partner.senderId,
+                receiverId : partner.receiverId
+            }
+            if (partner.receiverId == self.company.companyId){
+                newPartner.receiverId = partner.senderId;
+                newPartner.senderId = self.company.companyId;
+            }
+            ChatService.setCurrentChatPartner(newPartner);
         });
     }
 
