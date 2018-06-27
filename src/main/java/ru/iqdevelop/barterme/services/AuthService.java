@@ -90,6 +90,17 @@ public class AuthService {
         return user.getRoles().stream().map(RoleEntity::getTitle).collect(Collectors.toList());
     }
 
+    @Transactional
+    public void changePassword(String email, String password, String newPassword) {
+        UserEntity user = userDao.findByEmail(email);
+        String oldPassword = user.getPassword();
+        if (oldPassword.equals(password)) {
+            user.setPassword(newPassword);
+        } else {
+            throw new RuntimeException("Неверный старый пароль");
+        }
+    }
+
     private void validateEmail(RegistrationModel registrationModel) {
         List<UserEntity> users = userDao.getAll();
 
