@@ -2468,7 +2468,7 @@ main {
 }
 
 .chat-wrapper {
-  position: fixed;
+  float: right;
   bottom: 0;
   right: 37px;
   width: 445px;
@@ -2489,6 +2489,15 @@ main {
     .close-chat, .shrink-chat {height: 50px;}
     .chat-title {margin-left: 22px; height: 50px; line-height: 50px;}
   }
+}
+.chat-container{
+  position: fixed;
+  width: 100%;
+  z-index: 2000;
+  bottom: 0;
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+  overflow: hidden;
 }
 .chat-hat {
   background: $pink;

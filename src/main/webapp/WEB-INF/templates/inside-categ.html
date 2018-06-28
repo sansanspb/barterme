@@ -53,30 +53,31 @@
           </div>
         </header>
     <main ng-controller="CompanyController as ctrl">
-      <div class="chats">
-        <div class="chat-wrapper" ng-controller="ChatController as Cctrl" ng-class="{'shrinked' : Cctrl.currentChatPartner.isClosed, 'opened' : Cctrl.currentChatPartner, 'hidden' : !Cctrl.currentChatPartner}">
-          <div class="chat-hat"><a class="img-wrapper chat-img-wrapper" href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&amp;subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&amp;companyId={{Cctrl.currentChatPartner.company.companyId}}"><img src="image/get/{{Cctrl.currentChatPartner.company.photoPath}}"></a>
-            <h3 class="chat-title">{{Cctrl.currentChatPartner.company.caption}}</h3>
-            <div class="close-chat" ng-click="Cctrl.disconnectChat()"></div>
-            <div class="shrink-chat" ng-click="Cctrl.shrinkChat()">
-              <div class="shrink-chat-line" ng-class="{'opened' : Cctrl.currentChatPartner.isClosed}"></div>
+      <div class="chat-container" ng-controller="ChatController as Cctrl" ng-class="{'opened' : Cctrl.chats.length != 0, 'hidden' : Cctrl.chats.length == 0}">
+        <div class="chat-wrapper opened" ng-repeat="chat in Cctrl.currentChatPartners" ng-class="{'shrinked' : chat.isClosed}">
+          <div class="chat-hat"><a class="img-wrapper chat-img-wrapper" href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&amp;subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&amp;companyId={{chat.company.companyId}}"><img src="image/get/{{chat.company.photoPath}}"></a>
+            <h3 class="chat-title">{{chat.company.caption}}</h3>
+            <div class="close-chat" ng-click="Cctrl.disconnectChat(chat)"></div>
+            <div class="shrink-chat" ng-click="Cctrl.shrinkChat(chat)">
+              <div class="shrink-chat-line" ng-class="{'opened' : chat.isClosed}"></div>
             </div>
           </div>
-          <div class="chat-scroll mCustomScrollbar">
+          <div class="chat-scroll mCustomScrollbar" id="{{chat.receiverId}}">
             <div class="chat-messages-area">
-              <div class="block-message" ng-repeat="message in Cctrl.messages">
+              <div class="block-message" ng-repeat="message in chat.messages">
                 <div class="time-bubble grey-btn" ng-show="message.showDate">{{message.sendDate | date : 'dd.MM'}}</div>
-                <div class="bubble" ng-class="{'from' : message.senderId == Cctrl.currentChatPartner.senderId, 'to' : message.receiverId == Cctrl.currentChatPartner.senderId}">
-                  <div class="bubble-message" ng-class="{'from' : message.senderId == Cctrl.currentChatPartner.senderId, 'to' : message.receiverId == Cctrl.currentChatPartner.senderId}">{{message.message}}</div>
+                <div class="bubble" ng-class="{'from' : message.senderId == chat.senderId, 'to' : message.receiverId == chat.senderId}">
+                  <div class="bubble-message" ng-class="{'from' : message.senderId == chat.senderId, 'to' : message.receiverId == chat.senderId}">{{message.message}}</div>
                 </div>
               </div>
             </div>
           </div>
           <div class="chat-texting-area">
-            <textarea class="chat-textarea autoExpand" placeholder="Ваше сообщение" rows="1" data-min-rows="1" ng-model="Cctrl.chatMessage" ng-enter="Cctrl.sendMsg()"></textarea>
-            <div class="chat-btn" ng-click="Cctrl.sendMsg()"></div>
+            <textarea class="chat-textarea autoExpand" placeholder="Ваше сообщение" rows="1" data-min-rows="1" ng-model="chat.sendMessage" ng-enter="Cctrl.sendMsg(chat)"></textarea>
+            <div class="chat-btn" ng-click="Cctrl.sendMsg(chat)"></div>
           </div>
         </div>
+        <div class="clearfix"></div>
       </div>
       <div class="popup-wrapper" id="submitRequestPopupWrapper">
         <div class="popup small-popup" id="submitRequestPopup"><img class="close-popup" id="closeRequest" src="img/close-popup.svg">

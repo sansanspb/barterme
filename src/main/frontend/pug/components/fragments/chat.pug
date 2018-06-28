@@ -1,19 +1,20 @@
-.chats
-    .chat-wrapper(ng-controller="ChatController as Cctrl" ng-class="{'shrinked' : Cctrl.currentChatPartner.isClosed, 'opened' : Cctrl.currentChatPartner, 'hidden' : !Cctrl.currentChatPartner}")
+.chat-container(ng-controller="ChatController as Cctrl" ng-class="{'opened' : Cctrl.chats.length != 0, 'hidden' : Cctrl.chats.length == 0}")
+    .chat-wrapper.opened(ng-repeat="chat in Cctrl.currentChatPartners" ng-class="{'shrinked' : chat.isClosed}")
         .chat-hat
-            a.img-wrapper.chat-img-wrapper(href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&companyId={{Cctrl.currentChatPartner.company.companyId}}")
-                img(src='image/get/{{Cctrl.currentChatPartner.company.photoPath}}')
-            h3.chat-title {{Cctrl.currentChatPartner.company.caption}}
-            .close-chat(ng-click="Cctrl.disconnectChat()")
-            .shrink-chat(ng-click="Cctrl.shrinkChat()")
-                .shrink-chat-line(ng-class="{'opened' : Cctrl.currentChatPartner.isClosed}")
+            a.img-wrapper.chat-img-wrapper(href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&companyId={{chat.company.companyId}}")
+                img(src='image/get/{{chat.company.photoPath}}')
+            h3.chat-title {{chat.company.caption}}
+            .close-chat(ng-click="Cctrl.disconnectChat(chat)")
+            .shrink-chat(ng-click="Cctrl.shrinkChat(chat)")
+                .shrink-chat-line(ng-class="{'opened' : chat.isClosed}")
 
-        .chat-scroll.mCustomScrollbar
+        .chat-scroll.mCustomScrollbar(id="{{chat.receiverId}}")
             .chat-messages-area
-                .block-message(ng-repeat="message in Cctrl.messages")
+                .block-message(ng-repeat="message in chat.messages")
                     .time-bubble.grey-btn(ng-show="message.showDate") {{message.sendDate | date : 'dd.MM'}}
-                    .bubble(ng-class="{'from' : message.senderId == Cctrl.currentChatPartner.senderId, 'to' : message.receiverId == Cctrl.currentChatPartner.senderId}")
-                        .bubble-message(ng-class="{'from' : message.senderId == Cctrl.currentChatPartner.senderId, 'to' : message.receiverId == Cctrl.currentChatPartner.senderId}") {{message.message}}
+                    .bubble(ng-class="{'from' : message.senderId == chat.senderId, 'to' : message.receiverId == chat.senderId}")
+                        .bubble-message(ng-class="{'from' : message.senderId == chat.senderId, 'to' : message.receiverId == chat.senderId}") {{message.message}}
         .chat-texting-area
-            textarea.chat-textarea.autoExpand(placeholder="Ваше сообщение", rows='1', data-min-rows='1' ng-model="Cctrl.chatMessage" ng-Enter="Cctrl.sendMsg()")
-            .chat-btn(ng-click="Cctrl.sendMsg()")
+            textarea.chat-textarea.autoExpand(placeholder="Ваше сообщение", rows='1', data-min-rows='1' ng-model="chat.sendMessage" ng-Enter="Cctrl.sendMsg(chat)")
+            .chat-btn(ng-click="Cctrl.sendMsg(chat)")
+    .clearfix
