@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ru.iqdevelop.barterme.models.common.AnswerMessage;
 import ru.iqdevelop.barterme.services.ChatService;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/chat")
 public class ChatController {
@@ -34,5 +36,22 @@ public class ChatController {
         chatService.sendMessage(senderId, receiverId, message);
 
         return AnswerMessage.getSuccessMessage();
+    }
+
+    /**
+     * Возвращает id пользователей, с которыми у данного пользователя
+     * есть чат
+     *
+     * @param email email текущего пользователя
+     * @return список id пользователей
+     */
+    @RequestMapping(value = "/getChats", method = RequestMethod.GET)
+    public @ResponseBody
+    AnswerMessage getChats(@RequestParam(name = "email") String email) {
+        try {
+            return AnswerMessage.getSuccessMessage(chatService.getChats(email));
+        } catch (Exception e) {
+            return AnswerMessage.getFailMessage("Не удалось получить чаты");
+        }
     }
 }

@@ -11,6 +11,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class ChatRepository extends AbstractRepository<Long, ChatMessageEntity> {
@@ -49,4 +50,29 @@ public class ChatRepository extends AbstractRepository<Long, ChatMessageEntity> 
         }
     }
 
+    public List<Long> getChats(Long id) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<ChatMessageEntity> q = cb.createQuery(ChatMessageEntity.class);
+        Root<ChatMessageEntity> c = q.from(ChatMessageEntity.class);
+
+        q.where(cb.or(
+                cb.equal(c.get("fkSenderId"), id),
+                cb.equal(c.get("fkReceiverId"), id)
+                )
+        );
+
+        TypedQuery<ChatMessageEntity> query = entityManager.createQuery(q);
+        List<ChatMessageEntity> rsQuery = query.getResultList();
+
+        return rsQuery.stream()
+                .map(i -> {
+                    if (i.getFkReceiverId().equals(id)) {
+                        return i.getFkSenderId();
+                    } else {
+                        return i.getFkReceiverId();
+                    }
+                })
+                .distinct()
+                .collect(Collectors.toList());
+    }
 }

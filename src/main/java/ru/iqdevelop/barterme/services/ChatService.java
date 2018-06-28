@@ -8,8 +8,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iqdevelop.barterme.entities.ChatMessageEntity;
 import ru.iqdevelop.barterme.entities.CompanyEntity;
+import ru.iqdevelop.barterme.entities.UserEntity;
+import ru.iqdevelop.barterme.models.CurrentChatsModel;
 import ru.iqdevelop.barterme.repositories.ChatRepository;
 import ru.iqdevelop.barterme.repositories.CompanyRepository;
+import ru.iqdevelop.barterme.repositories.UserRepository;
 
 import java.util.List;
 
@@ -24,6 +27,9 @@ public class ChatService {
 
     @Autowired
     private CompanyRepository companyRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Transactional
     public List<ChatMessageEntity> getMessages(Long sender, Long receiver, Integer stage) {
@@ -46,5 +52,12 @@ public class ChatService {
         msgEntity.setMessage(msg);
 
         chatRepository.put(msgEntity);
+    }
+
+    @Transactional
+    public CurrentChatsModel getChats(String email) {
+        UserEntity user = userRepository.findByEmail(email);
+        long id = user.getUserId();
+        return new CurrentChatsModel(id, chatRepository.getChats(id));
     }
 }
