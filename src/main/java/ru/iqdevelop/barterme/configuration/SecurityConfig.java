@@ -33,8 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
         http.authorizeRequests()
-                .antMatchers("/cabinet*")
-                .access("hasAnyRole('ROLE_USER')");
+                .antMatchers("/cabinet*", "/chat/**")
+                .access("hasAnyRole('ROLE_USER', 'ROLE_CONFIRMED_USER')");
 //                .access("hasAnyRole('ROLE_CONFIRMED_USER')")
 //                .and()
 //                .formLogin()
