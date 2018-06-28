@@ -348,16 +348,17 @@
               <div class="one-line"><span class="grey label-like">Почта:</span>
                 <input class="cab-edit-input full-i" placeholder="Введите почту" ng-model="ctrl.company.contactEmail">
               </div>
-              <div class="one-line pass-line"><span class="grey label-like">Старый пароль:</span>
-                <input class="cab-edit-input full-i" type="password" placeholder="">
+              <div class="one-line pass-line" ng-show="ctrl.changePasswordShow"><span class="grey label-like">Старый пароль:</span>
+                <input class="cab-edit-input full-i" type="password" placeholder="" ng-model="ctrl.oldPassword">
               </div>
-              <div class="one-line pass-line"><span class="grey label-like">Новый пароль:</span>
-                <input class="cab-edit-input full-i" type="password" placeholder="">
+              <div class="one-line pass-line" ng-show="ctrl.changePasswordShow"><span class="grey label-like">Новый пароль:</span>
+                <input class="cab-edit-input full-i" type="password" placeholder="" ng-model="ctrl.newPassword1">
               </div>
-              <div class="one-line pass-line"><span class="grey label-like">Пароль еще раз:</span>
-                <input class="cab-edit-input full-i" type="password" placeholder="">
+              <div class="one-line pass-line" ng-show="ctrl.changePasswordShow"><span class="grey label-like">Пароль еще раз:</span>
+                <input class="cab-edit-input full-i" type="password" placeholder="" ng-model="ctrl.newPassword2">
               </div>
-              <div class="one-line"><a class="pink-link change-password" href="#">Изменить пароль</a></div>
+              <div class="one-line" ng-show="ctrl.changePasswordShow"><a class="pink-link change-password" href="" ng-click="ctrl.changePassword()">Сохранить пароль</a></div>
+              <div class="one-line" ng-show="!ctrl.changePasswordShow"><a class="pink-link change-password" href="" ng-click="ctrl.changePasswordShow = true;">Изменить пароль</a></div>
             </div>
           </div>
           <div class="cabinet-main-part">

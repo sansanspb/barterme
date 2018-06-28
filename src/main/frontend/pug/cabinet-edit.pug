@@ -54,17 +54,19 @@ block content
                         .one-line
                             span.grey.label-like Почта:
                             input.cab-edit-input.full-i(placeholder='Введите почту', ng-model="ctrl.company.contactEmail")
-                        .one-line.pass-line
+                        .one-line.pass-line(ng-show="ctrl.changePasswordShow")
                             span.grey.label-like Старый пароль:
-                            input.cab-edit-input.full-i(type="password", placeholder='')
-                        .one-line.pass-line
+                            input.cab-edit-input.full-i(type="password", placeholder='' ng-model="ctrl.oldPassword")
+                        .one-line.pass-line(ng-show="ctrl.changePasswordShow")
                             span.grey.label-like Новый пароль:
-                            input.cab-edit-input.full-i(type="password", placeholder='')
-                        .one-line.pass-line
+                            input.cab-edit-input.full-i(type="password", placeholder='' ng-model="ctrl.newPassword1")
+                        .one-line.pass-line(ng-show="ctrl.changePasswordShow")
                             span.grey.label-like Пароль еще раз:
-                            input.cab-edit-input.full-i(type="password", placeholder='')
-                        .one-line
-                            a.pink-link.change-password(href="#") Изменить пароль
+                            input.cab-edit-input.full-i(type="password", placeholder='' ng-model="ctrl.newPassword2")
+                        .one-line(ng-show="ctrl.changePasswordShow")
+                            a.pink-link.change-password(href="" ng-click="ctrl.changePassword()") Сохранить пароль
+                        .one-line(ng-show="!ctrl.changePasswordShow")
+                            a.pink-link.change-password(href="" ng-click="ctrl.changePasswordShow = true;") Изменить пароль
 
 
                 .cabinet-main-part

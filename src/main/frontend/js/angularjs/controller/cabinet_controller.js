@@ -15,6 +15,7 @@ module.exports = function ($scope, CompanyService, AuthService, CategoriesServic
         '4': 'four',
         '5': 'five'
     };
+    self.changePasswordText = 'Изменить пароль';
 
     self.getFavorites = getFavorites;
     self.getInfo = getInfo;
@@ -44,6 +45,7 @@ module.exports = function ($scope, CompanyService, AuthService, CategoriesServic
     self.removeCompanyFromFavorite = removeCompanyFromFavorite;
     self.uploadImage = uploadImage;
     self.openChat = openChat;
+    self.changePassword = changePassword;
 
     self.getInfo();
     self.getRegions();
@@ -366,5 +368,20 @@ module.exports = function ($scope, CompanyService, AuthService, CategoriesServic
             newPartner.senderId = self.company.companyId;
         }
         ChatService.setCurrentChatPartner(newPartner);
+    }
+
+    function changePassword(){
+        if (self.newPassword1 != self.newPassword2){
+            self.newPassword1 = '';
+            self.newPassword2 = '';
+        } else {
+            AuthService.changePassword(self.oldPassword, self.newPassword1).then(
+                function (result) {
+                    self.changePasswordShow = !self.changePasswordShow;
+                },
+                function (result) {
+                    self.oldPassword = '';
+                });
+        }
     }
 };

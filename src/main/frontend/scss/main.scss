@@ -482,10 +482,6 @@ body {
   margin: 0;
 }
 
-.mCSB_scrollTools {
-  opacity: 0 !important;
-}
-
 .one-notif {
   display: block;
   padding: 20px 20px 0 20px;
@@ -1791,7 +1787,6 @@ main {
 .cabinet-hat.edit {
   .cabinet-hat-info, .img-wrapper.hat {vertical-align: top;}
 }
-.pass-line {display: none;}
 .one-line {
   margin-bottom: 10px;
   &:last-of-type {

@@ -120,6 +120,7 @@ module.exports = function ($scope, CompanyService, AuthService, CategoriesServic
         '4': 'four',
         '5': 'five'
     };
+    self.changePasswordText = 'Изменить пароль';
 
     self.getFavorites = getFavorites;
     self.getInfo = getInfo;
@@ -149,6 +150,7 @@ module.exports = function ($scope, CompanyService, AuthService, CategoriesServic
     self.removeCompanyFromFavorite = removeCompanyFromFavorite;
     self.uploadImage = uploadImage;
     self.openChat = openChat;
+    self.changePassword = changePassword;
 
     self.getInfo();
     self.getRegions();
@@ -472,11 +474,26 @@ module.exports = function ($scope, CompanyService, AuthService, CategoriesServic
         }
         ChatService.setCurrentChatPartner(newPartner);
     }
+
+    function changePassword(){
+        if (self.newPassword1 != self.newPassword2){
+            self.newPassword1 = '';
+            self.newPassword2 = '';
+        } else {
+            AuthService.changePassword(self.oldPassword, self.newPassword1).then(
+                function (result) {
+                    self.changePasswordShow = !self.changePasswordShow;
+                },
+                function (result) {
+                    self.oldPassword = '';
+                });
+        }
+    }
 };
 },{}],4:[function(require,module,exports){
 'use sctrict';
 
-module.exports = function ($scope, ChatService, $interval) {
+module.exports = function ($scope, ChatService, $interval, CompanyService) {
     var self = this;
 
     self.messages = [];
@@ -486,7 +503,17 @@ module.exports = function ($scope, ChatService, $interval) {
     self.getMsg = getMsg;
     self.disconnectChat = disconnectChat;
     self.shrinkChat = shrinkChat;
-    self.chat = $interval(self.getMsg, 1000);
+    self.chat = $interval(self.getMsg, 3000);
+    self.currentChatPartners = [];
+    ChatService.getChats().then(function (value) {
+        self.chats = value;
+    });
+    self.getChats = $interval(function(){
+        ChatService.getChats().then(function (value) {
+            self.chats = value;
+        });
+    }, 60000);
+
 
     function sendMsg(){
         ChatService.sendMsg(self.currentChatPartner.senderId, self.currentChatPartner.receiverId, self.chatMessage).then(function (result) {
@@ -497,13 +524,48 @@ module.exports = function ($scope, ChatService, $interval) {
     }
 
     function getMsg(){
-        self.currentChatPartner = ChatService.getCurrentChatPartner();
-        if (!self.currentChatPartner){
-            if (window.localStorage.getItem('chatPartner') != null) {
-                ChatService.setCurrentChatPartner(JSON.parse(window.localStorage.getItem('chatPartner')));
+        var tmpChatPartner = ChatService.getCurrentChatPartner();
+        if (!self.currentChatPartner || !tmpChatPartner){
+            if (self.chats.collocutorIds.length != 0){
+                CompanyService.getInfo().then(function (result) {
+                        CompanyService.getOthersCompanies().then(function (result) {
+                            self.currentChatPartners = [];
+                            for (var i = 0; i < result.length; i++){
+                                for (var j = 0; j < self.chats.collocutorIds.length; j++) {
+                                    if (result[i].companyId == self.chats.collocutorIds[j]){
+                                        self.currentChatPartners.push({
+                                            senderId :  self.chats.id,
+                                            receiverId : self.chats.collocutorIds[j],
+                                            company : result[i]
+                                        });
+                                        break;
+                                    }
+                                }
+                            }
+                            if (window.localStorage.getItem('chatPartner') != null){
+                                self.currentChatPartners[self.currentChatPartners.length-1].isClosed = JSON.parse(window.localStorage.getItem('chatPartner')).isClosed;
+                                self.currentChatPartner = self.currentChatPartners[self.currentChatPartners.length-1];
+                                ChatService.setCurrentChatPartner(self.currentChatPartner);
+                                window.localStorage.setItem('chatPartner', JSON.stringify(self.currentChatPartner));
+                            } else {
+                                self.currentChatPartner = self.currentChatPartners[self.currentChatPartners.length-1];
+                                ChatService.setCurrentChatPartner(self.currentChatPartner);
+                                window.localStorage.setItem('chatPartner', JSON.stringify(self.currentChatPartner));
+                            }
+                        });
+                    }
+                );
+            } else {
+                self.currentChatPartner = tmpChatPartner;
             }
         }
         if (self.currentChatPartner){
+            if (tmpChatPartner.receiverId != self.currentChatPartner.receiverId){
+                self.firstload = true;
+                self.messages = [];
+                self.currentChatPartner = tmpChatPartner;
+                window.localStorage.setItem('chatPartner', JSON.stringify(self.currentChatPartner));
+            }
             Promise.all([
                 ChatService.getMsg(self.currentChatPartner.senderId, self.currentChatPartner.receiverId, 0).then(function (result) {
                     for (var i = 0; i < result.length; i++){
@@ -1021,7 +1083,8 @@ angular.module('barterme')
 module.exports = function ($http, $q) {
 
     var SERVICE_URI = {
-            getUserInfo: 'auth/getUserInfo'
+            getUserInfo: 'auth/getUserInfo',
+            changePassword: 'auth/changePassword'
         },
         SERVICE_CFG = {
             headers: {
@@ -1032,7 +1095,9 @@ module.exports = function ($http, $q) {
     var service = {
         regCode: false,
         reg: false,
-        getUserInfo: getUserInfo
+        userInfo: {},
+        getUserInfo: getUserInfo,
+        changePassword: changePassword
     };
 
     function getUserInfo() {
@@ -1041,6 +1106,7 @@ module.exports = function ($http, $q) {
             .then(
                 function (response) {
                     if (response.data.success) {
+                        service.userInfo = response.data.data;
                         var roles = response.data.data.roles;
                         for (var i = 0; i < roles.length; i++) {
                             if (roles[i] == 'ROLE_CONFIRMED_USER') {
@@ -1057,6 +1123,31 @@ module.exports = function ($http, $q) {
                     } else {
                         service.reg = false;
                         service.regCode = false;
+                        console.error(response.data.message);
+                        deferred.reject(response);
+                    }
+                },
+                function (errResponse) {
+                    console.error('Error while getting UserInfo');
+                    deferred.reject(errResponse);
+                }
+            );
+        return deferred.promise;
+    }
+
+    function changePassword(password, newPassword){
+        var deferred = $q.defer(),
+            data = JSON.stringify({
+                email : service.userInfo.email,
+                password : password,
+                newPassword : newPassword
+            });
+        $http.post(SERVICE_URI.changePassword, data)
+            .then(
+                function (response) {
+                    if (response.data.success) {
+                        deferred.resolve(response.data.data);
+                    } else {
                         console.error(response.data.message);
                         deferred.reject(response);
                     }
@@ -1114,9 +1205,10 @@ module.exports = function ($http, $q) {
 },{}],13:[function(require,module,exports){
 'use strict';
 
-module.exports = function ($http, $q) {
+module.exports = function ($http, $q, AuthService) {
 
     var SERVICE_URI = {
+            getChats: 'chat/getChats',
             getMsg: 'chat/getMsg',
             sendMsg: 'chat/sendMsg'
         },
@@ -1128,11 +1220,39 @@ module.exports = function ($http, $q) {
     var currentChatPartner = undefined;
 
     var service = {
+        getChats: getChats,
         getMsg: getMsg,
         sendMsg: sendMsg,
         setCurrentChatPartner: setCurrentChatPartner,
         getCurrentChatPartner: getCurrentChatPartner
     };
+
+    function getChats(){
+        var deferred = $q.defer();
+        AuthService.getUserInfo().then(
+            function (result) {
+                var data = $.param({
+                        email : result.email
+                    });
+                $http.get(SERVICE_URI.getChats + '?' + data)
+                    .then(
+                        function (response) {
+                            if (response.data.success) {
+                                deferred.resolve(response.data.data);
+                            } else {
+                                console.error(response.data.message);
+                                deferred.reject(response);
+                            }
+                        },
+                        function (errResponse) {
+                            console.error('Error while getting UserInfo');
+                            deferred.reject(errResponse);
+                        }
+                    );
+            }
+        );
+        return deferred.promise;
+    }
 
     function getMsg(senderId, receiverId, stage) {
         if (!stage) stage = 0;
@@ -2446,15 +2566,6 @@ $(document).ready(function () {
         $(this).text(
             text == "Показать больше отзывов" ? "Скрыть отзывы" : "Показать больше отзывов");
         $('.hidden-feedbacks').fadeToggle();
-    })
-
-    // Change Password
-    $(".change-password").click(function (chP) {
-        chP.preventDefault();
-        var text = $(this).text();
-        $(this).text(
-            text == "Изменить пароль" ? "Сохранить пароль" : "Изменить пароль");
-        $('.pass-line').fadeToggle();
     })
 
     // Open Order Form

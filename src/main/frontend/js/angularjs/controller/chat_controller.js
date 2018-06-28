@@ -1,6 +1,6 @@
 'use sctrict';
 
-module.exports = function ($scope, ChatService, $interval) {
+module.exports = function ($scope, ChatService, $interval, CompanyService) {
     var self = this;
 
     self.messages = [];
@@ -10,7 +10,17 @@ module.exports = function ($scope, ChatService, $interval) {
     self.getMsg = getMsg;
     self.disconnectChat = disconnectChat;
     self.shrinkChat = shrinkChat;
-    self.chat = $interval(self.getMsg, 1000);
+    self.chat = $interval(self.getMsg, 3000);
+    self.currentChatPartners = [];
+    ChatService.getChats().then(function (value) {
+        self.chats = value;
+    });
+    self.getChats = $interval(function(){
+        ChatService.getChats().then(function (value) {
+            self.chats = value;
+        });
+    }, 60000);
+
 
     function sendMsg(){
         ChatService.sendMsg(self.currentChatPartner.senderId, self.currentChatPartner.receiverId, self.chatMessage).then(function (result) {
@@ -21,13 +31,48 @@ module.exports = function ($scope, ChatService, $interval) {
     }
 
     function getMsg(){
-        self.currentChatPartner = ChatService.getCurrentChatPartner();
-        if (!self.currentChatPartner){
-            if (window.localStorage.getItem('chatPartner') != null) {
-                ChatService.setCurrentChatPartner(JSON.parse(window.localStorage.getItem('chatPartner')));
+        var tmpChatPartner = ChatService.getCurrentChatPartner();
+        if (!self.currentChatPartner || !tmpChatPartner){
+            if (self.chats.collocutorIds.length != 0){
+                CompanyService.getInfo().then(function (result) {
+                        CompanyService.getOthersCompanies().then(function (result) {
+                            self.currentChatPartners = [];
+                            for (var i = 0; i < result.length; i++){
+                                for (var j = 0; j < self.chats.collocutorIds.length; j++) {
+                                    if (result[i].companyId == self.chats.collocutorIds[j]){
+                                        self.currentChatPartners.push({
+                                            senderId :  self.chats.id,
+                                            receiverId : self.chats.collocutorIds[j],
+                                            company : result[i]
+                                        });
+                                        break;
+                                    }
+                                }
+                            }
+                            if (window.localStorage.getItem('chatPartner') != null){
+                                self.currentChatPartners[self.currentChatPartners.length-1].isClosed = JSON.parse(window.localStorage.getItem('chatPartner')).isClosed;
+                                self.currentChatPartner = self.currentChatPartners[self.currentChatPartners.length-1];
+                                ChatService.setCurrentChatPartner(self.currentChatPartner);
+                                window.localStorage.setItem('chatPartner', JSON.stringify(self.currentChatPartner));
+                            } else {
+                                self.currentChatPartner = self.currentChatPartners[self.currentChatPartners.length-1];
+                                ChatService.setCurrentChatPartner(self.currentChatPartner);
+                                window.localStorage.setItem('chatPartner', JSON.stringify(self.currentChatPartner));
+                            }
+                        });
+                    }
+                );
+            } else {
+                self.currentChatPartner = tmpChatPartner;
             }
         }
         if (self.currentChatPartner){
+            if (tmpChatPartner.receiverId != self.currentChatPartner.receiverId){
+                self.firstload = true;
+                self.messages = [];
+                self.currentChatPartner = tmpChatPartner;
+                window.localStorage.setItem('chatPartner', JSON.stringify(self.currentChatPartner));
+            }
             Promise.all([
                 ChatService.getMsg(self.currentChatPartner.senderId, self.currentChatPartner.receiverId, 0).then(function (result) {
                     for (var i = 0; i < result.length; i++){

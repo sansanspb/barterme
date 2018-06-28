@@ -1,8 +1,9 @@
 'use strict';
 
-module.exports = function ($http, $q) {
+module.exports = function ($http, $q, AuthService) {
 
     var SERVICE_URI = {
+            getChats: 'chat/getChats',
             getMsg: 'chat/getMsg',
             sendMsg: 'chat/sendMsg'
         },
@@ -14,11 +15,39 @@ module.exports = function ($http, $q) {
     var currentChatPartner = undefined;
 
     var service = {
+        getChats: getChats,
         getMsg: getMsg,
         sendMsg: sendMsg,
         setCurrentChatPartner: setCurrentChatPartner,
         getCurrentChatPartner: getCurrentChatPartner
     };
+
+    function getChats(){
+        var deferred = $q.defer();
+        AuthService.getUserInfo().then(
+            function (result) {
+                var data = $.param({
+                        email : result.email
+                    });
+                $http.get(SERVICE_URI.getChats + '?' + data)
+                    .then(
+                        function (response) {
+                            if (response.data.success) {
+                                deferred.resolve(response.data.data);
+                            } else {
+                                console.error(response.data.message);
+                                deferred.reject(response);
+                            }
+                        },
+                        function (errResponse) {
+                            console.error('Error while getting UserInfo');
+                            deferred.reject(errResponse);
+                        }
+                    );
+            }
+        );
+        return deferred.promise;
+    }
 
     function getMsg(senderId, receiverId, stage) {
         if (!stage) stage = 0;

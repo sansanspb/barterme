@@ -3,7 +3,8 @@
 module.exports = function ($http, $q) {
 
     var SERVICE_URI = {
-            getUserInfo: 'auth/getUserInfo'
+            getUserInfo: 'auth/getUserInfo',
+            changePassword: 'auth/changePassword'
         },
         SERVICE_CFG = {
             headers: {
@@ -14,7 +15,9 @@ module.exports = function ($http, $q) {
     var service = {
         regCode: false,
         reg: false,
-        getUserInfo: getUserInfo
+        userInfo: {},
+        getUserInfo: getUserInfo,
+        changePassword: changePassword
     };
 
     function getUserInfo() {
@@ -23,6 +26,7 @@ module.exports = function ($http, $q) {
             .then(
                 function (response) {
                     if (response.data.success) {
+                        service.userInfo = response.data.data;
                         var roles = response.data.data.roles;
                         for (var i = 0; i < roles.length; i++) {
                             if (roles[i] == 'ROLE_CONFIRMED_USER') {
@@ -39,6 +43,31 @@ module.exports = function ($http, $q) {
                     } else {
                         service.reg = false;
                         service.regCode = false;
+                        console.error(response.data.message);
+                        deferred.reject(response);
+                    }
+                },
+                function (errResponse) {
+                    console.error('Error while getting UserInfo');
+                    deferred.reject(errResponse);
+                }
+            );
+        return deferred.promise;
+    }
+
+    function changePassword(password, newPassword){
+        var deferred = $q.defer(),
+            data = JSON.stringify({
+                email : service.userInfo.email,
+                password : password,
+                newPassword : newPassword
+            });
+        $http.post(SERVICE_URI.changePassword, data)
+            .then(
+                function (response) {
+                    if (response.data.success) {
+                        deferred.resolve(response.data.data);
+                    } else {
                         console.error(response.data.message);
                         deferred.reject(response);
                     }
