@@ -1531,3 +1531,8 @@ INSERT INTO marketing_channels (title) VALUES ('Telegram канал');
 INSERT INTO marketing_channels (title) VALUES ('Ритейл сети');
 INSERT INTO marketing_channels (title) VALUES ('Маленькие магазины у дома');
 INSERT INTO marketing_channels (title) VALUES ('Помещение в собственности');
+
+
+
+ALTER TABLE companies ALTER COLUMN "income_min" DROP NOT NULL;
+ALTER TABLE companies ALTER COLUMN "income_max" DROP NOT NULL;
