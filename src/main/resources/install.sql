@@ -1536,3 +1536,22 @@ INSERT INTO marketing_channels (title) VALUES ('Помещение в собст
 
 ALTER TABLE companies ALTER COLUMN "income_min" DROP NOT NULL;
 ALTER TABLE companies ALTER COLUMN "income_max" DROP NOT NULL;
+
+
+CREATE TABLE "companies_regions" (
+  "company_region_id" serial NOT NULL,
+  "company_id" bigint NOT NULL,
+  "region_id" bigint NOT NULL,
+  CONSTRAINT companies_regions_pk PRIMARY KEY ("company_region_id")
+) WITH (
+OIDS=FALSE
+);
+ALTER TABLE "companies_regions" ADD CONSTRAINT "companies_regions_fk0" FOREIGN KEY ("company_id") REFERENCES "companies"("company_id");
+ALTER TABLE "companies_regions" ADD CONSTRAINT "companies_regions_fk1" FOREIGN KEY ("region_id") REFERENCES "regions"("region_id");
+
+INSERT INTO companies_regions (company_id, region_id)
+  SELECT company_id, region_id FROM companies WHERE region_id IS NOT NULL;
+
+ALTER TABLE companies DROP COLUMN region_id;
+
+INSERT INTO regions (region_id, title) VALUES (0, 'Россия')

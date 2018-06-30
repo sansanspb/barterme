@@ -11,6 +11,58 @@ import java.util.List;
 @Table(name = "companies")
 public class CompanyEntity {
 
+    @Id
+    @Column(name = "company_id")
+    private Long companyId;
+
+    @Column(name = "contact_person")
+    private String contactPerson = "";
+
+    @Column(name = "contact_email")
+    private String contactEmail = "";
+
+    @Column(name = "caption")
+    private String caption = "";
+
+    @Column(name = "description")
+    private String description = "";
+
+    @Column(name = "about")
+    private String about = "";
+
+    @Column(name = "rating")
+    private Double rating;
+
+    @Column(name = "gender_male")
+    private Boolean genderMale = false;
+
+    @Column(name = "gender_female")
+    private Boolean genderFemale = false;
+
+    @Column(name = "age_min")
+    private Long ageMin = 0L;
+
+    @Column(name = "age_max")
+    private Long ageMax = 0L;
+
+    @Column(name = "income_min")
+    private Long incomeMin = 0L;
+
+    @Column(name = "income_max")
+    private Long incomeMax = 0L;
+
+    @Column(name = "client_count")
+    private Long clientCount = 0L;
+
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "companies_regions",
+            joinColumns = {@JoinColumn(name = "company_id")},
+            inverseJoinColumns = {@JoinColumn(name = "region_id")}
+    )
+    List<RegionEntity> regions = new ArrayList<>();
+
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
@@ -19,6 +71,7 @@ public class CompanyEntity {
             inverseJoinColumns = {@JoinColumn(name = "category_id")}
     )
     List<CategoryEntity> offerCategories = new ArrayList<>();
+
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
@@ -27,6 +80,7 @@ public class CompanyEntity {
             inverseJoinColumns = {@JoinColumn(name = "category_id")}
     )
     List<CategoryEntity> searchCategories = new ArrayList<>();
+
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
@@ -35,6 +89,7 @@ public class CompanyEntity {
             inverseJoinColumns = {@JoinColumn(name = "marketing_channel_id")}
     )
     List<MarketingChannelEntity> marketingChannels = new ArrayList<>();
+
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
@@ -43,46 +98,12 @@ public class CompanyEntity {
             inverseJoinColumns = {@JoinColumn(name = "favorite_company_id")}
     )
     List<CompanyEntity> favoritesCompanies = new ArrayList<>();
-    @Id
-    @Column(name = "company_id")
-    private Long companyId;
-    @Column(name = "contact_person")
-    private String contactPerson = "";
-    @Column(name = "contact_email")
-    private String contactEmail = "";
-    @Column(name = "caption")
-    private String caption = "";
-    @Column(name = "description")
-    private String description = "";
-    @Column(name = "about")
-    private String about = "";
-    @Column(name = "rating")
-    private Double rating;
-    @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "region_id")
-    private RegionEntity region;
-    @JsonProperty(value = "regionId")
-    @Column(name = "region_id", insertable = false, updatable = false)
-    private Long fkRegionId;
-    @Column(name = "gender_male")
-    private Boolean genderMale = false;
-    @Column(name = "gender_female")
-    private Boolean genderFemale = false;
-    @Column(name = "age_min")
-    private Long ageMin = 0L;
-    @Column(name = "age_max")
-    private Long ageMax = 0L;
-    @Column(name = "income_min")
-    private Long incomeMin = 0L;
-    @Column(name = "income_max")
-    private Long incomeMax = 0L;
-    @Column(name = "client_count")
-    private Long clientCount = 0L;
+
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "photo_id")
     private PhotoEntity photo;
+
     @JsonProperty(value = "photoId")
     @Column(name = "photo_id", updatable = false, insertable = false)
     private Long fkPhotoId;
@@ -143,20 +164,12 @@ public class CompanyEntity {
         this.rating = rating;
     }
 
-    public RegionEntity getRegion() {
-        return region;
+    public List<RegionEntity> getRegions() {
+        return regions;
     }
 
-    public void setRegion(RegionEntity region) {
-        this.region = region;
-    }
-
-    public Long getFkRegionId() {
-        return fkRegionId;
-    }
-
-    public void setFkRegionId(Long fkRegionId) {
-        this.fkRegionId = fkRegionId;
+    public void setRegions(List<RegionEntity> regions) {
+        this.regions = regions;
     }
 
     public Boolean getGenderMale() {

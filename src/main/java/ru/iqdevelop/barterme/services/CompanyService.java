@@ -405,7 +405,6 @@ public class CompanyService {
         }
 
         model.setRating(companyEntity.getRating());
-        model.setRegionId(companyEntity.getFkRegionId());
         model.setContactEmail(companyEntity.getContactEmail());
         return model;
     }
@@ -427,10 +426,42 @@ public class CompanyService {
 
         PhotoEntity photo = photoRepository.getById(inCompanyModel.getPhotoId());
         currCompany.setPhoto(photo);
-
-        RegionEntity region = regionRepository.getById(inCompanyModel.getRegionId());
-        currCompany.setRegion(region);
     }
 
 
+    @Transactional(readOnly = true)
+    public List<RegionEntity> getCompanyRegions(String userEmail) {
+        CompanyEntity currCompany = getCurrentCompany(userEmail);
+
+        // костыль для lazy load
+        List<RegionEntity> list = currCompany.getRegions();
+        list = list.stream().filter(t -> t.getRegionId() != null).collect(Collectors.toList());
+        return list;
+    }
+
+    @Transactional
+    public void setCompanyRegions(String userEmail, CompanyRegionsModel companyRegionsModel) {
+        CompanyEntity currCompany = getCurrentCompany(userEmail);
+        syncRegions(currCompany.getRegions(), companyRegionsModel.getRegionsIds());
+    }
+
+    private void syncRegions(List<RegionEntity> listToChange, List<Long> newRegionsList) {
+        // Если указана Россия и еще несколько, то отказать
+        if ((newRegionsList.size() > 1) && (newRegionsList.contains(0L))) {
+            throw new RuntimeException("Нельзя выбирать Россию и другие города вместе");
+        }
+
+        List<Long> oldChannelsIds = listToChange.stream().map(RegionEntity::getRegionId).collect(Collectors.toList());
+
+        List<Long> needDeleteIds = oldChannelsIds.stream().filter(t -> !newRegionsList.contains(t)).collect(Collectors.toList());
+        List<Long> needInsertIds = newRegionsList.stream().filter(t -> !oldChannelsIds.contains(t)).collect(Collectors.toList());
+
+        List<RegionEntity> tempChannels = listToChange.stream().filter(t -> needDeleteIds.contains(t.getRegionId())).collect(Collectors.toList());
+        listToChange.removeAll(tempChannels);
+
+        needInsertIds.forEach(t -> {
+            RegionEntity chan = regionRepository.getById(t);
+            listToChange.add(chan);
+        });
+    }
 }
