@@ -72,6 +72,42 @@ public class CompanyController {
         }
     }
 
+    @RequestMapping(value = "/getCompanyRegions", method = RequestMethod.POST)
+    public @ResponseBody
+    AnswerMessage getCompanyRegions(HttpServletRequest request) {
+        try {
+            Principal userPrincipal = request.getUserPrincipal();
+            if (userPrincipal == null) {
+                return AnswerMessage.getFailMessage("Вы не авторизованны");
+            }
+
+            String userEmail = userPrincipal.getName();
+            List<RegionEntity> result = companyService.getCompanyRegions(userEmail);
+            return AnswerMessage.getSuccessMessage(result);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return AnswerMessage.getFailMessage("Не удалось получить данные компании");
+        }
+    }
+
+    @RequestMapping(value = "/setCompanyRegions", method = RequestMethod.POST)
+    public @ResponseBody
+    AnswerMessage setCompanyRegions(@RequestBody CompanyRegionsModel companyRegionsModel, HttpServletRequest request) {
+        try {
+            Principal userPrincipal = request.getUserPrincipal();
+            if (userPrincipal == null) {
+                return AnswerMessage.getFailMessage("Вы не авторизованны");
+            }
+
+            String userEmail = userPrincipal.getName();
+            companyService.setCompanyRegions(userEmail, companyRegionsModel);
+            return AnswerMessage.getSuccessMessage();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return AnswerMessage.getFailMessage("Не удалось сохранить данные компании");
+        }
+    }
+
     @RequestMapping(value = "/getOthersCompanies", method = RequestMethod.POST)
     public @ResponseBody
     AnswerMessage getOthersCompanies(HttpServletRequest request) {
