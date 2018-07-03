@@ -503,7 +503,7 @@ module.exports = function ($scope, ChatService, $interval, CompanyService) {
     self.getMsg = getMsg;
     self.disconnectChat = disconnectChat;
     self.shrinkChat = shrinkChat;
-    self.chat = $interval(self.getMsg, 3000);
+    self.chat = $interval(self.getMsg, 30000);
     self.currentChatPartners = [];
     ChatService.getChats().then(function (value) {
         self.chats = value;
@@ -532,7 +532,7 @@ module.exports = function ($scope, ChatService, $interval, CompanyService) {
     function getMsg(){
         self.newChat = ChatService.getCurrentChatPartner();
         var companyReg;
-
+        if (!self.chats || !self.chats.collocutorIds) return;
             if (self.chats.collocutorIds.length != 0){
                 CompanyService.getInfo().then(function (result) {
                         CompanyService.getOthersCompanies().then(function (result) {

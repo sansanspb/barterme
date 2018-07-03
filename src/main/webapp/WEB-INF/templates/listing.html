@@ -119,7 +119,7 @@
         </header>
     <main>
       <div class="chat-container" ng-controller="ChatController as Cctrl" ng-class="{'opened' : Cctrl.chats.length != 0, 'hidden' : Cctrl.chats.length == 0}">
-        <div class="chat-wrapper opened" ng-repeat="chat in Cctrl.currentChatPartners" ng-class="{'shrinked' : chat.isClosed}">
+        <div class="chat-wrapper opened" ng-repeat="chat in Cctrl.currentChatPartners | limitTo : 3 track by $index" ng-class="{'shrinked' : chat.isClosed}" style="right: {{$index*445}}px;">
           <div class="chat-hat"><a class="img-wrapper chat-img-wrapper" href="card?parentId={{ctrl.categoriesTree[0].categoryId}}&amp;subId={{ctrl.categoriesTree[0].childs[0].categoryId}}&amp;companyId={{chat.company.companyId}}"><img src="image/get/{{chat.company.photoPath}}"></a>
             <h3 class="chat-title">{{chat.company.caption}}</h3>
             <div class="close-chat" ng-click="Cctrl.disconnectChat(chat)"></div>
